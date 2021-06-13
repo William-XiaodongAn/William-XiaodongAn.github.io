@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<!-- Head -->
+<head>
+<script src='https://abubujs.org/libs/Abubu.latest.js'
+	type='text/javascript'></script>
+</head>
+<!-- body of the html page -->
+<body>
+    <canvas id="canvas_1" 
+            width=512 height=512
+            style="border:1px solid #000000;" >
+        <!-- This message is displayed if canvas is not available -->
+        Your browser does not support the HTML5 canvas tag.
+    </canvas>
+</body>
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- fragment shader                                                    -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+
+<!--<script id='init' type='shader'>#version 300 es
+precision highp float ;
+precision highp int ;
+
+uniform float x ;
+uniform float y ;
+uniform float r ;
+uniform float vx ;
+uniform float vy ;
+
+layout (location = 0 ) out vec4 color1 ; 
+
+in vec2 cc ;        /* input from vertex shader */
+
+
+// Main body of the shader
+void main() {
+    vec4 color = vec4(0.) ;
+    if ( length(cc-vec2(x,y))<r ){
+        color.r = 1. ;
+    }
+
+    // we assign the same values to both of them
+    color1 = color ;
+    return ;
+}
+</script> -->
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- fragment shader                                                    -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<script id='march' type='shader'>#version 300 es
+precision highp float ;
+precision highp int ;
+
+uniform float x ;
+uniform float y ;
+uniform float r ;
+uniform float vx ;
+uniform float vy ;
+
+layout (location = 0 ) out vec4 color1 ; 
+
+in vec2 cc ;        /* input from vertex shader */
+
+
+// Main body of the shader
+void main() {
+    vec4 color = vec4(0.) ;
+    if ( length(cc-vec2(x,y))<r ){
+        color.r = 1. ;
+    }
+
+    // we assign the same values to both of them
+    color1 = color ;
+    return ;
+}
+</script>
+
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- Main script -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<script>
+// get the shader source by its id ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function source(id){
+    return document.getElementById(id).text ;
+}
+
+// Get the canvas --------------------------------------------------------
+var canvas_1 = document.getElementById('canvas_1') ;
+
+// Define a texture ------------------------------------------------------
+var fcolor = new Abubu.Float32Texture(512,512) ;
+var scolor = new Abubu.Float32Texture(512,512) ;
+
+// Object to be used for interactions
+/*var env = {
+        running : false ,
+		x : 0.5 ,
+		y : 0.5 ,
+		r : 0.1 ,
+		vx : 0 ,
+		vy : 0 ,
+		dt : 0.001
+} ;*/
+
+var env2 = {
+        running : false ,
+		x : 0.5 ,
+		y : 0.5 ,
+		r : 0.1 ,
+		vx : 0.01 ,
+		vy : 0.01 ,
+		dt : 0.001		
+} ;
+
+/*var init = new Abubu.Solver({
+        fragmentShader : source( 'init') ,
+		uniforms: {
+			    x : { type : 'f', value : env.x } ,
+				y : { type : 'f', value : env.y } ,
+				r : { type : 'f', value : env.r } ,
+        } ,
+        targets : {
+                color1: {location : 0 , target : fcolor } ,
+        }
+} ) ;
+init.render() ;*/
+
+var march = new Abubu.Solver({
+        fragmentShader : source('march') ,
+		uniforms: {
+			    x : { type : 'f', value : env2.x } ,
+				y : { type : 'f', value : env2.y } ,
+				r : { type : 'f', value : env2.r } ,
+        } ,
+        targets : {
+                outputcolor : { location : 0 , target : fcolor } ,
+        }
+    } ) ;
+march.render()
+
+var plot = new Abubu.Plot2D({
+    target : fcolor ,   /* the texture to visualize             */
+    channel : 'r',              /* the channel of interest:
+                                        can be : 'r', 'g', 'b', or 'a' 
+                                        defualt value is 'r'            */
+    minValue : 0 ,              /* minimum value on the colormap        */
+    maxValue : 1 ,             /* maximum value on the colormap        */
+    colorbar : false ,           /* if you need to show the colorbar     */
+    canvas : canvas_1 ,         /* the canvas to draw on                */
+}) ;
+
+plot.init() ;   /* initialize the plot */
+plot.render() ;
+
+/* function to create a graphical user interface */
+function createGui(){
+    var gui = new Abubu.Gui() ;     /*  create a graphical user 
+                                        interface               */
+    var panel = gui.addPanel() ;    /*  add a panel to the GUI  */
+    panel.add(env2, 'running' ) ;
+    /*panel.add(env, 'y').onChange(function(){
+        init.uniforms.y.value = env.y ;
+		init.render();
+    } );
+    panel.add(env, 'x').onChange(function(){
+        init.uniforms.x.value = env.x ;
+		init.render();
+    } );
+    panel.add(env, 'r').onChange(function(){
+        init.uniforms.r.value = env.r ;
+		init.render();
+    } );*/
+    panel.add(env2, 'vx').step(0.01).onChange(function(){
+        march.uniforms.vx.value = env2.vx ;
+		march.render();
+    } );
+    panel.add(env2, 'vy').step(0.01).onChange(function(){
+        march.uniforms.vy.value = env2.vy ;
+		march.render();	
+    } );
+    panel.add(env2, 'dt').onChange(function(){
+		march.render();	
+    } );	
+	
+    panel.add(env2, 'y').onChange(function(){
+        march.uniforms.y.value = env2.y ;
+		march.render();
+    } );
+    panel.add(env2, 'x').onChange(function(){
+        march.uniforms.x.value = env2.x ;
+		march.render();
+    } );
+    panel.add(env2, 'r').onChange(function(){
+        march.uniforms.r.value = env2.r ;
+		march.render();
+    } );
+}
+
+function run(){
+		if (env2.running){
+			for (var i =0; i<80; i++){
+				env2.x += env2.vx*env2.dt ;
+				env2.y += env2.vy*env2.dt ;
+				march.uniforms.x.value = env2.x ;
+				march.uniforms.y.value = env2.y ;
+				if (Math.abs(env2.x - 0.5) >= 0.5 - env2.r){
+					env2.vx *= -1;
+				}
+				if (Math.abs(env2.y - 0.5) >= 0.5 - env2.r){
+					env2.vy *= -1;
+				}
+				march.render() ;
+			}
+		}
+		plot.render() ;
+		requestAnimationFrame(run) ;
+
+}
+/* run createGui to create the graphical user interface     */
+createGui() ;
+
+run() ;
+</script>
+</html>
