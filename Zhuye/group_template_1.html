@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+ <head> 
+  <meta charset="UTF-8"> 
+  <title>PC课题组模板 - X-MOL</title> 
+  <style>
+        html {
+            font-family: sans-serif;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        body {
+            font-size: 16px;
+            line-height: 1.7;
+            color:#808080;
+            margin: 0;
+            font-family:"微软雅黑","黑体";
+            background: #fff;
+            -moz-box-sizing: border-box; /*Firefox3.5+*/
+            -webkit-box-sizing: border-box; /*Safari3.2+*/
+            -o-box-sizing: border-box; /*Opera9.6*/
+            -ms-box-sizing: border-box; /*IE8*/
+            box-sizing: border-box; /*W3C标准(IE9+，Safari5.1+,Chrome10.0+,Opera10.6+都符合box-sizing的w3c标准语法)*/
+        }
+
+        img {
+            border: 0;
+            -ms-interpolation-mode: bicubic;
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            color:#808080;
+            text-decoration: none;
+            outline: none;
+        }
+        a:link {
+            color:#808080;
+            text-decoration: none;
+            outline: none;
+        }
+
+        a:visited {
+            color:#808080;
+            text-decoration: none;
+        }
+        a:hover {
+            color:#E30303;
+            text-decoration: none;
+        }
+        a:active {
+            color:#E30303;
+            text-decoration: none;
+        }
+        ul,li {
+            list-style: none;
+            margin:0;
+            padding:0;
+        }
+        .pull-right{
+            float:right;
+        }
+        .pull-left{
+            float:left;
+        }
+        .clear-float{
+            clear:both;
+            height:0;
+            font-size: 0px;
+            line-height: 0px;
+            OVERFLOW: hidden;
+            padding:0;
+            margin:0;
+            border:0;
+        }
+        .it28 {
+            font-size: 28px!important;
+        }
+        .it-bold{
+            font-weight:bold;
+        }
+        .header{
+            width:100%;
+        }
+        .header-line{
+            width:100%;
+            height:16px;
+            background-color:#808080;
+        }
+        .header-logo-ar{
+            width:1080px;
+            height:120px;
+            margin:0 auto;
+        }
+        .header-logo-ar .logo{
+            width:80%;
+            margin:20px 0;
+            float:left;
+        }
+        .header-logo-ar .logo img{
+            max-height:80px;
+        }
+        .header-logo-ar .logo-text{
+            margin-left:20px;
+        }
+        .logo-big-title{
+            color: #333333;
+        }
+        .logo-small-title{
+            color:#808080;
+        }
+        .header-menu{
+            width:100%;
+            height:40px;
+            background-color:#990000;
+        }
+        .header-menu-ar{
+            width:1080px;
+            height:40px;
+            margin:0 auto
+        }
+        .header-menu-ar ul{
+            width:100%;
+            margin:0;
+            padding:0;
+            list-style: none;
+        }
+        .header-menu-ar ul li{
+            float:left;
+            display: inline-block;
+            width:12.5%;
+            line-height:40px;
+            text-align: center;
+            margin:0;
+            padding:0;
+            list-style: none;
+            color:#fff;
+        }
+        .header-menu-ar ul li a{
+            float:left;
+            width:100%;
+            display: inline-block;
+            color:#fff;
+        }
+        .header-menu-ar ul li a:hover{
+            float:left;
+            width:100%;
+            display: inline-block;
+            background-color:#E30303;
+        }
+        .header-menu-ar-active{
+            float:left;
+            width:100%;
+            display: inline-block;
+            background-color:#E30303;
+        }
+        .header-banner{
+            width:100%;
+            overflow: hidden;
+        }
+        .header-banner img{
+            min-width:100%;
+            height:480px;
+            overflow: hidden;
+        }
+        .container{
+            width:100%;
+        }
+        .container-first{
+            width:100%;
+        }
+        .container-first-ar{
+            width:1080px;
+            margin:0 auto;
+            padding:30px 0;
+        }
+        .container-title{
+            width:100%;
+            line-height: 40px;
+            border-bottom:1px solid #e3e3e3;
+        }
+        .container-title-text{
+            font-size: 22px;
+            font-weight:bold;
+            color:#660101;
+        }
+
+        .container-content{
+            width:100%;
+            margin:20px 0 10px 0;
+        }
+        .container-content-left{
+            width:310px;
+            float:left;
+            line-height: 2;
+        }
+        .container-content-left-pic{
+            float:left;
+        }
+        .container-content-left-pic img{
+            width:280px;
+            height:280px;
+        }
+        .container-content-left-info{
+            float:left;
+            width:100%;
+            margin:10px 0 25px 0;
+        }
+        .container-content-left-info span{
+            display: block;
+        }
+        .teacher-name-text{
+            font-size:24px;
+            font-weight:bold;
+            color:#333333;
+        }
+        .teacher-name-text a{
+            color:#333333;
+        }
+        .teacher-detail-info-text{
+            color:#b3b3b3;
+        }
+        .teacher-list-ar ul {
+            width: 100%;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .teacher-list-ar li {
+            width: 20%;
+            float: left;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color:#333333;
+        }
+        .teacher-list-ar li a{
+            color:#1C87EA;
+        }
+        .teacher-list-ar li a:hover{
+            color:#1C87EA;
+        }
+
+        .teacher-list-ar li img {
+            width: 140px;
+            height: 140px;
+            border-radius: 100%;
+            border: 2px solid #ff6600;
+        }
+
+        .container-content-right{
+            width:770px;
+            float:left;
+        }
+        .container-content-right-another{
+            width:49%;
+            float:left;
+        }
+        .container-content-news-list{
+            width:100%;
+            float:left;
+        }
+        .container-content-news-list ul{
+            width:100%;
+            margin:0;
+            padding:0;
+            list-style: none;
+        }
+        .container-content-news-list ul li{
+            width:100%;
+            margin:0;
+            padding:0;
+            list-style: none;
+            line-height: 2.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+        }
+        .container-content-right-text{
+            width:100%;
+            line-height: 26px;
+            height:182px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 7;
+            -webkit-box-orient: vertical;
+        }
+        .team-list-ar {
+            width: 100%;
+        }
+        .team-list-ar ul {
+            width: 100%;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .team-list-ar li {
+            width: 25%;
+            float: left;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            margin-bottom:20px;
+        }
+
+        .team-list-ar li img {
+            width: 262px;
+            height: 185px;
+            border: 1px solid #b3b3b3;
+        }
+        .team-list-ar  li a{
+            color:#333333;
+        }
+        .team-list-ar  li a:hover{
+            color:#E30303;
+        }
+        .link-list-ar {
+            width: 100%;
+        }
+        .link-list-ar ul {
+            width: 100%;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .link-list-ar li {
+            width: 32%;
+            float: left;
+            list-style: none;
+            margin: 0;
+            text-align: left;
+            padding-bottom:5px;
+            margin-right:1%;
+            border-right:1px solid #e3e3e3;
+            white-space: nowrap;
+            overflow: hidden;
+            -ms-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+        }
+        .link-list-ar li:nth-child(3n){
+            border-right:0;
+        }
+
+        .footer{
+            width:100%;
+        }
+        .footer-bottom-new {
+            float: left;
+            width: 100%;
+            text-align: center;
+            font-size: 13px;
+            line-height: 36px;
+            height: 36px;
+            color: #b3b3b3;
+            background: #4d4d4d;
+            margin-top: 15px;
+        }
+    </style> 
+ </head> 
+ <body> 
+  <header class="header"> 
+   <div class="header-line"></div> 
+   <div class="header-logo-ar"> 
+    <div class="logo"> 
+     <img src="images/logo.png" class="pull-left"> 
+     <div class="logo-text pull-left"> 
+      <span class="logo-big-title it28 it-bold">香港理工大學朱葉课题组</span>
+      <br> 
+      <span class="logo-small-title"> xxxxx学</span> 
+     </div> 
+    </div> 
+    <div class="pull-right" style="padding: 40px 37px 0 0;"> 
+     <a href="#"> 中文 </a> &nbsp;&nbsp;|&nbsp;&nbsp; 
+     <a href="#"> English </a> 
+    </div> 
+   </div> 
+   <div class="header-menu"> 
+    <div class="header-menu-ar"> 
+     <ul> 
+      <li class="header-menu-ar-active"><a href="#">首页</a></li> 
+      <li><a href="#">研究方向</a></li> 
+      <li><a href="#">成果及论文</a></li> 
+      <li><a href="#">组员介绍</a></li> 
+      <li><a href="#">课题组新闻</a></li> 
+      <li><a href="#">组内活动</a></li> 
+      <li><a href="#">加入我们</a></li> 
+      <li><a href="#">联系我们</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+   <div class="header-banner">
+    <img src="images/banner.jpg"> 
+   </div> 
+  </header> 
+  <section class="container"> 
+   <div class="container-first"> 
+    <div class="container-first-ar" style="padding:0;"> 
+     <div class="container-content"> 
+      <div class="container-content-left"> 
+       <div class="container-content-left-pic"> 
+        <img src="images/member.jpg"> 
+       </div> 
+      </div> 
+      <div class="container-content-right"> 
+       <div class="container-content-left-info"> 
+        <span class="teacher-name-text space-right10" style="display: inline-block;"> zhuye </span> 
+        <span class="teacher-detail-info-text" style="display: inline-block;"> 教授&nbsp;&nbsp;博士生导师 </span> 
+        <span> xxxxxx学 </span> 
+       </div> 
+       <div class="container-content-right-text">
+         個人簡介
+       </div> 
+      </div> 
+      <div class="clear-float"></div> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="container-first" style="background:#fafafa;"> 
+    <div class="container-first-ar"> 
+     <div class="container-title"> 
+      <span class="container-title-text">研究方向</span> 
+      <span class="pull-right"><a href="#">更多&nbsp;&gt;</a></span> 
+     </div> 
+     <div class="container-content text-edd-9">
+       Research Details
+     </div> 
+    </div> 
+   </div> 
+   <div class="container-first"> 
+    <div class="container-first-ar"> 
+     <div class="container-title"> 
+      <span class="container-title-text">课题组新闻</span> 
+      <span class="pull-right"><a href="#">更多&nbsp;&gt;</a></span> 
+     </div> 
+     <div class="container-content" style="margin-bottom:0;"> 
+      <div class="container-content-left" style="width:48%;margin-right:2%;border-right:1px solid #e3e3e3;"> 
+       <div class="container-content-news-list"> 
+        <ul> 
+         <li><a href="#">西虹市科技大学周锐团队在有机太阳能电池领域取得进展</a> </li> 
+         <li><a href="#">周锐课题组博士研究生刘子谦获得2018ACS年会 Excellent Poster Award</a> </li> 
+        </ul> 
+       </div> 
+      </div> 
+      <div class="container-content-right-another"> 
+       <div class="container-content-news-list"> 
+        <ul> 
+         <li><a href="#">周锐教授受邀将在第八届格拉布斯论坛上做主题报告 </a> </li> 
+        </ul> 
+       </div> 
+      </div> 
+      <div class="clear-float"></div> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="container-first" style="background:#fafafa;"> 
+    <div class="container-first-ar" style="padding-bottom: 0;"> 
+     <div class="container-title"> 
+      <span class="container-title-text">组内活动</span> 
+      <span class="pull-right"><a href="#"> 更多&nbsp;&gt;</a></span> 
+     </div> 
+     <div class="container-content"> 
+      <div class="team-list-ar"> 
+       <ul> 
+        <li> <a href="#"> <img src="images/201903051551775592968.jpg"> <br> <span class="text-edd-2">毕业留念</span> </a> </li> 
+        <li> <a href="#"> <img src="images/201903051551775658501.jpg"> <br> <span class="text-edd-2">会议报告</span> </a> </li> 
+        <li> <a href="#"> <img src="images/201903051551775696823.jpg"> <br> <span class="text-edd-2">组内合影</span> </a> </li> 
+        <li> <a href="#"> <img src="images/201902281551347513083.png"> <br> <span class="text-edd-2">组内旅游活动</span> </a> </li> 
+        <div class="clear-float"></div> 
+       </ul> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="container-first"> 
+    <div class="container-first-ar" style="padding-bottom: 10px;"> 
+     <div class="container-title"> 
+      <span class="container-title-text">友情链接</span> 
+     </div> 
+     <div class="container-content" style="margin-bottom:20px;"> 
+      <div class="link-list-ar"> 
+       <ul> 
+        <li><a href="#"> 教育部科技发展中心</a></li> 
+        <li><a href="#"> 中国科学院</a></li> 
+        <li><a href="#"> 中国工程院</a></li> 
+        <li><a href="#"> 国家自然科学基金委</a></li> 
+        <li><a href="#"> 中国知网cnki</a></li> 
+        <li><a href="#"> 新东方教育</a></li> 
+        <div class="clear-float"></div> 
+       </ul> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </section> 
+  <footer class="footer"> 
+   <div> 
+    <div class="footer-bottom-new"> 
+     <span>Copyright © 2014-2018 北京衮雪科技有限公司 All Rights Reserved&nbsp;&nbsp;&nbsp;&nbsp;</span> 
+     <span> <a href="#" target="_blank">京ICP备11026495-2号</a> &nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="#" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"> <img src="images/beian.png" style="float:left;">京公网安备 11010802027423号 </a> </span> 
+    </div> 
+   </div> 
+  </footer>  
+ </body>
+</html>
