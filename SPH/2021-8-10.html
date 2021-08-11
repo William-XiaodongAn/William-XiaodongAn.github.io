@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Head -->
+<head>
+<script src='https://abubujs.org/libs/Abubu.latest.js'
+	type='text/javascript'></script>
+</head>
+<!-- body of the html page -->
+<body>
+    <canvas id="canvas_1" 
+            width=512 height=512
+            style="border:1px solid #000000;" >
+        <!-- This message is displayed if canvas is not available -->
+        Your browser does not support the HTML5 canvas tag.
+    </canvas>
+</body>
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- fragment shader                                                    -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+
+<script id='init' type='shader'>#version 300 es
+precision highp float ;
+precision highp int ;
+
+layout (location = 0 ) out vec4 color1 ;
+layout (location = 1 ) out vec4 color2 ; 
+
+in vec2 cc ;        /* input from vertex shader */
+
+
+// Main body of the shader
+void main() {
+    vec4 color = vec4(0.) ;
+
+    // we assign the same values to both of them
+    color1 = color ;
+	color2 = color ;
+    return ;
+}
+</script>
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- fragment shader                                                    -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<script id='march' type='shader'>#version 300 es
+precision highp float ;
+precision highp int ;
+
+uniform sampler2D   inTexture ;
+uniform float x ;
+uniform float y ;
+/*
+uniform float aX0 ;
+uniform float aY0 ;
+uniform float aX1 ;
+uniform float aY1 ;*/
+uniform float r ;
+
+
+layout (location = 0 ) out vec4 color1 ; 
+
+in vec2 cc ;        /* input from vertex shader */
+
+
+// Main body of the shader
+void main() {
+	vec4 color = texture( inTexture ,cc );
+    if ( length(cc-vec2(x,y))<r ){
+        color.r = 1. ;
+    }
+/*
+    if ( length(cc.x-aX1)<r ){
+		if ( length(cc.y-aY1)<r ){	
+        color.r = 1. ;
+		}
+    }
+    if ( length(cc.x-aX0)<r ){
+		if ( length(cc.y-aY0)<r ){	
+        color.r = 1. ;
+		}
+    }	
+*/
+    // we assign the same values to both of them
+    color1 = color ;
+    return ;
+}
+</script>
+
+
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- Main script -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<script>
+// get the shader source by its id ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function source(id){
+    return document.getElementById(id).text ;
+}
+
+// Get the canvas --------------------------------------------------------
+var canvas_1 = document.getElementById('canvas_1') ;
+
+// Define a texture ------------------------------------------------------
+var fcolor = new Abubu.Float32Texture(512,512) ;
+var scolor = new Abubu.Float32Texture(512,512) ;
+
+// Object to be used for interactions
+var env = {
+		L : 50,
+		N: 10*10,
+		x: 0.5,
+		y: 0.5,
+		/*
+		x1: 0,
+		y1: 0,	
+		x2: 0,
+		y2: 0,	*/	
+		restL: 0.0,
+		k : 2, //string constant
+		dampingC: 2 ,//damping constant
+		g: 0.000 ,
+		anchorX : [0.14,0.95],	
+		anchorY : [0.95,0.95],			
+	
+} ;
+
+env.N = env.L ** 2;
+
+var env2 = {
+        running : false ,
+		x : Array(env.N).fill(0) ,
+		y : Array(env.N).fill(0) ,
+		r : 1/env.L/4,
+		vx : Array(env.N).fill(0),
+		vy : Array(env.N).fill(0) ,
+		dt : 0.05	,
+		m : 14,
+		Fy : Array(env.N).fill(0),
+		Fx : Array(env.N).fill(0),
+		T : 0,
+} ;
+
+
+/*for (var i =0; i<env.N; i++){
+	env2.vx[i] = Math.random()*0.1-0.05;
+	env2.vy[i] = Math.random()*0.1-0.05;
+}*/
+function distance(a,b){
+	return Math.sqrt((env2.x[a] - env2.x[b])**2 + (env2.y[a] - env2.y[b])**2)
+}
+function angle(a,b){
+	var  angle = Math.atan2( (env2.y[b]-env2.y[a]) , (env2.x[b]-env2.x[a]));
+	return angle;
+}
+function anchorY(a,b){
+	return env.k*( Math.abs(env2.y[a] - env.anchorY[b]) - env.restL )* Math.sign(env.anchorY[b] - env2.y[a])
+}
+function anchorX(a,b){
+	return env.k*( Math.abs(env2.x[a] - env.anchorX[b]) - env.restL )* Math.sign(env.anchorX[b] - env2.x[a])
+}
+function Fy(a,b,e,T){
+	if (T == true){
+		return e*env.k*( distance(a,b) - env.restL/(1+env2.T) )* Math.sin(angle(a,b));
+	}
+	if (T == false){
+		return e*env.k*( Math.abs(env2.y[a] - env2.y[b]) - env.restL )* Math.sin(angle(a,b));
+	}	
+}
+
+function Fx(a,b,e,T){
+	if (T == true){
+		return e*env.k*( distance(a,b) - env.restL/(1+env2.T) )* Math.cos(angle(a,b));
+	}
+	if (T == false){	
+		return e*env.k*( distance(a,b) - env.restL )* Math.cos(angle(a,b));
+	}
+}
+
+function calFF(a,b,c){
+	var sumFy, Fg, sumFx;
+	sumFy = 0;
+	sumFx = 0;
+	Fg = - env2.m * env.g;
+	for (var i = 0; i < b.length; i++){
+		sumFy += Fy(a,b[i],1,false); // structural spring
+		sumFx += Fx(a,b[i],1,false);
+	}
+	for (var i = 0; i < c.length; i++){
+		sumFy += Fy(a,c[i],0.35,true); // reaction spring
+		sumFx += Fx(a,c[i],0.35,true);
+	}
+	
+	env2.Fy[a] = sumFy + Fg - env.dampingC * env2.vy[a];
+	env2.Fx[a] = sumFx - env.dampingC * env2.vx[a];
+}
+
+
+
+
+
+
+function calF(){
+	var xx,yy;
+	for (var i = 0; i < env.N; i++){
+		xx = i%env.L;
+		yy = (i-i%env.L)/env.L;
+		if ( xx > 0 && xx < (env.L-1) && yy > 0 && yy < (env.L-1)){
+			calFF(i,[i-1,i+1,i+env.L,i-env.L],[i+(env.L-1),i+(env.L+1),i-(env.L-1),i-(env.L+1)])
+		}
+		else if (xx == 0 && yy != 0 && yy != (env.L-1)){
+			calFF(i,[i-env.L,i+env.L,i+1],[i-(env.L-1),i+(env.L+1)])
+		}
+		else if (xx == (env.L-1) && yy != 0 && yy != (env.L-1)){
+			calFF(i,[i-env.L,i+env.L,i-1],[i-(env.L+1),i+(env.L-1)])
+		}
+		else if (yy == 0 && xx != 0 && xx != (env.L-1)){
+			calFF(i,[i-1,i+1,i+env.L],[i+(env.L-1),i+(env.L+1)])
+		}
+		else if (yy == (env.L-1) && xx != 0 && xx != (env.L-1)){
+			calFF(i,[i-1,i+1,i-env.L],[i-(env.L-1),i-(env.L+1)])
+		}		
+	}
+	
+	calFF(0,[1,env.L],[(env.L+1)]);
+	calFF((env.L-1),[(env.L-2),(env.L-1)+env.L],[(env.L-1)+env.L-1]);
+	calFF((env.L-1)*env.L,[(env.L-1)*env.L-env.L,(env.L-1)*env.L+1],[(env.L-1)*env.L-(env.L-1)]);
+	calFF(env.L*env.L-1,[env.L*env.L-2,env.L*env.L-1-env.L],[env.L*env.L-1-(env.L+1)]);
+		
+
+}
+
+
+function initialPosition(){
+	var xx,yy;
+	for (var i = 0; i < env.N; i++){
+		xx = i%env.L;
+		yy = (i-i%env.L)/env.L;
+		env2.x[i] = (xx+1)/(env.L+3);
+		env2.y[i] = (yy+1)/(env.L+3);
+	}
+}
+
+initialPosition();
+var init = new Abubu.Solver({
+        fragmentShader : source( 'init') ,
+        targets : {
+                color1: {location : 0 , target : fcolor } ,
+				color2: {location : 1 , target : scolor } ,
+        }
+} ) ;
+init.render() ;
+
+
+
+var fmarch = new Abubu.Solver({
+        fragmentShader : source('march') ,
+		uniforms: {
+				inTexture   : { type : 't', value : fcolor } ,
+			    x : { type : 'f', value : env.x0 } ,
+				y : { type : 'f', value : env.y0 } ,				
+				
+				r : { type : 'f', value : env2.r } ,/*
+				aX0: { type : 'f', value : env.anchorX[0] } ,
+				aY0: { type : 'f', value : env.anchorY[0] } ,
+				aX1: { type : 'f', value : env.anchorX[1] } ,
+				aY1: { type : 'f', value : env.anchorY[1] } ,*/				
+        } ,
+        targets : {
+                outputcolor : { location : 0 , target : scolor } ,
+        }
+    } ) ;
+	
+var smarch = new Abubu.Solver({
+        fragmentShader : source('march') ,
+		uniforms: {
+				inTexture   : { type : 't', value : scolor } ,
+			    x : { type : 'f', value : env.x0 } ,
+				y : { type : 'f', value : env.y0 } ,				
+			
+				r : { type : 'f', value : env2.r } ,/*
+				aX0: { type : 'f', value : env.anchorX[0] } ,
+				aY0: { type : 'f', value : env.anchorY[0] } ,
+				aX1: { type : 'f', value : env.anchorX[1] } ,
+				aY1: { type : 'f', value : env.anchorY[1] } ,*/				
+        } ,
+        targets : {
+                outputcolor : { location : 0 , target : fcolor } ,
+        }
+    } ) ;
+	
+function march(){
+
+	for (var i =0; i<env.N; i++){
+
+			fmarch.uniforms.x.value = env2.x[i]///2 +0.5 ;
+			fmarch.uniforms.y.value = env2.y[i]///2 +0.5;
+			smarch.uniforms.x.value = env2.x[i]///2 +0.5;
+			smarch.uniforms.y.value = env2.y[i]///2 +0.5;
+		
+			fmarch.render() ;
+			smarch.render() ;/*
+		if (x != 1){			
+		}
+		else {
+			fmarch.uniforms.x1.value = env2.x[1] ;
+			fmarch.uniforms.y1.value = env2.y[1] ;
+			smarch.uniforms.x1.value = env2.x[1] ;
+			smarch.uniforms.y1.value = env2.y[1] ;
+		
+			fmarch.render() ;
+			smarch.render() ;	
+		}*/
+	}
+}
+
+march();
+var plot = new Abubu.Plot2D({
+    target : fcolor ,   /* the texture to visualize             */
+    channel : 'r',              /* the channel of interest:
+                                        can be : 'r', 'g', 'b', or 'a' 
+                                        defualt value is 'r'            */
+    minValue : 0 ,              /* minimum value on the colormap        */
+    maxValue : 1 ,             /* maximum value on the colormap        */
+    colorbar : false ,           /* if you need to show the colorbar     */
+    canvas : canvas_1 ,         /* the canvas to draw on                */
+}) ;
+
+plot.init() ;   /* initialize the plot */
+plot.render() ;
+
+
+/* function to create a graphical user interface */
+function createGui(){
+    var gui = new Abubu.Gui() ;     /*  create a graphical user 
+                                        interface               */
+    var panel = gui.addPanel() ;    /*  add a panel to the GUI  */
+    panel.add(env2, 'running' ) ;
+    /*panel.add(env, 'y').onChange(function(){
+        init.uniforms.y.value = env.y ;
+		init.render();
+    } );
+    panel.add(env, 'x').onChange(function(){
+        init.uniforms.x.value = env.x ;
+		init.render();
+    } );
+    panel.add(env, 'r').onChange(function(){
+        init.uniforms.r.value = env.r ;
+		init.render();
+    } );
+    panel.add(env2, 'vx').step(0.01).onChange(function(){
+        march.uniforms.vx.value = env2.vx ;
+		march.render();
+    } );
+    panel.add(env2, 'vy').step(0.01).onChange(function(){
+        march.uniforms.vy.value = env2.vy ;
+		march.render();	
+    } );*/
+    panel.add(env2, 'dt').onChange(function(){
+    } );/*	
+	
+    panel.add(env2, 'y').onChange(function(){
+        march.uniforms.y.value = env2.y ;
+		march.render();
+    } );
+    panel.add(env2, 'x').onChange(function(){
+        march.uniforms.x.value = env2.x ;
+		march.render();
+    } );*/
+    panel.add(env2, 'r').onChange(function(){
+        fmarch.uniforms.r.value = env2.r;
+        smarch.uniforms.r.value = env2.r;
+		init.render();
+		march();
+		plot.render();
+    } );
+    panel.add(env2, 'm').onChange(function(){
+    } );
+    panel.add(env, 'dampingC').onChange(function(){
+    } );
+    panel.add(env, 'k').onChange(function(){
+    } );
+    panel.add(env, 'g').onChange(function(){
+    } );
+
+    panel.add(env2, 'T').step(0.1).min(0).onChange(function(){
+    } );	
+    panel.add(env, 'restL').step(0.01).onChange(function(){
+    } );
+    /*panel.add(env, 'N').onChange(function(){
+		initialPosition();
+		init.render();
+		march();
+		plot.render();
+    } );*/
+}
+
+
+function move(){
+	for (var i =0; i<env.N; i++){
+		env2.x[i] += env2.vx[i]*env2.dt ;
+		env2.y[i] += env2.vy[i]*env2.dt ;
+	}
+}
+
+
+function accelaration(){
+	calF();
+	for (var i =0; i<env.N; i++){
+		env2.vy[i] += env2.Fy[i]/env2.m * env2.dt;	
+		env2.vx[i] += env2.Fx[i]/env2.m * env2.dt;		
+		
+	}
+}
+
+function run(){
+		if (env2.running){		
+			for (var k =0; k<10; k++){
+				/*for (var i =0; i<env.N; i++){
+					env2.x[i] += env2.vx[i]*env2.dt ;
+					env2.y[i] += env2.vy[i]*env2.dt ;
+					if (Math.abs(env2.x[i] - 0.5) >= 0.5 - env2.r){
+						env2.vx[i] *= -1;
+					}
+					if (Math.abs(env2.y[i] - 0.5) >= 0.5 - env2.r){
+						env2.vy[i] *= -1;
+					};
+				};*/
+				accelaration();
+				/*
+				detectBounce();
+				detectBounce();
+				detectWall();
+				detectBounce();
+				*/
+				move();
+
+			}
+		march();
+		plot.render();
+		init.render();
+
+		}
+		requestAnimationFrame(run) ;
+
+}
+/*
+var clickCopy = new Abubu.Copy( scolor, fcolor ) ;
+var mouseDrag = new Abubu.MouseListener({
+    canvas : canvas_1 ,
+    event : 'drag' ,
+    callback : function(e){
+		env2.x[1] = (e.position[0]);
+		env2.y[1] = (e.position[1]);
+		/*
+		fmarch.uniforms.x1.value = env2.x[1] ;
+		fmarch.uniforms.y1.value = env2.y[1] ;
+		smarch.uniforms.x1.value = env2.x[1] ;
+		smarch.uniforms.y1.value = env2.y[1] ;
+		fmarch.render() ;
+		smarch.render() ;
+		plot.render();	
+		init.render();
+		/*
+		if (env2.running != true){
+		march();
+		plot.render();
+		}
+		
+    }
+} ) ; 
+*/
+/* run createGui to create the graphical user interface     */
+createGui() ;
+run() ;
+</script>
+<img typeof="foaf:Image" src="1.png" width="200" height="500" alt="" />
+</html>
