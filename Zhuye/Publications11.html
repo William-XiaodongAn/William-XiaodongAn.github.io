@@ -111,9 +111,20 @@ jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":
                   <label for="edit-tid">
             Select Publication Year          </label>
                         <div class="views-widget">
-          <div class="form-item form-type-select form-item-tid">
- <select id="edit-tid" name="tid" class="form-select"><option value="All" selected="selected">- Any -</option><option value="18">2021</option><option value="17">2020</option><option value="16">2019</option><option value="15">2018</option><option value="14">2017</option><option value="13">2016</option><option value="12">2015</option><option value="10">2014</option><option value="8">2013</option><option value="7">2012</option><option value="6">2011</option><option value="5">2010</option><option value="4">2009</option><option value="3">2008</option><option value="2">2007</option><option value="1">2006</option><option value="9">2005 and before</option></select>
-</div>
+  <select id="year" onchange="countryHandler(this.value)">
+    <option value="">Any...</option>
+    <option value="2021">2021</option>	
+    <option value="2020">2020</option>
+    <option value="2019">2019</option>
+    <option value="2018">2018</option>	
+    <option value="2017">2017</option>
+    <option value="-2016">-2016</option>			
+</select>     
+<script>
+    function countryHandler(value) {
+        window.location.assign(`${value}.html`);
+    }
+</script> 
         </div>
               </div>
                     <div class="views-exposed-widget views-submit-button">
