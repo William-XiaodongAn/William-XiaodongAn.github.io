@@ -1,0 +1,1760 @@
+F<!DOCTYPE html>
+<html><!-- Head --><head>
+<script src="https://abubujs.org/libs/Abubu.latest.js" type="text/javascript"></script><style type="text/css">.dg ul{list-style:none;margin:0;padding:0;width:100%;clear:both}.dg.ac{position:fixed;top:0;left:0;right:0;height:0;z-index:0}.dg:not(.ac) .main{overflow:hidden}.dg.main{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear}.dg.main.taller-than-window{overflow-y:auto}.dg.main.taller-than-window .close-button{opacity:1;margin-top:-1px;border-top:1px solid #2c2c2c}.dg.main ul.closed .close-button{opacity:1 !important}.dg.main:hover .close-button,.dg.main .close-button.drag{opacity:1}.dg.main .close-button{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear;border:0;line-height:19px;height:20px;cursor:pointer;text-align:center;background-color:#000}.dg.main .close-button.close-top{position:relative}.dg.main .close-button.close-bottom{position:absolute}.dg.main .close-button:hover{background-color:#111}.dg.a{float:right;margin-right:15px;overflow-y:visible}.dg.a.has-save>ul.close-top{margin-top:0}.dg.a.has-save>ul.close-bottom{margin-top:27px}.dg.a.has-save>ul.closed{margin-top:0}.dg.a .save-row{top:0;z-index:1002}.dg.a .save-row.close-top{position:relative}.dg.a .save-row.close-bottom{position:fixed}.dg li{-webkit-transition:height .1s ease-out;-o-transition:height .1s ease-out;-moz-transition:height .1s ease-out;transition:height .1s ease-out;-webkit-transition:overflow .1s linear;-o-transition:overflow .1s linear;-moz-transition:overflow .1s linear;transition:overflow .1s linear}.dg li:not(.folder){cursor:auto;height:27px;line-height:27px;padding:0 4px 0 5px}.dg li.folder{padding:0;border-left:4px solid rgba(0,0,0,0)}.dg li.title{cursor:pointer;margin-left:-4px}.dg .closed li:not(.title),.dg .closed ul li,.dg .closed ul li>*{height:0;overflow:hidden;border:0}.dg .cr{clear:both;padding-left:3px;height:27px;overflow:hidden}.dg .property-name{cursor:default;float:left;clear:left;width:40%;overflow:hidden;text-overflow:ellipsis}.dg .c{float:left;width:60%;position:relative}.dg .c input[type=text]{border:0;margin-top:4px;padding:3px;width:100%;float:right}.dg .has-slider input[type=text]{width:30%;margin-left:0}.dg .slider{float:left;width:66%;margin-left:-5px;margin-right:0;height:19px;margin-top:4px}.dg .slider-fg{height:100%}.dg .c input[type=checkbox]{margin-top:7px}.dg .c select{margin-top:5px}.dg .cr.function,.dg .cr.function .property-name,.dg .cr.function *,.dg .cr.boolean,.dg .cr.boolean *{cursor:pointer}.dg .cr.color{overflow:visible}.dg .selector{display:none;position:absolute;margin-left:-9px;margin-top:23px;z-index:10}.dg .c:hover .selector,.dg .selector.drag{display:block}.dg li.save-row{padding:0}.dg li.save-row .button{display:inline-block;padding:0px 6px}.dg.dialogue{background-color:#222;width:460px;padding:15px;font-size:13px;line-height:15px}#dg-new-constructor{padding:10px;color:#222;font-family:Monaco, monospace;font-size:10px;border:0;resize:none;box-shadow:inset 1px 1px 1px #888;word-wrap:break-word;margin:12px 0;display:block;width:440px;overflow-y:scroll;height:100px;position:relative}#dg-local-explain{display:none;font-size:11px;line-height:17px;border-radius:3px;background-color:#333;padding:8px;margin-top:10px}#dg-local-explain code{font-size:10px}#dat-gui-save-locally{display:none}.dg{color:#eee;font:11px 'Lucida Grande', sans-serif;text-shadow:0 -1px 0 #111}.dg.main::-webkit-scrollbar{width:5px;background:#1a1a1a}.dg.main::-webkit-scrollbar-corner{height:0;display:none}.dg.main::-webkit-scrollbar-thumb{border-radius:5px;background:#676767}.dg li:not(.folder){background:#1a1a1a;border-bottom:1px solid #2c2c2c}.dg li.save-row{line-height:25px;background:#dad5cb;border:0}.dg li.save-row select{margin-left:5px;width:108px}.dg li.save-row .button{margin-left:5px;margin-top:1px;border-radius:2px;font-size:9px;line-height:7px;padding:4px 4px 5px 4px;background:#c5bdad;color:#fff;text-shadow:0 1px 0 #b0a58f;box-shadow:0 -1px 0 #b0a58f;cursor:pointer}.dg li.save-row .button.gears{background:#c5bdad url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANCAYAAAB/9ZQ7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpiYKAU/P//PwGIC/ApCABiBSAW+I8AClAcgKxQ4T9hoMAEUrxx2QSGN6+egDX+/vWT4e7N82AMYoPAx/evwWoYoSYbACX2s7KxCxzcsezDh3evFoDEBYTEEqycggWAzA9AuUSQQgeYPa9fPv6/YWm/Acx5IPb7ty/fw+QZblw67vDs8R0YHyQhgObx+yAJkBqmG5dPPDh1aPOGR/eugW0G4vlIoTIfyFcA+QekhhHJhPdQxbiAIguMBTQZrPD7108M6roWYDFQiIAAv6Aow/1bFwXgis+f2LUAynwoIaNcz8XNx3Dl7MEJUDGQpx9gtQ8YCueB+D26OECAAQDadt7e46D42QAAAABJRU5ErkJggg==) 2px 1px no-repeat;height:7px;width:8px}.dg li.save-row .button:hover{background-color:#bab19e;box-shadow:0 -1px 0 #b0a58f}.dg li.folder{border-bottom:0}.dg li.title{padding-left:16px;background:#000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.2)}.dg .closed li.title{background-image:url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==)}.dg .cr.boolean{border-left:3px solid #806787}.dg .cr.color{border-left:3px solid}.dg .cr.function{border-left:3px solid #e61d5f}.dg .cr.number{border-left:3px solid #2FA1D6}.dg .cr.number input[type=text]{color:#2FA1D6}.dg .cr.string{border-left:3px solid #1ed36f}.dg .cr.string input[type=text]{color:#1ed36f}.dg .cr.function:hover,.dg .cr.boolean:hover{background:#111}.dg .c input[type=text]{background:#303030;outline:none}.dg .c input[type=text]:hover{background:#3c3c3c}.dg .c input[type=text]:focus{background:#494949;color:#fff}.dg .c .slider{background:#303030;cursor:ew-resize}.dg .c .slider-fg{background:#2FA1D6;max-width:100%}.dg .c .slider:hover{background:#3c3c3c}.dg .c .slider:hover .slider-fg{background:#44abda}</style><style type="text/css">.dg ul{list-style:none;margin:0;padding:0;width:100%;clear:both}.dg.ac{position:fixed;top:0;left:0;right:0;height:0;z-index:0}.dg:not(.ac) .main{overflow:hidden}.dg.main{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear}.dg.main.taller-than-window{overflow-y:auto}.dg.main.taller-than-window .close-button{opacity:1;margin-top:-1px;border-top:1px solid #2c2c2c}.dg.main ul.closed .close-button{opacity:1 !important}.dg.main:hover .close-button,.dg.main .close-button.drag{opacity:1}.dg.main .close-button{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear;border:0;line-height:19px;height:20px;cursor:pointer;text-align:center;background-color:#000}.dg.main .close-button.close-top{position:relative}.dg.main .close-button.close-bottom{position:absolute}.dg.main .close-button:hover{background-color:#111}.dg.a{float:right;margin-right:15px;overflow-y:visible}.dg.a.has-save>ul.close-top{margin-top:0}.dg.a.has-save>ul.close-bottom{margin-top:27px}.dg.a.has-save>ul.closed{margin-top:0}.dg.a .save-row{top:0;z-index:1002}.dg.a .save-row.close-top{position:relative}.dg.a .save-row.close-bottom{position:fixed}.dg li{-webkit-transition:height .1s ease-out;-o-transition:height .1s ease-out;-moz-transition:height .1s ease-out;transition:height .1s ease-out;-webkit-transition:overflow .1s linear;-o-transition:overflow .1s linear;-moz-transition:overflow .1s linear;transition:overflow .1s linear}.dg li:not(.folder){cursor:auto;height:27px;line-height:27px;padding:0 4px 0 5px}.dg li.folder{padding:0;border-left:4px solid rgba(0,0,0,0)}.dg li.title{cursor:pointer;margin-left:-4px}.dg .closed li:not(.title),.dg .closed ul li,.dg .closed ul li>*{height:0;overflow:hidden;border:0}.dg .cr{clear:both;padding-left:3px;height:27px;overflow:hidden}.dg .property-name{cursor:default;float:left;clear:left;width:40%;overflow:hidden;text-overflow:ellipsis}.dg .c{float:left;width:60%;position:relative}.dg .c input[type=text]{border:0;margin-top:4px;padding:3px;width:100%;float:right}.dg .has-slider input[type=text]{width:30%;margin-left:0}.dg .slider{float:left;width:66%;margin-left:-5px;margin-right:0;height:19px;margin-top:4px}.dg .slider-fg{height:100%}.dg .c input[type=checkbox]{margin-top:7px}.dg .c select{margin-top:5px}.dg .cr.function,.dg .cr.function .property-name,.dg .cr.function *,.dg .cr.boolean,.dg .cr.boolean *{cursor:pointer}.dg .cr.color{overflow:visible}.dg .selector{display:none;position:absolute;margin-left:-9px;margin-top:23px;z-index:10}.dg .c:hover .selector,.dg .selector.drag{display:block}.dg li.save-row{padding:0}.dg li.save-row .button{display:inline-block;padding:0px 6px}.dg.dialogue{background-color:#222;width:460px;padding:15px;font-size:13px;line-height:15px}#dg-new-constructor{padding:10px;color:#222;font-family:Monaco, monospace;font-size:10px;border:0;resize:none;box-shadow:inset 1px 1px 1px #888;word-wrap:break-word;margin:12px 0;display:block;width:440px;overflow-y:scroll;height:100px;position:relative}#dg-local-explain{display:none;font-size:11px;line-height:17px;border-radius:3px;background-color:#333;padding:8px;margin-top:10px}#dg-local-explain code{font-size:10px}#dat-gui-save-locally{display:none}.dg{color:#eee;font:11px 'Lucida Grande', sans-serif;text-shadow:0 -1px 0 #111}.dg.main::-webkit-scrollbar{width:5px;background:#1a1a1a}.dg.main::-webkit-scrollbar-corner{height:0;display:none}.dg.main::-webkit-scrollbar-thumb{border-radius:5px;background:#676767}.dg li:not(.folder){background:#1a1a1a;border-bottom:1px solid #2c2c2c}.dg li.save-row{line-height:25px;background:#dad5cb;border:0}.dg li.save-row select{margin-left:5px;width:108px}.dg li.save-row .button{margin-left:5px;margin-top:1px;border-radius:2px;font-size:9px;line-height:7px;padding:4px 4px 5px 4px;background:#c5bdad;color:#fff;text-shadow:0 1px 0 #b0a58f;box-shadow:0 -1px 0 #b0a58f;cursor:pointer}.dg li.save-row .button.gears{background:#c5bdad url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANCAYAAAB/9ZQ7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpiYKAU/P//PwGIC/ApCABiBSAW+I8AClAcgKxQ4T9hoMAEUrxx2QSGN6+egDX+/vWT4e7N82AMYoPAx/evwWoYoSYbACX2s7KxCxzcsezDh3evFoDEBYTEEqycggWAzA9AuUSQQgeYPa9fPv6/YWm/Acx5IPb7ty/fw+QZblw67vDs8R0YHyQhgObx+yAJkBqmG5dPPDh1aPOGR/eugW0G4vlIoTIfyFcA+QekhhHJhPdQxbiAIguMBTQZrPD7108M6roWYDFQiIAAv6Aow/1bFwXgis+f2LUAynwoIaNcz8XNx3Dl7MEJUDGQpx9gtQ8YCueB+D26OECAAQDadt7e46D42QAAAABJRU5ErkJggg==) 2px 1px no-repeat;height:7px;width:8px}.dg li.save-row .button:hover{background-color:#bab19e;box-shadow:0 -1px 0 #b0a58f}.dg li.folder{border-bottom:0}.dg li.title{padding-left:16px;background:#000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.2)}.dg .closed li.title{background-image:url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==)}.dg .cr.boolean{border-left:3px solid #806787}.dg .cr.color{border-left:3px solid}.dg .cr.function{border-left:3px solid #e61d5f}.dg .cr.number{border-left:3px solid #2FA1D6}.dg .cr.number input[type=text]{color:#2FA1D6}.dg .cr.string{border-left:3px solid #1ed36f}.dg .cr.string input[type=text]{color:#1ed36f}.dg .cr.function:hover,.dg .cr.boolean:hover{background:#111}.dg .c input[type=text]{background:#303030;outline:none}.dg .c input[type=text]:hover{background:#3c3c3c}.dg .c input[type=text]:focus{background:#494949;color:#fff}.dg .c .slider{background:#303030;cursor:ew-resize}.dg .c .slider-fg{background:#2FA1D6;max-width:100%}.dg .c .slider:hover{background:#3c3c3c}.dg .c .slider:hover .slider-fg{background:#44abda}</style>
+</head>
+<!-- body of the html page -->
+<body>
+    <canvas id='canvas_1' width=512 height=512>
+        <!-- This message is displayed if canvas is not available -->
+        Your browser does not support the HTML5 canvas tag.
+    </canvas>
+    <canvas id='canvas_2' width=512 height=512>
+        Your browser does not support HTML4.0 canvas elements.
+    </canvas>	
+</body>
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- fragment shader                                                    -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<script type="text/javascript" src="numeric.js"></script>
+<script id="init1" type="shader">#version 300 es
+precision highp float ;
+precision highp int ;
+
+layout (location = 0 ) out vec4 color1 ;
+layout (location = 1 ) out vec4 color2 ; 
+
+in vec2 cc ;        /* input from vertex shader */
+
+
+// Main body of the shader
+void main() {
+    vec4 color = vec4(0.) ;
+
+    // we assign the same values to both of them
+    color1 = color ;
+	color2 = color ;	
+    return ;
+}
+</script>
+
+<script id="init2" type="shader">#version 300 es
+precision highp float ;
+precision highp int ;
+
+layout (location = 0 ) out vec4 color1 ;
+layout (location = 1 ) out vec4 color2 ; 
+
+in vec2 cc ;        /* input from vertex shader */
+
+
+// Main body of the shader
+void main() {
+    vec4 color = vec4(0.) ;
+
+    // we assign the same values to both of them
+    color1 = color ;
+	color2 = color ;	
+    return ;
+}
+</script>
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- fragment shader                                                    -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<script id="march" type="shader">#version 300 es
+precision highp float ;
+precision highp int ;
+
+uniform sampler2D   inTexture ;
+uniform sampler2D inText ;
+uniform float r ;
+uniform float vx ;
+uniform float vy ;
+uniform float xMin ;
+uniform float xMax ;
+uniform float ACubic ;
+uniform float BCubic ;
+uniform float CCubic ;
+uniform float DCubic ;
+uniform float A5_6 ;
+uniform float B5_6 ;
+				
+
+uniform float A1_2;
+uniform float B1_2;
+
+uniform float A2_3_4;
+uniform float B2_3_4;
+uniform float C2_3_4;	
+
+
+
+uniform float x1 ;
+uniform float x2 ;
+uniform float y1 ;
+uniform float y2 ;
+uniform float x3 ;
+uniform float x4 ;
+uniform float y3 ;
+uniform float y4 ;
+uniform float x5 ;
+uniform float x6 ;
+uniform float y5 ;
+uniform float y6 ;
+uniform float x7 ;
+uniform float x8 ;
+uniform float y7 ;
+uniform float y8 ;
+uniform float x9 ;
+uniform float x10 ;
+uniform float y9 ;
+uniform float y10 ;
+
+
+
+layout (location = 0 ) out vec4 color1 ; 
+
+in vec2 cc ;        /* input from vertex shader */
+
+#define quad1(A1, x1, y1, x2, y2) (A1*(cc.y-((y2-y1)/(x2-x1)*cc.x + (y1 - x1*(y2-y1)/(x2-x1)))))
+#define quad2(A1, B1, C1) (cc.y-A1*cc.x*cc.x-B1*cc.x-C1)
+#define cubic(A1, B1, C1, D1) (cc.y-A1*cc.x*cc.x*cc.x-B1*cc.x*cc.x-C1*cc.x - D1)
+#define line1(x1 , x2) ((cc.x-x1) * (cc.x-x2))
+#define line2(A, B) (cc.y - A*cc.x - B)
+
+/*
+void quad(float A1,float B1, float C1 ,float x1, float y1,float x2, float y2) 
+{
+	if(quad1(A1, x1, y1, x2, y2) < 0.){
+		if ( quad2(A1, B1, C1)>-0.01){
+			if ( quad2(A1, B1, C1)<0.01){
+				color.r = 0.3 ;
+			}
+		}	
+	}
+
+}*/
+
+        
+// Main body of the shader
+void main() {
+	vec4 color = texture( inTexture ,cc );
+	vec4 position = texture( inText ,cc );
+	
+
+	if (position.r == 1.){
+			color.r = position.g ;
+	}
+    if ( cc.x-xMin<0.){
+		if ( cc.x-xMin>-0.01){
+			color.r = 0.6 ;
+		}
+	}
+	
+    if ( cc.x-xMin<0.){
+		if ( cc.x-xMin>-0.01){
+			color.r = 0.6 ;
+		}
+	}	
+/*
+	if(ACubic*(cc.y-((y9-y14)/(x9-x14)*cc.x + (y14 - x14*(y9-y14)/(x9-x14)))) < 0.){
+		if ( cc.y-ACubic*cc.x*cc.x-BCubic*cc.x-CCubic>-0.01){
+			if ( cc.y-ACubic*cc.x*cc.x-BCubic*cc.x-CCubic<0.01){
+				color.r = 0.3 ;
+			}
+		}	
+	}*/
+	if(cc.x >x2){
+		if(cc.x < x4){
+			if(quad1(1., x2, y2, x4, y4) < 0.){
+				if ( cubic(ACubic, BCubic, CCubic, DCubic)>-0.004){
+					if ( cubic(ACubic, BCubic, CCubic, DCubic)<0.004){
+						color.r = 0.1 ;
+					}
+				}	
+			}		
+		}
+	}
+/*
+	if(quad1(A2_3_4, x2, y2, x4, y4) < 0.){
+		if ( quad2(A2_3_4, B2_3_4, C2_3_4)>-0.004){
+			if ( quad2(A2_3_4, B2_3_4, C2_3_4)<0.004){
+				color.r = 0.3 ;
+			}
+		}	
+	}*/
+	
+	if(line1(x5 , x6) < 0.){
+		if ( line2(A5_6, B5_6) > -0.004 ) {
+			if (line2(A5_6, B5_6) < 0.004 ){
+			color.r = 0.3 ;
+			}
+		}
+	}
+	/*if(line1(x1 , x2) < 0.){
+		if ( line2(A1_2, B1_2) > -0.004 ) {
+			if (line2(A1_2, B1_2) < 0.004 ){
+			color.r = 0.3 ;
+			}
+		}
+	}*/
+    if ( cc.x>x5){
+		if ( cc.x-x4<0.005){
+			if(abs(cc.y - y5)<0.003){
+			color.r = 0.6 ;
+			}
+		}
+	}	
+
+    if ( cc.x-xMax>0.){
+		if ( cc.x-xMax<0.01){
+			color.r = 0.6 ;
+		}
+	}/*
+    if ( cc.y>y1){
+		if ( cc.y<y10){	
+			if (  cc.x-x1<0.005){
+				if ( cc.x-x1>-0.){
+					color.r = 0.1 ;
+				}
+			}
+		}
+	}
+    if ( cc.y>y6){
+		if ( cc.y<y9){	
+			if (  cc.x-x9<0.005){
+				if ( cc.x-x9>-0.0){
+					color.r = 0.1 ;
+				}
+			}
+		}
+	}	
+    if ( cc.x>x9){
+		if ( cc.x<x8){	
+			if (  cc.y-y9<0.){
+				if ( cc.y-y9>-0.005){
+					color.r = 0.1 ;
+				}
+			}
+		}
+	}
+    if ( cc.x>x10){
+		if ( cc.x<x8){	
+			if (  cc.y-y10<0.){
+				if ( cc.y-y10>-0.01){
+					color.r = 0.1 ;
+				}
+			}
+		}
+	}	*/
+    // we assign the same values to both of them
+    color1 = color ;
+    return ;
+}
+</script>
+<script id='march2' type='shader'>#version 300 es
+precision highp float ;
+precision highp int ;
+
+uniform sampler2D   inTexture ;
+uniform float       dt, diffCoef ;
+uniform float       a, b, epsilon ;
+
+in vec2 cc, pixPos ;
+
+layout (location = 0) out vec4 ocolor ;
+
+#define u       color.r
+#define v       color.g
+#define time    color.b
+// Main body of the shader
+void main() {
+    vec2  size  = vec2(textureSize(inTexture, 0)) ;
+    float dx    = 10./size.x ; // a scaling of ii in real space
+
+    vec2 ii = vec2(1.,0.)/size ;
+    vec2 jj = vec2(0.,1.)/size ;
+
+
+    vec4 color = texture( inTexture , cc ) ;
+ 	vec4 mx = texture( inTexture ,cc - ii );
+	vec4 px = texture( inTexture ,cc +ii);
+	vec4 my = texture( inTexture ,cc -jj);
+	vec4 py = texture( inTexture ,cc +jj);   
+    vec4 laplacian = 
+            mx
+        +   px
+        +   my
+        +   py
+        -4.*texture( inTexture, cc    ) ;
+    //u += dt*diffCoef*laplacian.r/(dx*dx) ;
+
+
+
+    float du2dt = diffCoef*laplacian.r/(dx*dx)+u*(1.-u)*(u-a) - v ;
+    float dv2dt = epsilon*(b*u-v) ;
+
+
+    u += du2dt*dt ;
+    v += dv2dt*dt ;
+
+    time += dt ;
+
+
+
+    ocolor = color ;
+    return ;
+}
+</script>
+<!-- ***************************************************************** -->
+<script id='click' type='x-shader-fragment'>#version 300 es
+precision highp float ;
+precision highp int ;
+
+uniform sampler2D   inTexture ;
+uniform vec2    clickPosition ;
+uniform float   clickRadius ;
+
+in vec2 cc, pixPos ;
+
+layout (location = 0) out vec4 ocolor ;
+
+#define u       color.r
+#define v       color.g
+#define time    color.b
+// Main body of the shader
+void main() {
+    vec2  size  = vec2(textureSize(inTexture, 0)) ;
+
+    // read the color of the pixel .......................................
+    vec4 color = texture( inTexture , cc ) ;
+ 
+    if ( length(clickPosition - cc )< clickRadius ){
+        u = 1. ;
+    }
+
+    // output the color of the pixel .....................................
+    ocolor = color ;
+    return ;
+}
+
+</script>
+
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- Main script -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<script>
+// get the shader source by its id ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function source(id){
+    return document.getElementById(id).text ;
+}
+
+// Get the canvas --------------------------------------------------------
+var canvas_1 = document.getElementById('canvas_1') ;
+var canvas_2 = document.getElementById('canvas_2') ;
+
+// Define a texture ------------------------------------------------------
+var fcolor = new Abubu.Float32Texture(512,512) ;
+var scolor = new Abubu.Float32Texture(512,512) ;
+
+// Object to be used for interactions
+var env = {
+		L : 50,
+		N: 10*10,
+		x: 0.5,
+		y: 0.5,
+		/*
+		x1: 0,
+		y1: 0,	
+		x2: 0,
+		y2: 0,	*/	
+		restL: 0.03,
+		k : 5, //string constant
+		dampingC: 0.5 ,//damping constant
+		g: 0.000 ,
+		anchorX : [0.05,0.95],	
+		anchorY : [0.95,0.95],
+		
+        dt : 0.05 ,
+        diffCoef :0.001,
+		a :0.1,
+		b :0.3,
+		epsilon : 0.01,
+        time : 0 ,
+        running : false ,
+		clickRadius: 0.1 ,
+		clickPosition: [0.,0.] ,
+} ;
+
+var color33 = new Abubu.Float32Texture(env.L,env.L) ;
+var color44 = new Abubu.Float32Texture(env.L,env.L) ;
+color33.pairable = true ;
+color44.pairable = true ;
+env.N = env.L ** 2;
+
+var env2 = {
+        startHeartBeat : false ,
+		x : Array(env.N).fill(0) ,
+		y : Array(env.N).fill(0) ,
+		r : 1/env.L/4,
+		vx : Array(env.N).fill(0),
+		vy : Array(env.N).fill(0) ,
+		dt : 0.05	,
+		m : 14,
+		Fy : Array(env.N).fill(0),
+		Fx : Array(env.N).fill(0),
+		U : Array(env.N).fill(0),
+		mode : Array(env.N).fill(0),
+		pMode : Array(env.N).fill(0),
+		anchor : Array(env.N).fill(0),			
+		T : 10,
+		scale: 300,
+		addBloodIn : false,
+} ;
+var env3 = {
+		N: 500,
+		x: 0.5,
+		y: 0.5,
+		viscosity: 3,
+		k: 1.3 ,
+		wallBounceLose : 0.3,
+} ;
+
+
+var x1 = 0.355
+var x2 = 0.34
+var x3 = 0.38
+var x33 = 0.45
+var x4 = 0.53
+var x5 = 0.42
+var x6 = 0.39
+var x7 = 0.5
+var x8 = 0.45
+var x9 = 0.39
+var x10 = 0.355
+var x11 = x8
+var x12 = x8
+
+var y1 = 0.69
+var y2 = 0.64
+var y3 = 0.495
+var y33 = 0.45
+var y4 = 0.64
+var y5 = 0.64
+var y6 = 0.69
+var y7 = 0.74
+var y8 = 0.74
+var y9 = 0.8
+var y10 = 0.83
+var y11 = y9
+var y12 = y10
+
+y2 = y1
+x2 = x1
+var A2_3_4 = quadF([x2,x3,x4],[y2,y3,y4])[0];
+var B2_3_4 = quadF([x2,x3,x4],[y2,y3,y4])[1];
+var C2_3_4 = quadF([x2,x3,x4],[y2,y3,y4])[2];
+
+updateCubic([x2,x3,x33,x4],[y2,y3,y33,y4]);
+var ACubic;
+var BCubic;
+var CCubic;
+var DCubic
+var A5_6 = (y5-y6)/(x5-x6);
+var B5_6 = y5-A5_6*x5;
+var A1_2 = (y1-y2)/(x1-x2);
+var B1_2 = y1-A1_2*x1;
+
+
+var env4 = {
+        running : false ,
+		restart : false ,
+		frame : 5,
+		x : Array(env3.N).fill(0) ,
+		y : Array(env3.N).fill(0) ,
+		r : 0.007,
+		vx : Array(env3.N).fill(0),
+		vy : Array(env3.N).fill(0),
+		vhx : Array(env3.N).fill(0),
+		vhy : Array(env3.N).fill(0),
+		radius : 0.01,
+		dt : 18e-4 	,
+		m : 1 ,
+		h : 0.016 ,
+
+		density : Array(env3.N).fill(0) ,
+		dens0 : 1000 ,
+		pressureC : 15*env3.k,
+		
+		pressure : Array(env3.N).fill(0) ,
+
+		viscosityC : -40*env3.viscosity , 
+		
+		ax : Array(env3.N).fill(0) ,
+		ay : Array(env3.N).fill(0) ,
+		
+		gravityC : 9.8 ,		
+		xMax : 0.99	,
+		yMax : 1,
+		xMin : 0.01,
+		yMin : 0 ,
+		wallBounce : 1-env3.wallBounceLose ,
+		friction: 0.5,
+		yMinOfParticle: 0.25,
+		yMaxOfParticle: 0.65,
+		xMinOfParticle: 0.35,
+		scale : 200,
+		//f1C : 0.08,
+		A : Array(5).fill(0) ,
+		B : Array(5).fill(0) ,
+		C : Array(5).fill(0) ,
+		xx : Array(5).fill(0) ,		
+		yy : Array(5).fill(0) ,	
+		y3 : y3,
+		color : Array(env3.N).fill(1.),
+} ;
+
+var texture = new Abubu.Float32Texture(env4.scale, env4.scale) ;
+
+var table = new Float32Array( env4.scale*env4.scale*4 );
+/*for (var i =0; i<env.N; i++){
+	env2.vx[i] = Math.random()*0.1-0.05;
+	env2.vy[i] = Math.random()*0.1-0.05;
+}*/
+
+//SPH
+function initialPosition2(){
+	var x,y;
+    for (var i = 0; i < env3.N; i++) {
+		for (var j = 0; j < 10*env3.N; j++) {
+			x =  Math.random();
+			y =  Math.random();
+			env4.x[i] = x;
+			env4.y[i] = y;
+			if(x>x2 && x<x4){
+				if(y<y4){
+					if(y > cubicWall(i,x2,y2,x4,y4,'initial') ){
+						break;
+					}
+				}
+			}			
+
+		}
+		env4.color[i] = 1;
+		env4.x[i] = x;
+		env4.y[i] = y;
+        env4.vx[i] = Math.random()*0.04-0.02;//random(-0.02, 0.02);
+        env4.vy[i] = Math.random()*0.04-0.02;//random(-0.02, 0.02);		
+
+	}
+}	
+initialPosition2()
+//SPH
+
+
+
+function distance(a,b){
+	return Math.sqrt((env2.x[a] - env2.x[b])**2 + (env2.y[a] - env2.y[b])**2)
+}
+function angle(a,b){
+	var  angle = Math.atan2( (env2.y[b]-env2.y[a]) , (env2.x[b]-env2.x[a]));
+	return angle;
+}
+function anchorY(a,b){
+	return env.k*( Math.abs(env2.y[a] - env.anchorY[b]) - env.restL )* Math.sign(env.anchorY[b] - env2.y[a])
+}
+function anchorX(a,b){
+	return env.k*( Math.abs(env2.x[a] - env.anchorX[b]) - env.restL )* Math.sign(env.anchorX[b] - env2.x[a])
+}
+function Fy(a,b,e,T){
+	if (T == true){
+		return e*env.k/(1+(env2.U[a]+env2.U[b]))*( distance(a,b) - env.restL/(1+env2.T*(Math.abs(env2.U[a]-env2.U[b])) ))* Math.sin(angle(a,b));
+	}
+	if (T == false){
+		return e*env.k*( Math.abs(env2.y[a] - env2.y[b]) - env.restL )* Math.sin(angle(a,b));
+	}	
+}
+
+function Fx(a,b,e,T){
+	if (T == true){
+		return e*env.k/(1+(env2.U[a]+env2.U[b]))*( distance(a,b) - env.restL/(1+env2.T*(Math.abs(env2.U[a]-env2.U[b]))) )* Math.cos(angle(a,b));
+	}
+	if (T == false){	
+		return e*env.k*( distance(a,b) - env.restL )* Math.cos(angle(a,b));
+	}
+}
+
+function calFF(a,b,c){
+	var sumFy, Fg, sumFx;
+	sumFy = 0;
+	sumFx = 0;
+	Fg = - env2.m * env.g;
+	for (var i = 0; i < b.length; i++){
+		sumFy += Fy(a,b[i],1,false); // structural spring
+		sumFx += Fx(a,b[i],1,false);
+	}
+	for (var i = 0; i < c.length; i++){
+		sumFy += Fy(a,c[i],0.35,true); // reaction spring
+		sumFx += Fx(a,c[i],0.35,true);
+	}
+	
+	env2.Fy[a] = sumFy + Fg - env.dampingC * env2.vy[a];
+	env2.Fx[a] = sumFx - env.dampingC * env2.vx[a];
+}
+
+
+
+
+
+
+function calF(){
+	var xx,yy;
+	for (var i = 0; i < env.N; i++){
+		xx = i%env.L;
+		yy = (i-i%env.L)/env.L;
+		if ( xx > 0 && xx < (env.L-1) && yy > 0 && yy < (env.L-1)){
+			calFF(i,[i-1,i+1,i+env.L,i-env.L],[i+(env.L-1),i+(env.L+1),i-(env.L-1),i-(env.L+1)])
+		}
+		else if (xx == 0 && yy != 0 && yy != (env.L-1)){
+			calFF(i,[i-env.L,i+env.L,i+1],[i-(env.L-1),i+(env.L+1)])
+		}
+		else if (xx == (env.L-1) && yy != 0 && yy != (env.L-1)){
+			calFF(i,[i-env.L,i+env.L,i-1],[i-(env.L+1),i+(env.L-1)])
+		}
+		else if (yy == 0 && xx != 0 && xx != (env.L-1)){
+			calFF(i,[i-1,i+1,i+env.L],[i+(env.L-1),i+(env.L+1)])
+		}
+		else if (yy == (env.L-1) && xx != 0 && xx != (env.L-1)){
+			calFF(i,[i-1,i+1,i-env.L],[i-(env.L-1),i-(env.L+1)])
+		}		
+	}
+	
+	calFF(0,[1,env.L],[(env.L+1)]);
+	calFF((env.L-1),[(env.L-2),(env.L-1)+env.L],[(env.L-1)+env.L-1]);
+	calFF((env.L-1)*env.L,[(env.L-1)*env.L-env.L,(env.L-1)*env.L+1],[(env.L-1)*env.L-(env.L-1)]);
+	calFF(env.L*env.L-1,[env.L*env.L-2,env.L*env.L-1-env.L],[env.L*env.L-1-(env.L+1)]);
+	/*
+		i = env.L*env.L-1;
+		env2.x[i] = (i%env.L+1)/(env.L+3);
+		env2.y[i] = ((i-i%env.L)/env.L+1)/(env.L+3);
+		i = env.L*env.L-env.L;
+		env2.x[i] = (i%env.L+1)/(env.L+3);
+		env2.y[i] = ((i-i%env.L)/env.L+1)/(env.L+3);	*/
+}
+
+
+function initialPosition(){
+	var xx,yy;
+	for (var i = 0; i < env.N; i++){
+		xx = i%env.L;
+		yy = (i-i%env.L)/env.L;
+		env2.x[i] = (xx+1)/(env.L+3);
+		env2.y[i] = (yy+1)/(env.L+3);
+	}
+}
+
+initialPosition();
+
+//SPH
+var init1 = new Abubu.Solver({
+        fragmentShader : source( 'init1') ,
+        targets : {
+                color1: {location : 0 , target : fcolor } ,
+				color2: {location : 1 , target : scolor } ,
+        }
+} ) ;
+init1.render() ;
+//SPH
+
+var init2 = new Abubu.Solver({
+        fragmentShader : source( 'init2') ,
+        targets : {
+                color1: {location : 0 , target : color33 } ,
+				color2: {location : 1 , target : color44 } ,
+        }
+} ) ;
+init2.render() ;
+
+//SPH
+var fmarch = new Abubu.Solver({
+        fragmentShader : source('march') ,
+		uniforms: {
+				inTexture   : { type : 't', value : fcolor } ,
+				inText : { type : 't', value : texture } ,
+				r : { type : 'f', value : env4.r } ,
+				xMin : { type : 'f', value : env4.xMin } ,
+				xMax : { type : 'f', value : env4.xMax } ,
+				
+				ACubic : { type : 'f', value : ACubic } ,
+				BCubic : { type : 'f', value : BCubic } ,
+				CCubic : { type : 'f', value : CCubic } ,
+				DCubic : { type : 'f', value : DCubic } ,				
+				A5_6 : { type : 'f', value : A5_6 } ,
+				B5_6 : { type : 'f', value : B5_6 } ,
+				A1_2 : { type : 'f', value : A1_2 } ,
+				B1_2 : { type : 'f', value : B1_2 } ,
+				A2_3_4 : { type : 'f', value : A2_3_4 } ,
+				B2_3_4 : { type : 'f', value : B2_3_4 } ,
+				C2_3_4 : { type : 'f', value : C2_3_4 } ,								
+			
+				x1 : { type : 'f', value : x1 } ,
+				y1 : { type : 'f', value : y1 } ,	
+				x2 : { type : 'f', value : x2 } ,
+				y2 : { type : 'f', value : y2 } ,	
+				x3 : { type : 'f', value : x3 } ,
+				y3 : { type : 'f', value : y3 } ,	
+				x4 : { type : 'f', value : x4 } ,
+				y4 : { type : 'f', value : y4 } ,
+				x5 : { type : 'f', value : x5 } ,
+				y5 : { type : 'f', value : y5 } ,	
+				x6 : { type : 'f', value : x6 } ,
+				y6 : { type : 'f', value : y6 } ,
+				x7 : { type : 'f', value : x7 } ,
+				y7 : { type : 'f', value : y7 } ,
+				x8 : { type : 'f', value : x8 } ,
+				y8 : { type : 'f', value : y8 } ,	
+				x9 : { type : 'f', value : x9 } ,
+				y9 : { type : 'f', value : y9 } ,
+				x10 : { type : 'f', value : x10 } ,
+				y10 : { type : 'f', value : y10 } ,				
+							
+				
+        } ,
+        targets : {
+                outputcolor : { location : 0 , target : scolor } ,
+        }
+    } ) ;
+	
+var smarch = new Abubu.Solver({
+        fragmentShader : source('march') ,
+		uniforms: {
+				inTexture   : { type : 't', value : scolor } ,
+				inText : { type : 't', value : texture } ,
+				r : { type : 'f', value : env4.r } ,
+				xMin : { type : 'f', value : env4.xMin } ,
+				xMax : { type : 'f', value : env4.xMax } ,
+				
+				ACubic : { type : 'f', value : ACubic } ,
+				BCubic : { type : 'f', value : BCubic } ,
+				CCubic : { type : 'f', value : CCubic } ,
+				DCubic : { type : 'f', value : DCubic } ,				
+				A5_6 : { type : 'f', value : A5_6 } ,
+				B5_6 : { type : 'f', value : B5_6 } ,
+				A1_2 : { type : 'f', value : A1_2 } ,
+				B1_2 : { type : 'f', value : B1_2 } ,
+				A2_3_4 : { type : 'f', value : A2_3_4 } ,
+				B2_3_4 : { type : 'f', value : B2_3_4 } ,
+				C2_3_4 : { type : 'f', value : C2_3_4 } ,				
+				
+				x1 : { type : 'f', value : x1 } ,
+				y1 : { type : 'f', value : y1 } ,	
+				x2 : { type : 'f', value : x2 } ,
+				y2 : { type : 'f', value : y2 } ,	
+				x3 : { type : 'f', value : x3 } ,
+				y3 : { type : 'f', value : y3 } ,	
+				x4 : { type : 'f', value : x4 } ,
+				y4 : { type : 'f', value : y4 } ,
+				x5 : { type : 'f', value : x5 } ,
+				y5 : { type : 'f', value : y5 } ,	
+				x6 : { type : 'f', value : x6 } ,
+				y6 : { type : 'f', value : y6 } ,
+				x7 : { type : 'f', value : x7 } ,
+				y7 : { type : 'f', value : y7 } ,
+				x8 : { type : 'f', value : x8 } ,
+				y8 : { type : 'f', value : y8 } ,
+				x9 : { type : 'f', value : x9 } ,
+				y9 : { type : 'f', value : y9 } ,
+				x10 : { type : 'f', value : x10 } ,
+				y10 : { type : 'f', value : y10 } ,					
+				
+        } ,
+        targets : {
+                outputcolor : { location : 0 , target : fcolor } ,
+        }
+    } ) ;
+
+//SPH
+
+var march3 = new Abubu.Solver({
+        fragmentShader : source( 'march2' ) ,
+        uniforms : { 
+                inTexture   : { type : 't', value : color33      } ,
+                dt          : { type : 'f', value : env.dt      } ,
+                diffCoef    : { type : 'f', value : env.diffCoef} ,
+				a    : { type : 'f', value : env.a} ,
+				b    : { type : 'f', value : env.b} ,
+				epsilon    : { type : 'f', value : env.epsilon} ,
+        } ,
+        targets : {
+                ocolor : { location : 0, target : color44 } 
+        }
+    } ) ;
+
+var march4 = new Abubu.Solver({
+        fragmentShader : source( 'march2' ) ,
+        uniforms : { 
+                inTexture   : { type : 't', value : color44      } ,
+                dt          : { type : 'f', value : env.dt      } ,
+                diffCoef    : { type : 'f', value : env.diffCoef} ,
+				a    : { type : 'f', value : env.a} ,
+				b    : { type : 'f', value : env.b} ,
+				epsilon    : { type : 'f', value : env.epsilon} ,				
+        } ,
+        targets : {
+                ocolor : { location : 0, target : color33 } 
+        }
+    } ) ;
+
+// march the solution for two time steps
+/*
+var ushape = [];
+function Ushape(){
+	for( var i=0 ; i< env.N; i++) {
+		if(Math.abs(env2.y[i] - 15*(env2.x[i]-0.5)**2 - 0.3) < 0.08 ) {
+			if(env2.y[i] < 0.8	){
+
+			env2.shape[i] = 1;
+			ushape.push(i);
+			}
+		}
+		
+		
+	}
+}
+
+//Ushape();*/
+
+
+function setAnchor(){
+	for( var i=0 ; i< env.N; i++) {
+		if(i%env.L == 0 || i%env.L == env.L - 1 || (i-i%env.L)/env.L == 0 || (i-i%env.L)/env.L == env.L - 1) {
+			env2.anchor[i] = 1;
+		}
+	}	
+}
+
+setAnchor();
+
+var representPoints = [];
+
+//SPH
+function march(){
+	var row,column,num;
+	var table = new Float32Array( env4.scale*env4.scale*4 );	
+	var color44data = color44.value;	
+	for( var i=0 ; i< env3.N; i++) {
+			row = Math.round(env4.scale*env4.y[i]);
+			column = Math.round(env4.scale*env4.x[i]);
+			if (row == 0){
+				row = 1;
+			}
+			if (column == 0){
+				column = 1;
+			}
+			num = (row - 1) * env4.scale + column - 1;
+			num1 = num + 1;
+			num2 = num - 1;
+			num3 = num + env4.scale;
+			num4 = num - env4.scale;
+			num5 = num + env4.scale + 1;
+			num6 = num + env4.scale - 1;
+			num7 = num - env4.scale + 1;
+			num8 = num - env4.scale - 1;
+			
+			table[4*num] = 1 ;      // red   channel
+			table[4*num + 1] = env4.color[i];
+			
+			
+			table[4*num1] = 1 ;      // red   channel
+			table[4*num1 + 1] = env4.color[i];
+			table[4*num2] = 1 ;      // red   channel
+			table[4*num2 + 1] = env4.color[i];
+			table[4*num3] = 1 ;      // red   channel
+			table[4*num3 + 1] = env4.color[i];		
+			table[4*num4] = 1 ;      // red   channel
+			table[4*num4 + 1] = env4.color[i];	
+			table[4*num5] = 1 ;      // red   channel
+			table[4*num5 + 1] = env4.color[i];	
+			table[4*num6] = 1 ;      // red   channel
+			table[4*num6 + 1] = env4.color[i];	
+			table[4*num7] = 1 ;      // red   channel
+			table[4*num7 + 1] = env4.color[i];	
+			table[4*num8] = 1 ;      // red   channel
+			table[4*num8 + 1] = env4.color[i];				
+			
+				
+	}
+	for( var i=0 ; i< env.N; i++) {
+		env2.U[i] = color44data[4*i];
+	}	
+	
+	texture.data = table ;
+		
+			fmarch.render() ;
+			smarch.render() ;
+}
+
+
+march();
+
+//SPH
+
+var plot = new Abubu.Plot2D({
+    target : fcolor ,   /* the texture to visualize             */
+    channel : 'r',              /* the channel of interest:
+                                        can be : 'r', 'g', 'b', or 'a' 
+                                        defualt value is 'r'            */
+    minValue : 0 ,              /* minimum value on the colormap        */
+    maxValue : 1 ,             /* maximum value on the colormap        */
+    colorbar : false ,           /* if you need to show the colorbar     */
+    canvas : canvas_2 ,         /* the canvas to draw on                */
+}) ;
+
+plot.init() ;   /* initialize the plot */
+plot.render() ;
+
+var uPlot = new Abubu.Plot2D({ // plots the u field on canvas_1
+    target : color33,   /* the texture to visualize             */
+    channel : 'r',              /* the channel of interest:
+                                        can be : 'r', 'g', 'b', or 'a' 
+                                        defualt value is 'r'            */
+    minValue : 0 ,              /* minimum value on the colormap        */
+    maxValue : 1 ,              /* maximum value on the colormap        */
+    colorbar : true ,           /* if you need to show the colorbar     */
+    canvas : canvas_1 ,         /* the canvas to draw on                */
+}) ;
+uPlot.addMessage( 'u-voltage-2D', 0.05,0.075 , 
+        { 
+            font : "16pt Times" ,
+            style: "#ffffe0", 
+            align: "left"
+        }
+    ) ;
+
+uPlot.init() ;   /* initialize the plot */
+uPlot.render() ;
+/* function to create a graphical user interface */
+function createGui(){
+    var gui = new Abubu.Gui() ;     /*  create a graphical user 
+                                        interface               */
+    var panel = gui.addPanel() ;    /*  add a panel to the GUI  */
+    panel.add(env2, 'startHeartBeat' ).onChange(function(){
+		findModeParticle();
+	
+    } ) ;
+	panel.add(env2,'addBloodIn').onChange(function(){
+		addBloodIn();
+    } ) ;		
+    panel.add(env4, 'running' ) ;
+    panel.add(env3, 'k').onChange(function(){
+		env4.pressureC = 15*env3.k;
+    } );
+    panel.add(env3, 'viscosity').onChange(function(){
+	    env4.viscosityC = -40*env3.viscosity;
+    } );
+    panel.add(env4, 'gravityC').onChange(function(){
+    } );
+    panel.add(env3, 'wallBounceLose').onChange(function(){
+		env4.wallBounce = 1-env3.wallBounceLose;
+    } );
+	
+    panel.add(env,'time').listen();	
+    /*panel.add(env3, 'N').onChange(function(){
+		initialPosition2();
+		initialization();
+		init1.render();
+		march();
+		plot.render();
+    } );*/
+		
+}
+
+//SPH
+function distance2(i,j){
+	var r2 = (env4.x[i] - env4.x[j])**2 + (env4.y[i] - env4.y[j])**2;
+	var r = Math.sqrt(r2);
+	return r;
+}
+
+function updateDensity(){
+	var neighbor = [];
+    var dx, dy, r2;
+    var C0 = env4.m / (Math.PI * (env4.h**4));
+    var C1 = 4 * env4.m / (Math.PI * (env4.h**2));
+    var C2 = 4 * env4.m / (Math.PI * (env4.h**8));
+	
+	
+    for (var i =0; i<env3.N; i++){
+        env4.density[i] = C1;
+        env4.ax[i] = 0;
+        env4.ay[i] = -env4.gravityC;
+	
+		for (var j =i+1; j<env3.N; j++) {
+			dx = env4.x[i] - env4.x[j];
+			dy = env4.y[i] - env4.y[j];
+			r = distance2(i,j);
+			r2 = dx * dx + dy * dy;
+			if (r2 < env4.h**2) {
+				neighbor.push([i, j, dx, dy, r2]);
+			}
+		}
+	}
+    var c, rho_ij, z;
+    for (var i = 0; i < neighbor.length; i++) {
+        c = neighbor[i];
+        z = env4.h**2 - c[4];
+        rho_ij = C2 * z * z * z;
+        env4.density[c[0]] += rho_ij;
+        env4.density[c[1]] += rho_ij;
+    }
+}
+
+function update(){
+	var neighbor = [];
+    var dx, dy, r2;
+    var C0 = env4.m / (Math.PI * (env4.h**4));
+    var C1 = 4 * env4.m / (Math.PI * (env4.h**2));
+    var C2 = 4 * env4.m / (Math.PI * (env4.h**8));
+	
+	
+    for (var i =0; i<env3.N; i++){
+        env4.density[i] = C1;
+        env4.ax[i] = 0;
+        env4.ay[i] = -env4.gravityC;
+	
+		for (var j =i+1; j<env3.N; j++) {
+			dx = env4.x[i] - env4.x[j];
+			dy = env4.y[i] - env4.y[j];
+			r = distance2(i,j);
+			r2 = dx * dx + dy * dy;
+			if (r2 < env4.h**2 && r2 != 0 ) {
+					
+				neighbor.push([i, j, dx, dy, r2]);
+
+			}
+		}
+	}
+    var c, rho_ij, z;
+    for (var i = 0; i < neighbor.length; i++) {
+        c = neighbor[i];
+        z = env4.h**2 - c[4];
+        rho_ij = C2 * z * z * z;
+        env4.density[c[0]] += rho_ij;
+        env4.density[c[1]] += rho_ij;
+    }
+	
+    var pi, pj, q, u, w0, wp, wv, dvx, dvy;
+    for (var i = 0; i < neighbor.length; i++) {
+        c = neighbor[i];
+        pi = c[0];
+        pj = c[1];
+
+        q = Math.sqrt(c[4]) / env4.h;
+        u = 1 - q;
+        w0 = C0 * u / (env4.density[pi] * env4.density[pj]);
+        wp = w0 * env4.pressureC * (env4.density[pi] + env4.density[pj] - env4.dens0*2) * u / q;
+        wv = w0 * env4.viscosityC;
+        
+        dvx = env4.vx[pi] - env4.vx[pj];
+        dvy = env4.vy[pi] - env4.vy[pj];
+        
+        env4.ax[pi] += wp * c[2] + wv * dvx;
+        env4.ay[pi] += wp * c[3] + wv * dvy;
+        env4.ax[pj] -= wp * c[2] + wv * dvx;
+        env4.ay[pj] -= wp * c[3] + wv * dvy;
+    }
+
+
+}
+
+function normalizeMass(){
+    //env4.m = 1;
+    updateDensity();
+    
+    var rho2 = 0;
+    var rho  = 0;
+    for (var i =0; i<env3.N; i++) {
+        rho2 += env4.density[i] * env4.density[i];
+        rho  += env4.density[i];
+    }
+    
+    env4.m = env4.dens0 * rho / rho2;	
+}
+
+function leapfrog() {
+    for (var i = 0; i < env3.N; i++) {
+	
+        env4.vhx[i] = env4.vx[i] + env4.ax[i] * env4.dt/2;
+        env4.vhy[i] = env4.vy[i] + env4.ay[i] * env4.dt/2;
+        
+        env4.vx[i] = env4.ax[i] * env4.dt/2;
+        env4.vy[i] = env4.ay[i] * env4.dt/2;
+        
+        env4.x[i] += env4.vhx[i] * env4.dt;
+        env4.y[i] += env4.vhy[i] * env4.dt;
+    }
+};
+
+
+function timeStep() {
+    for (var i = 0; i < env3.N; i++) {
+		
+        env4.vhx[i] += env4.ax[i] * env4.dt;
+        env4.vhy[i] += env4.ay[i] * env4.dt;
+        
+        env4.vx[i] = env4.vhx[i] + env4.ax[i] * env4.dt/2;
+        env4.vy[i] = env4.vhy[i] + env4.ay[i] * env4.dt/2;
+        
+        env4.x[i] += env4.vhx[i] * env4.dt;
+        env4.y[i] += env4.vhy[i] * env4.dt;
+			//bloodLoop(i);
+		transformBloodOut(i,x2,y2,x6,y6)
+		detectWall(i);
+		
+	}
+}
+
+function quadF(X,Y){
+//y=a*x*x+b*x+c
+	var a, b, c ,x1, x2, x3, y1, y2, y3;
+	x1 = X[0];
+	x2 = X[1];
+	x3 = X[2];
+	y1 = Y[0];
+	y2 = Y[1];
+	y3 = Y[2];
+	x1x1 = x1*x1;
+	x2x2 = x2*x2;
+	x3x3 = x3*x3;
+	y1y1 = y1*y1;
+	y2y2 = y2*y2;
+	y3y3 = y3*y3;
+	var denomi = (x1-x2)*(x2-x3)*(x1-x3);
+	a = -(x3*(y1-y2) + x1*(y2-y3) + x2*(y3-y1)) / denomi;
+	b = -(x3x3*(y2-y1) + x2x2*(y1-y3) + x1x1*(y3-y2)) / denomi;
+	c = (x2*x3*(x2-x3)*y1 + x1*x3*(x3-x1)*y2 + x1*x2*(x1-x2)*y3) / denomi;
+	return [a,b,c];
+}
+	init1.render();
+	march();
+	plot.render();	
+
+
+var ACubic,BCubic,CCubic,DCubic;
+function updateCubic(X,Y){
+	ACubic = Number(polyfit(X, Y, 3)[0]);
+	BCubic = Number(polyfit(X, Y, 3)[1]);
+	CCubic = Number(polyfit(X, Y, 3)[2]);
+	DCubic = Number(polyfit(X, Y, 3)[3]);
+
+
+	
+}	
+
+function cubicWall(i,xx1,yy1,xx2,yy2,upside){	
+	var x = env4.x[i];
+	var y = env4.y[i];
+	var xNext = env4.x[i] + env4.vx[i] * env4.dt;
+	var yNext = env4.y[i] + env4.vy[i] * env4.dt;
+	/*
+	A = quadF(X,Y)[0];
+	B = quadF(X,Y)[1];
+	C = quadF(X,Y)[2];*/
+	var value = ACubic*Math.pow(x,3) + BCubic*Math.pow(x,2) + CCubic*x + DCubic;
+
+	var slope = 3*ACubic*Math.pow(x,2)+2*BCubic*x + CCubic;
+	var Lvalue = (yy2-yy1)/(xx2-xx1)*x + (yy1 - xx1*(yy2-yy1)/(xx2-xx1));
+	if((y-Lvalue) < 0 && (yNext-Lvalue) < 0 ){
+		if (upside == true){
+			if (y - value < 0  && y - value > -0.03) {
+
+					var theta = Math.atan(slope);
+					x += Math.random()*0.0004 + 0.0001;
+					y =  value + Math.random()*0.004 + 0.0001;
+					var vx = env4.wallBounce * ( -env4.vx[i] * Math.sin(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta) ) + (env4.vx[i] * Math.cos(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta)) ;
+					var vy = env4.wallBounce * ( -env4.vy[i] * Math.cos(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta) ) + (env4.vy[i] * Math.sin(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta));	
+
+					
+					env4.vy[i] = vy;
+					env4.vhy[i] = vy;
+					env4.vx[i] = vx;
+					env4.vhx[i] = vx;			
+			}
+		}		
+		if (upside == false){
+			if (y - value > 0  && y - value > -0.05) {
+
+					var theta = Math.atan(slope);
+					x += Math.random()*0.0004 + 0.0001;
+					y =  value - Math.random()*0.004 + 0.0001;
+					var vx = env4.wallBounce * ( -env4.vx[i] * Math.sin(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta) ) + (env4.vx[i] * Math.cos(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta)) ;
+					var vy = env4.wallBounce * ( -env4.vy[i] * Math.cos(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta) ) + (env4.vy[i] * Math.sin(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta));	
+
+					
+					env4.vy[i] = vy;
+					env4.vhy[i] = vy;
+					env4.vx[i] = vx;
+					env4.vhx[i] = vx;			
+			}
+		}
+		if (upside == 'initial'){
+			return value;		
+		}
+
+	}
+	env4.x[i] = x;
+	env4.y[i] = y;	
+}
+function quadWall(i,X,Y,xx1,yy1,xx2,yy2,upside){
+	var A,B,C;
+	var x = env4.x[i];
+	var y = env4.y[i];
+	var xNext = env4.x[i] + env4.vx[i] * env4.dt;
+	var yNext = env4.y[i] + env4.vy[i] * env4.dt;
+	A = quadF(X,Y)[0];
+	B = quadF(X,Y)[1];
+	C = quadF(X,Y)[2];
+	var value = A*x**2 + B*x + C;
+	var slope = 2*A*env4.x[i]+B;
+	var Lvalue = (yy2-yy1)/(xx2-xx1)*x + (yy1 - xx1*(yy2-yy1)/(xx2-xx1));
+	if(A*(y-Lvalue) < 0 && A*(yNext-Lvalue) < 0 ){
+		if (upside == true){
+			if (y - value < 0 && yNext - value < 0  && y - value > -0.05) {
+
+					var theta = Math.atan(slope);
+					x += Math.random()*0.0004 + 0.0001;
+					y =  value + Math.random()*0.004 + 0.0001;
+					var vx = env4.wallBounce * ( -env4.vx[i] * Math.sin(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta) ) + (env4.vx[i] * Math.cos(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta)) ;
+					var vy = env4.wallBounce * ( -env4.vy[i] * Math.cos(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta) ) + (env4.vy[i] * Math.sin(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta));	
+
+					
+					env4.vy[i] = vy;
+					env4.vhy[i] = vy;
+					env4.vx[i] = vx;
+					env4.vhx[i] = vx;			
+			}
+		}		
+		if (upside == false){
+			if (y - value > 0 && yNext - value > 0 && y - value > -0.05) {
+
+					var theta = Math.atan(slope);
+					x += Math.random()*0.0004 + 0.0001;
+					y =  value - Math.random()*0.004 + 0.0001;
+					var vx = env4.wallBounce * ( -env4.vx[i] * Math.sin(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta) ) + (env4.vx[i] * Math.cos(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta)) ;
+					var vy = env4.wallBounce * ( -env4.vy[i] * Math.cos(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta) ) + (env4.vy[i] * Math.sin(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta));	
+
+					
+					env4.vy[i] = vy;
+					env4.vhy[i] = vy;
+					env4.vx[i] = vx;
+					env4.vhx[i] = vx;			
+			}
+		}
+		if (upside == 'initial'){
+			return value;		
+		}
+
+	}
+	env4.x[i] = x;
+	env4.y[i] = y;	
+}
+function lineWall(i,xx1,yy1,xx2,yy2,upside){
+	var A,B; //y = Ax+B;
+	var x = env4.x[i];
+	var y = env4.y[i];
+	var xNext = env4.x[i] + env4.vx[i] * env4.dt;
+	var yNext = env4.y[i] + env4.vy[i] * env4.dt;
+	A = (yy1-yy2)/(xx1-xx2);
+	B = yy1-A*xx1;
+	var value = A*x + B;
+	var slope = A;
+	if (upside == true){
+		if((x-xx1 ) * (x-xx2) <= 0. && (xNext-xx1 ) * (xNext-xx2) <= 0.){
+			if (y - value < 0.005 && yNext - value < 0.005 ) {
+
+					var theta = Math.atan(slope);
+					
+					x += Math.random()*0.0004 + 0.0001;
+					y =  value + Math.random()*0.005 + 0.005;
+					var vx = env4.wallBounce * ( -env4.vx[i] * Math.sin(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta) ) + env4.vx[i] * Math.cos(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta) ;
+					var vy = env4.wallBounce * ( -env4.vy[i] * Math.cos(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta) ) + env4.vy[i] * Math.sin(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta);
+					env4.vy[i] = vy;
+					env4.vhy[i] = vy;
+					env4.vx[i] = vx;
+					env4.vhx[i] = vx;			
+				
+				
+			}
+
+		}
+	}
+	
+	if (upside == false){
+		if((x-xx1 ) * (x-xx2) <= 0. && (xNext-xx1 ) * (xNext-xx2) <= 0.){
+			if (y - value > -0.005 && yNext - value > -0.005 ) {
+
+					var theta = Math.atan(slope);
+					
+					x += Math.random()*0.0004 + 0.0001;
+					y =  value - Math.random()*0.005 + 0.005;
+					var vx = env4.wallBounce * ( -env4.vx[i] * Math.sin(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta) ) + env4.vx[i] * Math.cos(theta)**2 + env4.vy[i] * Math.sin(theta)*Math.cos(theta) ;
+					var vy = env4.wallBounce * ( -env4.vy[i] * Math.cos(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta) ) + env4.vy[i] * Math.sin(theta)**2 + env4.vx[i] * Math.sin(theta)*Math.cos(theta);
+					env4.vy[i] = vy;
+					env4.vhy[i] = vy;
+					env4.vx[i] = vx;
+					env4.vhx[i] = vx;			
+				
+				
+			}
+
+		}
+	}	
+	/*
+	if((x-xx1) * (x-xx2) <　0　){	
+		return value;	
+	}
+	else {
+		return y;
+	}	*/
+	env4.x[i] = x;
+	env4.y[i] = y;	
+
+}
+function polyfit(xArray, yArray, order) {
+
+	if (xArray.length <= order) console.warn("Warning: Polyfit may be poorly conditioned.")
+
+	let xMatrix = []
+	let yMatrix = numeric.transpose([yArray])
+
+	for (let i = 0; i < xArray.length; i++) {
+
+		let temp = []
+
+		for (let j = 0; j <= order; j++) {
+
+		  temp.push(Math.pow(xArray[i], j))
+
+		}
+
+		xMatrix.push(temp)
+
+	}
+
+	let xMatrixT = numeric.transpose(xMatrix)
+
+	let dot1 = numeric.dot(xMatrixT, xMatrix)
+	let dot2 = numeric.dot(xMatrixT, yMatrix)
+
+	let dotInv = numeric.inv(dot1)
+
+	let coefficients = numeric.dot(dotInv, dot2)
+	coefficients = coefficients.reverse()
+	return coefficients
+
+}
+
+
+function rotate (x, y, sin, cos, reverse) {
+  return {
+	x: (reverse) ? (x * cos + y * sin) : (x * cos - y * sin),
+	y: (reverse) ? (y * cos - x * sin) : (y * cos + x * sin)
+  };
+}
+
+
+function checkQuad(i,X,Y,xx1,yy1,xx2,yy2){
+	var A,B,C;
+	let x = env4.x[i];
+	let y = env4.y[i];
+	let xNext = env4.x[i] + env4.vx[i] * env4.dt;
+	let yNext = env4.y[i] + env4.vy[i] * env4.dt;
+	A = quadF(X,Y)[0];
+	B = quadF(X,Y)[1];
+	C = quadF(X,Y)[2];
+	let value = A*x**2 + B*x + C;
+	let slope = 2*A*x+B;
+	let Lvalue = (yy2-yy1)/(xx2-xx1)*x + (yy1 - xx1*(yy2-yy1)/(xx2-xx1));
+	if(A*(y-Lvalue) < 0 && A*(yNext-Lvalue) < 0 ){
+		if(Math.abs(y-value) < env4.radius){
+			var xxx1 = x-3*env4.radius;
+			var xxx2 = x+3*env4.radius;
+			return [true,xxx1,slope*xxx1 + (value - slope * x),xxx2 , slope*xxx2 + (value - slope * x)]
+			
+		}
+	}
+	else{
+		return false
+	}
+}
+function checkLine(i,x1,y1,x2,y2){
+	let cos = Math.cos(Math.atan2(y2 - y1, x2 - x1));
+	let sin = Math.sin(Math.atan2(y2 - y1, x2 - x1));
+	let x = env4.x[i];
+	let y = env4.y[i];
+	let xMin = Math.min(x1, x2);
+	let xMax = Math.max(x1, x2);
+   // 判断小球是否在粉色区域内
+	if (x + env4.radius > xMin && x - env4.radius < xMax){
+		// 位置以（x1，y1）为坐标原点来旋转坐标
+		let pos = rotate(x - x1, y - y1, sin, cos, true);
+		let vel = rotate(env4.vx[i], env4.vy[i], sin, cos, true);
+		// 当小球中心距离斜面的距离小于半径的时说明已经相碰撞了
+		if (Math.abs(pos.y) < env4.radius) {
+		  // 判断小球是上面碰撞还是下面碰撞
+			if (pos.y - vel.y <= 0) {
+				pos.y = -env4.radius;
+			} 
+			else {
+				pos.y = env4.radius;
+			}
+			vel.y *= 0.5;
+			// 选择回去
+			let velF = rotate(vel.x, vel.y, sin, cos, false);
+			let posF = rotate(pos.x, pos.y, sin, cos, false);
+			env4.vx[i] = velF.x;
+			env4.vy[i] = velF.y;
+			x = x1 + posF.x;
+			y = y1 + posF.y;
+		}
+	}
+ 	env4.x[i] = x;
+	env4.y[i] = y; 
+  
+}
+function transformBloodOut(i,x1,y1,x2,y2){ //return 1 if collision with line , 0 if not;
+	let cos = Math.cos(Math.atan2(y2 - y1, x2 - x1));
+	let sin = Math.sin(Math.atan2(y2 - y1, x2 - x1));
+	let x = env4.x[i];
+	let y = env4.y[i];
+	let xMin = Math.min(x1, x2);
+	let xMax = Math.max(x1, x2);
+   // 判断小球是否在粉色区域内
+	if (x + env4.radius > xMin && x - env4.radius < xMax){
+		// 位置以（x1，y1）为坐标原点来旋转坐标
+		let pos = rotate(x - x1, y - y1, sin, cos, true);
+		let vel = rotate(env4.vx[i], env4.vy[i], sin, cos, true);
+		// 当小球中心距离斜面的距离小于半径的时说明已经相碰撞了
+		if (Math.abs(pos.y) < env4.radius) {
+			//env4.x[i] =  (x7-x8)*Math.random() * 0.7 + x8;
+			//env4.y[i] =  0.2 * Math.random() + y8;
+			env4.vx[i] = 0.;
+			env4.vy[i] *= 2;		
+		}
+	}
+  
+}
+function detectWall(i){ 
+        if (env4.x[i] < env4.xMin) {
+            env4.x[i] = env4.xMin;
+            env4.vx[i] *= -env4.wallBounce;
+            env4.vhx[i] *= -env4.wallBounce;
+        } else if (env4.x[i] > env4.xMax) {
+            env4.x[i] = env4.xMax;
+            env4.vx[i] *= -env4.wallBounce;
+            env4.vhx[i] *= -env4.wallBounce;
+        }
+        
+        if (env4.y[i] < env4.yMin) {
+            env4.y[i] = env4.yMin + Math.random()*0.0004 + 0.0001;
+            env4.vy[i] *= -env4.wallBounce;
+            env4.vhy[i] *= -env4.wallBounce;
+        } else if (env4.y[i] > env4.yMax) {
+            env4.y[i] = env4.yMax - Math.random()*0.0004 - 0.0001;
+            env4.vy[i] *= -env4.wallBounce;
+            env4.vhy[i] *= -env4.wallBounce;
+        }
+		if (env4.y[i] > y5 && env4.y[i] < y5 + 0.014 && (env4.x[i] - x5) * (env4.x[i] - x4 ) < 0 ) {
+			env4.y[i] = y5 - Math.random()*0.0004 - 0.0001;
+			env4.vy[i] *= -env4.wallBounce;
+			env4.vhy[i] *= -env4.wallBounce;
+		}
+        if (env4.x[i] > x4 - 0.003) {
+            env4.x[i] = x4 - 0.003;
+            env4.vx[i] *= -env4.wallBounce;
+            env4.vhx[i] *= -env4.wallBounce;
+        }/*
+		if (env4.x[i] < x2 + 0.007 && (env4.y[i] - (y2 - 0.01)) * (env4.y[i] - (y2 - 0.01)) < 0 ) {
+            env4.x[i] = x2 + 0.003;
+            env4.vx[i] *= -env4.wallBounce;
+            env4.vhx[i] *= -env4.wallBounce;
+        }
+		if (env4.x[i] < x8 + 0.003 && (env4.y[i] - (y2 - 0.01)) * (env4.y[i] - (y2 - 0.01)) < 0 ) {
+            env4.x[i] = x2 + 0.003;
+            env4.vx[i] *= -env4.wallBounce;
+            env4.vhx[i] *= -env4.wallBounce;
+        }	*/	
+				
+		checkLine(i,x1,y1,x2,y2); //14 15
+		checkLine(i,x5,y5,x6,y6); 
+		//quadWall(i,[x2,x3,x4],[y2,y3,y4],x2,y2,x4,y4,true);
+		cubicWall(i,x2,y2,x4,y4,true);
+		//cubicWall(i,x2,y2,x4,y4,true);
+		/*
+        if (env4.x[i] < x1 && env4.x[i] > x1 -0.007 && env4.y[i] > y1 && env4.y[i] < y10  ) {
+            env4.x[i] = x8;
+            env4.vx[i] *= -env4.wallBounce;
+            env4.vhx[i] *= -env4.wallBounce;
+        } else if (env4.x[i] > x6 && env4.x[i] < x6 + 0.007 && env4.y[i] > y6 && env4.y[i] < y9  ) {
+            env4.x[i] = x7;
+            env4.vx[i] *= -env4.wallBounce;
+            env4.vhx[i] *= -env4.wallBounce;
+        }
+        if (env4.y[i] < y9 && env4.y[i] > y9 -0.007 && env4.x[i] > x9 && env4.x[i] < x11  ) {
+            env4.y[i] = y9;
+            env4.vy[i] *= -env4.wallBounce;
+            env4.vhy[i] *= -env4.wallBounce;
+        } else if (env4.y[i] > y12 && env4.y[i] < y12 + 0.007 && env4.x[i] > x10 && env4.x[i] < x12  ) {
+            env4.y[i] = y12;
+            env4.vy[i] *= -env4.wallBounce;
+            env4.vhy[i] *= -env4.wallBounce;
+        }	*/	
+		
+};
+
+var mode = 0; //mode = 1 plug in blood ; mode = 2 heart pulp ; mode = 0 normal mode; 
+var mode1Particle = [];//[1669, 1671, 1719, 1720, 1721, 1722, 1723, 1768, 1769, 1770, 1771, 1772, 1818, 1819, 1820, 1821, 1822];
+var mode2Particle1 = [];//[975, 1024, 1025, 1026, 1027, 1074, 1076];
+var mode2Particle2 = [];//[1075, 1077, 1125, 1126, 1127, 1176, 1178];
+var P1X, P2X, P1Y,P2Y;
+var findModeParticleStart = false;
+function addBloodIn(){
+    for( var i=0 ; i< env3.N; i++){
+		if(env4.y[i] < 0.2){		
+			if(Math.random() <0.5){
+				var x = (x4-x2) * Math.random()  + x2 ;
+				var y = (y2 - y3) * Math.random() + y3;
+				
+				if(y > cubicWall(i,x2,y2,x4,y4,'initial')){
+					env4.x[i] = x;
+					env4.y[i] = y;					
+					env4.vx[i] = 0;
+					env4.vy[i] = 0;				
+					env4.color[i] = 0.4;
+				}
+				
+			}
+		}
+	}
+}
+function findModeParticle(){
+		findModeParticleStart = true;
+		mode1Particle = [];
+		mode2Particle1 = [];
+		mode2Particle2 = [];
+		for( var i=0 ; i< env.N; i++) {
+			if(Math.sqrt( (env2.y[i] - y2)**2 + (env2.x[i] - x2)**2 ) < 0.05 ) {
+				env2.mode[i] = 1;
+				mode1Particle.push(i);
+			}
+			if(Math.sqrt( (env2.y[i] - 0.395)**2 + (env2.x[i] - 0.43)**2 ) < 0.05 ) {
+				if(env2.y[i] <= 3.95){
+					env2.mode[i] = 2;
+					mode2Particle1.push(i);
+				}
+			}
+			
+			if(Math.sqrt( (env2.y[i] - 0.45)**2 + (env2.x[i] - 0.45)**2 ) < 0.05 ) {
+				if(env2.y[i] <= 0.45){
+					env2.mode[i] = 2;
+					mode2Particle2.push(i);
+				}
+			}			
+			
+		}		
+		
+}
+function updateMode(){
+	if (findModeParticleStart == true){
+	/*
+		P1X = 0;
+		P2X = 0;
+		P1Y = 0;
+		P2Y = 0;*/
+		
+		var mode1V = 0; 
+		var mode2V = 0;
+		for (var i =0; i<mode1Particle.length; i++){
+			mode1V += env2.U[mode1Particle[i]] / mode1Particle.length;
+		}
+		for (var i =0; i<mode2Particle1.length; i++){
+			mode2V += env2.U[mode2Particle1[i]] / (mode2Particle1.length + mode2Particle2.length);
+			/*
+			P1X += env2.x[mode2Particle1[i]] / (mode2Particle1.length);
+			P1Y += env2.y[mode2Particle1[i]] / (mode2Particle1.length);*/
+		}
+		for (var i =0; i<mode2Particle2.length; i++){
+			mode2V += env2.U[mode2Particle2[i]] / (mode2Particle1.length + mode2Particle2.length);
+			/*
+			P2X += env2.x[mode2Particle2[i]] / (mode2Particle2.length);
+			P2Y += env2.y[mode2Particle2[i]] / (mode2Particle2.length);	*/	
+		}	
+		
+		if (mode1V > 0.3 ){
+			mode = 1;
+		}
+		else if (mode2V > 0.3 ){
+			mode = 2;
+		}	
+		else {
+			mode = 0;
+		}
+		/*
+		x3 = P1X;
+		y3 = P1Y;
+		x33 = P2X;
+		y33 = P2Y;*/
+		
+	}
+}
+function restrict(a){
+	if (Math.abs(x3 - 0.43) >a){
+		var variance = (x3 - 0.43) / Math.abs(x3 - 0.43) * a;
+		x3 = variance + 0.43;
+	}
+	if (Math.abs(x33 - 0.45) >a){
+		var variance = (x33 - 0.45) / Math.abs(x33 - 0.45) * a;
+		x33 = variance + 0.45;
+	}
+	if (Math.abs(y3 - 0.395) >a){
+		var variance = (y3 - 0.395) / Math.abs(y3 - 0.395) * a;
+		y3 = variance + 0.395;
+	}
+	if (Math.abs(y33 - 0.45) >a){
+		var variance = (y33 - 0.45) / Math.abs(y33 - 0.45) * a;
+		y33 = variance + 0.45;
+	}	
+}
+var modeTime;
+function move2(){
+	//findModeParticle();
+	updateMode();
+	if (mode ==1 ){
+		modeTime += 1;
+	}
+	else{
+		modeTime = 0;
+	}
+	
+//240
+	
+	//restrict(0.02)
+	if (mode == 1 && modeTime%2 == 0){
+		updateCubic([x2,x3,x33+ 0.03 * modeTime/240,x4],[y2,y3 + 0.14 * modeTime/240 , y33 + 0.07 * modeTime/240 , y4]);
+	}
+	else {
+		updateCubic([x2,x3,x33,x4],[y2,y3,y33,y4]);
+	}
+	
+	fmarch.uniforms.ACubic.value = ACubic;
+	smarch.uniforms.ACubic.value = ACubic;
+	fmarch.uniforms.BCubic.value = BCubic;
+	smarch.uniforms.BCubic.value = BCubic;
+	fmarch.uniforms.CCubic.value = CCubic;
+	smarch.uniforms.CCubic.value = CCubic;	
+	fmarch.uniforms.DCubic.value = DCubic;
+	smarch.uniforms.DCubic.value = DCubic;		
+
+    update();
+    timeStep();
+}
+
+function initialization(){
+	initialPosition2();
+	normalizeMass();
+	update();
+	leapfrog();
+
+
+}
+
+initialization();
+
+
+//SPH
+
+function move(){
+	for (var i =0; i<env.N; i++){
+		if (env2.anchor[i] == 0){
+		env2.x[i] += env2.vx[i]*env.dt ;
+		env2.y[i] += env2.vy[i]*env.dt ;
+		}
+	}
+}
+
+
+
+function accelaration(){
+	calF();
+	for (var i =0; i<env.N; i++){
+		env2.vy[i] += env2.Fy[i]/env2.m * env.dt;	
+		env2.vx[i] += env2.Fx[i]/env2.m * env.dt;		
+		
+	}
+}
+
+function run(){
+
+		if (env4.running){	
+			for (var i =0; i<4; i++){
+				move2();
+				/*
+				accelaration();
+				move();*/				
+				for (var k =0; k<4; k++){
+					env.time += env.dt;
+					march3.render() ;
+					march4.render() ;	
+				}
+			}
+			march();
+			plot.render();
+			init1.render();			
+		uPlot.render();	
+
+		}
+			
+		requestAnimationFrame(run) ;
+
+}
+
+
+var click = new Abubu.Solver({
+    fragmentShader : source( 'click' ) ,
+    uniforms : {
+        inTexture : { type : 't', value : color33 } ,
+        clickRadius: { type : 'f', value : env.clickRadius } ,
+        clickPosition: { type : 'v2', value : env.clickPosition } ,
+    } ,
+    targets : {
+            ocolor : { location : 0 , target : color44 } ,
+    }
+} ) ;
+
+var clickCopy = new Abubu.Copy( color44, color33 ) ;
+
+var mouseDrag = new Abubu.MouseListener({
+    canvas : canvas_1 ,
+    event : 'drag' ,
+    callback : function(e){
+        click.uniforms.clickPosition.value = e.position ;
+        click.render() ;
+        clickCopy.render() ;
+	
+    }
+} ) ;
+
+env3.N = 400;
+		initialPosition2();
+		initialization();
+		init1.render();
+		march();
+		plot.render();
+/* run createGui to create the graphical user interface     */
+createGui() ;
+run() ;
+</script>
+
+</html>
