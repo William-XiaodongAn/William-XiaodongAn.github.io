@@ -110,9 +110,19 @@
       <div class="col-md-8 ml-auto">
 
 
- 
     <label for="edit-tid" >
-            <b>Select Publication Year    </b>    
+            <b>Select Research Output Type    </b>    
+	</label>
+	<select style="width:65px" id="year" onchange="countryHandler(this.value)">
+		<option value="top">Any...</option>
+		<option value="Journal">Journal</option>	
+		<option value="Patents">Patents</option>
+		<option value="Honors and Awards">Honors and Awards</option>
+		<option value="Magazine and Public Media">Magazine and Public Media</option>					
+	</select> 
+	<br>
+    <label for="edit-tid" >
+            <b>Select Journal Publication Year    </b>    
 	</label>
 	<select id="year" onchange="countryHandler(this.value)">
 		<option value="top">Any...</option>
@@ -130,17 +140,7 @@
 		<option value="2010">2010</option>
 		<option value="2009">2009</option>					
 	</select>	
-	<br>
-    <label for="edit-tid" >
-            <b>Select Research Output Type    </b>    
-	</label>
-	<select id="year" onchange="countryHandler(this.value)">
-		<option value="top">Any...</option>
-		<option value="Journal">Journal</option>	
-		<option value="Patents">Patents</option>
-		<option value="Honors and Awards">Honors and Awards</option>
-		<option value="Magazine and Public Media">Magazine and Public Media</option>					
-	</select> 
+ 
 <script>
     function countryHandler(value) {
         window.location.assign(`#${value}`);
