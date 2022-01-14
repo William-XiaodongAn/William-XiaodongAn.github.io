@@ -59,11 +59,10 @@ a:focus {
 
 #navigation {
 	/* overflow: hidden; */ /* Sometimes you want to prevent overlapping with main div. */
-width: 980px;
+width: 740px;  /* about us publications group members activities blank */ 
 	height: 30px;
-	background-color: #F7941E;
+	background-color: rgb(255, 0, 0);
 	margin-top:-1px;
-	
 	
 	
 	
@@ -72,13 +71,25 @@ width: 980px;
 	background-repeat: repeat-x;*/
 }
 #navigation a:link,
+@font-face {
+    font-family: 'Berlin Sans FB Demi';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Berlin Sans FB Demi'), url('https://fonts.cdnfonts.com/s/13625/BRLNSDB.woff') format('woff');
+}
+.fontA{
+  font-family: 'Berlin Sans FB Demi', sans-serif;
+
+}
 #navigation a:visited {
-  color: #000;
+  color: rgb(255,255,255); /*about us research publications group activities font property*/
   text-decoration: none;
+  font-family: Berlin Sans FB Demi, sans-serif;
+                                                
 }
 #navigation a:hover,
 #navigation a:focus {
-	color: #FFF;
+	color: rgb(0,0,0);
 	text-decoration: none;
 }
 
@@ -162,16 +173,16 @@ width: 980px;
   list-style-image: none;
 }
 
-.sf-menu.sf-style-white.sf-navbar {
+.sf-menu.sf-style-white.sf-navbar { 
   width: 980px;
   height: 37px;
 }
-.sf-menu.sf-style-white a {
-border: 1px #F7941E solid;
-border-right: 1px solid #000;
+.sf-menu.sf-style-white a { /* about us publications group members activities blank */
+border: 1px rgb(255, 0, 0) solid;
+border-right: 0px solid #000;
 color: #000;
-padding: 0.4em 2.2em 0.5em 2.2em;
-
+padding: 0.4em 2.8em 0.5em 2.6em;
+  font-size: 1.em;
 font-weight: normal;
 text-decoration: none;
 }
@@ -185,14 +196,14 @@ text-decoration: none;
 }
 .sf-menu.sf-style-white li,
 .sf-menu.sf-style-white.sf-navbar {
-background-color:#F7941E;
+background-color:rgb(255, 0, 0);
 margin-left: 0px;
 }
 .sf-menu.sf-style-white li li {
-background-color: #F7941E;
+background-color: rgb(255, 0, 0);
 }
 .sf-menu.sf-style-white li li li {
-background-color: #F7941E;
+background-color: rgb(255, 0, 0);
 }
 .sf-menu.sf-style-white li:hover,
 .sf-menu.sf-style-white li.sfHover,
@@ -201,13 +212,13 @@ background-color: #F7941E;
 .sf-menu.sf-style-white a:hover,
 
 .sf-menu.sf-style-white.sf-navbar li li {
-background-color:#3a3a3c;
-color: #FFF;
+background-color:rgb(255, 0, 0);
+color: rgb(255,255,255);
 }
 .sf-menu.sf-style-white li.active a,
 .sf-menu.sf-style-white a:active {
 background-color:#3a3a3c;;
-color: #FFF;
+color: rgb(255,255,255);
 }
 .sf-menu.sf-style-white.sf-navbar li ul {
   background-color: #F7941E;

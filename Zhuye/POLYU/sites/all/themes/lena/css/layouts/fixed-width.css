@@ -24,7 +24,7 @@
   
   margin-left: auto;
   margin-right: auto;
-  width: 980px;
+  width: 780px;
   
 }
 
@@ -86,7 +86,7 @@
   position: absolute;
   top: 0; /* Move the navbar up inside #main's padding. */
   height: 3em;
-  width: 980px;
+  width: 720px;
  
   
   
@@ -102,12 +102,13 @@
   /* Span 4 columns, starting in 2nd column from left. */
   float: left;
   width: 700px;
-  margin-left: 260px;
+  margin-left: 20px;
   margin-right: -980px;
+  
 }
-
+/*
 .sidebar-first .region-sidebar-first {
-	/* Span 1 column, starting in 1st column from left. */
+	/* Span 1 column, starting in 1st column from left. 
   position:absolute;
 	margin-top: -1em;
 	
@@ -124,7 +125,7 @@
  
 	
 	
-}
+}*/
 
 
 /*

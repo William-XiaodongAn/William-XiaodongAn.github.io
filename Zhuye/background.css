@@ -16,9 +16,11 @@ body {
   margin: 0;
   padding: 0;
   
-  background-image: url(../images/lenaSide.png);
-  background-repeat: repeat-x;
-  background-color:#E6E7E8;
+  background-image: url(background.jpg);
+  background-repeat: repeat-xy;
+  background-color:rgb(255, 255, 255);
+  background-size:1500px 2100px;  
+; /* 背景色*/
   }
 
 
@@ -49,9 +51,12 @@ body {
 
 #header {
 
-height:150px;
-background-image:url(title6.png);
-background-color:#E6E7E8;
+height:130px;
+background-image:url(title7.png);
+  background-repeat: no-repeat;
+  background-size: 760px 100px;
+background-color:transparent;
+  background-position: 0px 50px;
 
 	
 background-repeat: no-repeat;
@@ -102,7 +107,8 @@ background-repeat: no-repeat;
  */
 
 #main {
-background-color:#FFF;
+	color: #e6e7e8;
+background-color:transparent;
 min-height:600px;
 }
 /*
@@ -144,6 +150,14 @@ min-height:600px;
 	
 	
 }
+#peeppic2 {
+	float:right;
+	padding-left: 60px;
+	padding-bottom: 15px;
+	
+	
+}
+
 #views-field views-field-body {
 	position:relative;
 }
@@ -373,3 +387,7 @@ span.field-label { /* The inline field label used by the Fences module */
 
 .region-bottom { /* Wrapper for any blocks placed in the page bottom region */
 }
+
+#container1 {width: 100%;}
+#photo1 {float: right; width: 40%;}
+#content1 {float: left; width: 60%;}
