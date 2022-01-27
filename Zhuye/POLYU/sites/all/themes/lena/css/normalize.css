@@ -286,7 +286,7 @@ a:active {
  */
 
 h1 {
-	font-size: 1.8em;
+	font-size: 2.5em;
 	  font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
  	 font-weight:lighter;
 	color:#F7941E;
@@ -309,7 +309,7 @@ h2 {
 
 h3 {
   
-  font-size: 1.17em;
+  font-size: 1.5em;
   line-height: 1.282em; /* 1.5rem / 1.17em = 1.282em */
   margin-top: 1.282em;
   margin-bottom: 1.282em;
@@ -340,6 +340,17 @@ h6 {
   line-height: 2em; /* 1.5rem / .75em = 2em */
   margin-top: 2em;
   margin-bottom: 2em;
+}
+
+h7 {
+  
+  font-size: 1.9em;
+  line-height: 1.282em; /* 1.5rem / 1.17em = 1.282em */
+  margin-top: 1.282em;
+  margin-bottom: 1.282em;
+  font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+  font-weight:lighter;
+  color:#F7941E;
 }
 
 /* Thematic break */

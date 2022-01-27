@@ -53,8 +53,9 @@ setInterval(function() {
 window.onload = function() {
 responsiveSlider("slider1","slideWrap1","prev1","next1");  
 responsiveSlider("slider2","slideWrap2","prev2","next2");  
-responsiveSlider("slider1","slideWrap3","prev3","next3");  
-responsiveSlider("slider2","slideWrap4","prev4","next4");  
+responsiveSlider("slider3","slideWrap3","prev3","next3");  
+responsiveSlider("slider4","slideWrap4","prev4","next4");  
+responsiveSlider("slider5","slideWrap5","prev5","next5");  
 }
 
 
