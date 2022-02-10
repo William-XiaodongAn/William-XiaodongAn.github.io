@@ -19,7 +19,7 @@ body {
   background-image: url(background.jpg);
   background-repeat: repeat-xy;
   background-color:rgb(255, 255, 255);
-  background-size:1500px 2100px;  
+  background-size:cover;  
 ; /* 背景色*/
   }
 

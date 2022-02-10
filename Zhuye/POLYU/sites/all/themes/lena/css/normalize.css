@@ -314,8 +314,8 @@ h3 {
   margin-top: 1.282em;
   margin-bottom: 1.282em;
   font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
-  font-weight:lighter;
-  color:#F7941E;
+  font-weight:bolder;
+  color:rgb(255,255,0);
 }
 
 h4 {
@@ -349,8 +349,8 @@ h7 {
   margin-top: 1.282em;
   margin-bottom: 1.282em;
   font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
-  font-weight:lighter;
-  color:#F7941E;
+  font-weight:bolder;
+  color:rgb(255,255,0);
 }
 
 /* Thematic break */
