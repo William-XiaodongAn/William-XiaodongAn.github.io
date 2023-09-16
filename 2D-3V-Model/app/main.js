@@ -944,8 +944,8 @@ function loadWebGL()
 				env.running = !env.running;
 			}
 			
-			console.log(env.svfs.value[willpoint] - env.svfs2.value[willpoint],env.svfs.value[willpoint + 0],env.svfs2.value[willpoint + 0],'time1',env.time)
-			console.log(env.svfs.value[willpoint - 4 * 50] - env.svfs2.value[willpoint- 4 * 50],env.svfs.value[willpoint- 4 * 50],env.svfs2.value[willpoint- 4 * 50],'time2',env.time)
+			//console.log(env.svfs.value[willpoint] - env.svfs2.value[willpoint],env.svfs.value[willpoint + 0],env.svfs2.value[willpoint + 0],'time1',env.time)
+			//console.log(env.svfs.value[willpoint - 4 * 50] - env.svfs2.value[willpoint- 4 * 50],env.svfs.value[willpoint- 4 * 50],env.svfs2.value[willpoint- 4 * 50],'time2',env.time)
 
 		    refreshDisplay();	
         }
