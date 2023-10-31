@@ -1,0 +1,34 @@
+.logo{
+	float:left;
+	margin-left:0;
+}
+.logo a{
+	margin-top:20px;
+	display:block;
+	text-decoration:none; 
+}
+.fmenu{
+	float:left;
+	margin-right:10%;
+	margin-top:10px;
+}
+.fmenu ul{
+	margin:0px;
+	padding:0px;
+	list-style:none;
+}
+.fmenu ul li{
+	float:left;
+}
+.fmenu ul li a{
+	color:#58595b;
+	text-decoration:none;
+	margin-left:10px;
+	margin-right:10px;
+}
+.footer p{
+	margin:0;
+	padding:0;
+	line-height:60px;
+	color:#58595b;
+}
