@@ -1,38 +1,49 @@
 #menu {
-	width: 900px;
+	width: 1300px;
 	margin-top: 0px;
 	margin-right: auto;
 	margin-bottom: 0px;
 	margin-left: auto;
 	padding: 0px;
+	
 
 }
 #menu ul {
 	padding: 0px;
 	margin: 0px;
+	margin-left : 0px;	
 
 }
 #menu ul li {
 
 	float: left;
 	list-style-type: none;
+	
 }
 #menu ul li a {
-	font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+	font-family: Calibri;
 	font-size: 24px;
 	color: #FFFFFF	;
 	text-decoration: none;
 	display: block;
-	line-height: 40px;
-	width: 150px;
-	height: 40px;
+	line-height: 0px;
+	width: auto;
+	height: 0px;
 	text-align: center;
-
+	margin-right : 4px;
+	margin-left : 0px;
+	margin-top : -15px;	
+	transition : 1.3s;
+	border-radius: 7px;	
+	padding: 20px 9px;
 }
+
 #menu ul li:hover {
-	background-color: #0000ff;
+	
+	
 }
 
 #menu ul li a:hover {
-	color:;
+	background-color: #0000ff;
+	color: #ddd;
 }

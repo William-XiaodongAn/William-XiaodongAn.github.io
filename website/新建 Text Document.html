@@ -1,0 +1,77 @@
+<html>
+<head>
+    <title>按钮渐变互动</title>
+    <style type="text/css">
+        .button {
+            position: relative;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: red;
+            padding: 1em 2em;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.2em;
+            cursor: pointer;
+            outline: none;
+            overflow: hidden;
+            -webkit-border-radius: 50px;
+            -moz-border-radius: 50px;
+            border-radius: 50px;
+        }
+
+        .button::before {
+            position: absolute;
+            --size: 0;
+            content: '';
+            left: var(--x);
+            top: var(--y);
+            width: var(--size);
+            height: var(--size);
+            background: radial-gradient(circle closest-side, yellow, transparent);
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            -webkit-transition: width 0.2s ease, height 0.2s ease;
+            -moz-transition: width 0.2s ease, height 0.2s ease;
+            -ms-transition: width 0.2s ease, height 0.2s ease;
+            -o-transition: width 0.2s ease, height 0.2s ease;
+            transition: width 0.2s ease, height 0.2s ease;
+        }
+
+        .button:hover::before {
+            --size: 400px;
+        }
+
+        span {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<button class="button"><span>Hover me,you will find amazing！</span></button>
+<pre>
+    注意：
+    * 用 span 包裹文本，以避免显示在按钮的上方，position：relative
+    * 将 width 和 height 初始化为0，当用户悬停在按钮上方时，将其改为400px，不要忘了设置将这种转换已使其像风一样瞬间出现
+    * 利用坐标追踪鼠标位置
+    * 在 background 属性上应用 radial-gradient ，使用 circle closest-side,closest-side能够颠覆整个面
+</pre>
+</body>
+<script type="text/javascript">
+    window.onload = function () {
+        var dom = document.querySelector('.button')
+//        var clone = dom.cloneNode(true)
+//        dom.parentNode.replaceChild(clone,dom) // 解决页面卡顿问题
+//        clone.onmousemove = (e)=>{
+        dom.onmousemove = (e)=>{
+            var x = e.pageX - e.target.offsetLeft // 计算相对于元素的位置
+            var y = e.pageY - e.target.offsetTop
+            e.target.style.setProperty('--x', `${x}px`)
+            e.target.style.setProperty('--y', `${y}px`)
+        }
+    }
+</script>
+</html>
