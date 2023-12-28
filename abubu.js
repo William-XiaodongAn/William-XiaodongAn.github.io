@@ -14884,7 +14884,7 @@ class Texture{
         this.texture    = gl.createTexture() ;
         this._width      = w ;
         this._height     = h ;
-        this._internalFormat = readOption( iformat, 'rgba32f' ,
+        this._internalFormat = readOption( iformat, 'COMPRESSED_RGBA' ,
                 'No internal format provided, assuming RBGA32F' ) ;
         this._format = readOption( format , 'rgba',
             'No format was provided, assuming "rgba"' ) ;
