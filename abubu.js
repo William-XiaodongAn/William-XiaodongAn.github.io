@@ -15209,7 +15209,7 @@ class Float32RTexture extends Texture{
  */
 class Float32Texture extends Texture{
     constructor(w,h,options={}){
-        super(w,h,'rgba64f','rgba','float',options) ;
+        super(w,h,'COMPRESSED_RGBA','rgba','float',options) ;
     }
    
     resize( width, height, copy ){
