@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<head>
+    <title>Ball Collision Simulation</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<div id="myPlot" style="width:100%;max-width:700px"></div>
+    <label>
+        <input type="checkbox" id="plotDistribution" checked>
+        Plot Distribution
+    </label>
+    <label>
+        <input type="checkbox" id="startSimulation" checked>
+        Start Simulation
+    </label>
+	
+    <canvas id="myCanvas" width="600" height="400"></canvas>
+    <script>
+		
+		function plot(vel,numBalls){
+			let exp = "2/(500**2)*x*Math.exp(-2/(500**2)*(x**2)/2)";
+			//const norm = 1 / 0.03266667  * numBalls
+			// Generate values
+			const xValues = [];
+			const yValues = [];
+			for (let x = 0; x <= 2000; x += 2) {
+			  xValues.push(x);
+			  yValues.push(eval(exp));
+
+			}
+			// Display using Plotly
+			const trace1 = {
+				x:xValues,
+				y:yValues,
+				mode:"lines"
+			}
+			const trace2 = {
+				x:vel, 
+				type: 'histogram',
+				histnorm: 'probability density',
+
+				xbins: { 
+					end: 2000, 
+					size: 50, 
+					start: 0
+
+				}
+			}
+
+			data = [trace1,trace2]
+
+			const layout = {title: "y = " + exp};
+
+			Plotly.newPlot("myPlot", data, layout);	
+		}
+		function adjustValue1(value)
+		{
+			Plotly.restyle('myPlot', 'y', [[value]]);
+		}
+	
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+        const startSimulation = document.getElementById('startSimulation');
+
+        const balls = [];
+        const numBalls = 100;
+		const dt = 0.005
+		var count = 0
+        //const largeBall = { x: canvas.width / 2, y: canvas.height / 2, radius: 20, dx: 0, dy: 0 };
+
+        function createBalls() {
+			var vel = []
+		
+            for (let i = 0; i < numBalls; i++) {
+				var positionX = 10 + Math.random() * (canvas.width - 20)	
+				if (positionX < canvas.width/2){
+					var coeff = 1
+				}
+				if (positionX > canvas.width/2){
+					var coeff = -1
+				}	
+				
+                balls.push({
+
+                    x: positionX,
+                    y: 10 + Math.random() * (canvas.height - 20),
+                    radius: 5,
+                    dx: 500 * coeff,
+                    dy: 0
+                });
+				vel.push(500)
+            }
+		startSimulation.checked = false
+		plotDistribution.checked = false
+		plot(vel,numBalls);				
+        }
+		
+
+		
+        function drawBall(ball, color) {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+		function detectWall(ball){
+		
+			var x = ball.x
+			var y = ball.y
+			var vx = ball.dx
+			var vy = ball.dy
+			var r = ball.radius
+			var w = canvas.width/2
+			var h = canvas.height/2
+			
+			
+			if (Math.abs(x - w) >= w - r  && Math.abs(x + vx*dt - w) >= w - r ){
+				ball.dx *= -1.;
+			}
+			if (Math.abs(y - h) >= h - r  && Math.abs(y + vy*dt - h) >= h - r ){
+				ball.dy *= -1.;
+			};			
+		}
+
+
+        function updateBallPosition(ball) {
+            ball.x += ball.dx * dt;
+            ball.y += ball.dy * dt;
+        }
+		
+		function calculateEnergy(){
+			var energy = 0
+			balls.forEach(ball => {
+				energy += ball.dx**2 + ball.dy**2
+			});		
+			return energy
+		
+		}
+
+        function detectCollisions() {
+			for (var i =0; i<numBalls; i++){
+				for (var j =i+1; j<numBalls; j++){			
+					if (i != j){
+						if (((balls[i].x - balls[j].x **2) + (balls[i].y - balls[j].y)**2) <= 4*balls[i].radius && ((balls[i].x + balls[i].dx * dt - balls[j].x - balls[j].dx * dt)**2 + (balls[i].y + balls[i].dy *dt - balls[j].y - balls[j].dy * dt)**2) <= 4*balls[i].radius*balls[i].radius){       
+							var disSqr = (balls[i].x - balls[j].x)**2 + (balls[i].y - balls[j].y)**2
+							
+							
+							var vxi = balls[i].dx;
+							var vxj = balls[j].dx;
+							var vyi = balls[i].dy;
+							var vyj = balls[j].dy;
+							var v1_v2_r1_r2 = (vxi - vxj) * (balls[i].x - balls[j].x) + (vyi - vyj) * (balls[i].y - balls[j].y)
+							
+							balls[i].dx = vxi - v1_v2_r1_r2 * (balls[i].x - balls[j].x) / disSqr
+							balls[j].dx = vxj - v1_v2_r1_r2 * (balls[j].x - balls[i].x) / disSqr
+							balls[i].dy = vyi - v1_v2_r1_r2 * (balls[i].y - balls[j].y) / disSqr
+							balls[j].dy = vyj - v1_v2_r1_r2 * (balls[j].y - balls[i].y) / disSqr			
+						};
+					}
+				}
+			}
+        }
+		
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (startSimulation.checked) {
+				var vel = []
+				detectCollisions();
+				detectCollisions();
+                balls.forEach(ball => {
+					detectWall(ball)
+                    updateBallPosition(ball);
+					vel.push(Math.sqrt(ball.dx**2 + ball.dy**2))
+                });
+				count += 1 //*dt
+				//console.log(calculateEnergy());
+				
+				if (plotDistribution.checked){
+					if(count % 2 == 0 ){
+						plot(vel,numBalls);
+					}
+				}
+				
+				
+            }
+
+			balls.forEach(ball => {
+				drawBall(ball, 'blue');	
+			});	
+			
+
+            requestAnimationFrame(draw);
+			
+			
+			
+        }
+
+        createBalls();		
+        draw();
+    </script>
+</body>
+</html>
