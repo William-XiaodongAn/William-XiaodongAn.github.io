@@ -14884,7 +14884,7 @@ class Texture{
         this.texture    = gl.createTexture() ;
         this._width      = w ;
         this._height     = h ;
-        this._internalFormat = readOption( iformat, 'COMPRESSED_RGBA' ,
+        this._internalFormat = readOption( iformat, 'rgba32f' ,
                 'No internal format provided, assuming RBGA32F' ) ;
         this._format = readOption( format , 'rgba',
             'No format was provided, assuming "rgba"' ) ;
@@ -15209,7 +15209,7 @@ class Float32RTexture extends Texture{
  */
 class Float32Texture extends Texture{
     constructor(w,h,options={}){
-        super(w,h,'rgba64f','rgba','float',options) ;
+        super(w,h,'COMPRESSED_RGBA','rgba','float',options) ;
     }
    
     resize( width, height, copy ){
