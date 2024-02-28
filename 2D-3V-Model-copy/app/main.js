@@ -928,7 +928,7 @@ function loadWebGL()
            //     env.pace.render() ;
            // }		
 			//data += '\n'+'2'
-			if (env.time > 3000){
+			if (env.time > 2000){
 				env.running = !env.running;
 			}
 			
