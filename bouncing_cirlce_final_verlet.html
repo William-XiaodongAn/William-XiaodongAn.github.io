@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body onload='run();'>
+<h1>Two Bouncing balls in circle</h1>
+<canvas id="c1" width="300" height="300" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas></br>
+
+<input type='button' onclick='running=~running;' value='run'>
+<input type='button' onclick='trajectory=~trajectory;' value='trajectory'>
+
+<script>
+var position={x:0,y:0} ;
+var cnvs = document.getElementById('c1') ;
+var width=cnvs.width ;
+var height= cnvs.height ;
+var ctx = cnvs.getContext('2d') ;
+
+var minX = -1.5 ;
+var maxX = 1.5 ;
+var minY = -1.5 ;
+var maxY = 1.5 ;
+
+function Px(x){
+    return width*(x-minX)/(maxX-minX) ;
+}
+function Py(y){
+    return height*(maxY-y)/(maxY-minY) ;
+}
+
+var running = false ;
+var trajectory= false ;
+let x=0.100 ;
+let y=0 ;
+let vx=0;
+let vy=0;
+let xc=0;
+let yc=0;
+
+let x2=0.101 ;
+let y2=0 ;
+let vx2=0;
+let vy2=0;
+let x2c=0;
+let yc2=0;
+
+let dt=.005;
+let g=9.81;
+let radius = 1.0 ;
+let nmax=15000;
+let xp = new Array(nmax);
+let yp=  new Array(nmax);
+let nn=0 ;
+xp[0]=x ;
+yp[0]=y ;
+for (var i = 1; i < nmax; i++) {
+           xp[i]=xp[0] ;
+           yp[i]=yp[0] ;
+           
+                             }
+let xp2 = new Array(nmax);
+let yp2=  new Array(nmax);
+xp2[0]=x2 ;
+yp2[0]=y2 ;
+for (var i = 1; i < nmax; i++) {
+           xp2[i]=xp2[0] ;
+           yp2[i]=yp2[0] ;
+           
+                             }
+
+function circle(){
+    var n = 100 ;
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    var dTheta = 2*Math.PI/n ;
+    var theta = 0 ;
+    var radius = 1.0 ;
+
+    for (var i=0; i<n; i++){
+        var xx = radius*Math.sin(theta) ;
+        var yy = radius*Math.cos(theta) ;
+        ctx.moveTo(Px(xx),Py(yy));
+
+        theta += dTheta ;
+        xx = radius*Math.sin(theta) ;
+        yy = radius*Math.cos(theta) ;
+        ctx.lineTo(Px(xx),Py(yy)) ;
+        ctx.stroke();
+    }
+               }
+
+function run(){
+    if (running){
+       ctx.clearRect(0, 0, cnvs.width, cnvs.height);
+       nn=nn+1;
+        ctx.strokeStyle = "black";
+        x = x+vx*dt ;
+        y = y+vy*dt-.5*g*dt*dt ;
+        vx=vx;
+        vy=vy-g*dt;
+        xp[nn]=x;
+        yp[nn]=y;
+
+        x2 = x2+vx2*dt ;
+        y2 = y2+vy2*dt-.5*g*dt*dt ;
+        vx2=vx2;
+        vy2=vy2-g*dt;
+        xp2[nn]=x2;
+        yp2[nn]=y2;
+        
+        if( Math.sqrt(x*x+y*y) > 1.0){
+          xc=x;
+          yc=y;
+          xr=xp[nn-1]-xp[nn];
+          yr=yp[nn-1]-yp[nn];
+        qo=(xr*xc+yr*yc)/Math.sqrt(xc*xc+yc*yc);
+        dx= xp[nn-1]-(xc+xc*qo);
+        dy= yp[nn-1]-(yc+yc*qo);
+      
+        xr=xp[nn-1]-2*dx;
+        yr=yp[nn-1]-2*dy;
+        vm=Math.sqrt(vx*vx+vy*vy);
+
+        vx=-vm*(xc-xr)/Math.sqrt((xc-xr)**2+(yc-yr)**2);
+        vy=-vm*(yc-yr)/Math.sqrt((xc-xr)**2+(yc-yr)**2);
+      //   running=!running;   
+                                      }
+
+        if( Math.sqrt(x2*x2+y2*y2) > 1.0){
+          xc2=x2;
+          yc2=y2;
+          xr2=xp2[nn-1]-xp2[nn];
+          yr2=yp2[nn-1]-yp2[nn];
+        qo2=(xr2*xc2+yr2*yc2)/Math.sqrt(xc2*xc2+yc2*yc2);
+        dx2= xp2[nn-1]-(xc2+xc2*qo2);
+        dy2= yp2[nn-1]-(yc2+yc2*qo2);
+      
+        xr2=xp2[nn-1]-2*dx2;
+        yr2=yp2[nn-1]-2*dy2;
+        vm2=Math.sqrt(vx2*vx2+vy2*vy2);
+
+        vx2=-vm2*(xc2-xr2)/Math.sqrt((xc2-xr2)**2+(yc2-yr2)**2);
+        vy2=-vm2*(yc2-yr2)/Math.sqrt((xc2-xr2)**2+(yc2-yr2)**2);
+      //   running=!running;   
+                                      }
+        if(trajectory){
+        ctx.strokeStyle = "black";
+        ctx.beginPath();
+        ctx.moveTo(Px(xp[nn-10]),Py(yp[nn-10]));
+        ctx.lineTo(Px(xp[nn]),Py(yp[nn])) ;
+        ctx.stroke();
+
+        ctx.strokeStyle = "red";
+        ctx.beginPath();
+        ctx.moveTo(Px(xp2[nn-10]),Py(yp2[nn-10]));
+        ctx.lineTo(Px(xp2[nn]),Py(yp2[nn])) ;
+        ctx.stroke();
+                      }
+          else {
+        ctx.strokeStyle = "black";
+        for (var k=1; k<nn; k++){
+        ctx.beginPath();
+        ctx.moveTo(Px(xp[k-1]),Py(yp[k-1]));
+        ctx.lineTo(Px(xp[k]),Py(yp[k])) ;
+        ctx.stroke();            }
+
+        ctx.strokeStyle = "red";
+        for (var k=1; k<nn; k++){
+        ctx.beginPath();
+        ctx.moveTo(Px(xp2[k-1]),Py(yp2[k-1]));
+        ctx.lineTo(Px(xp2[k]),Py(yp2[k])) ;
+        ctx.stroke();            }
+
+                       }
+
+        ctx.beginPath();
+        ctx.arc(Px(x), Py(y), 8, 0, Math.PI*2);
+        ctx.fillStyle = "#0095DD";
+	  ctx.fill();
+	  ctx.closePath()
+        circle();
+
+        ctx.beginPath();
+        ctx.arc(Px(x2), Py(y2), 8, 0, Math.PI*2);
+        ctx.fillStyle = "red";
+	  ctx.fill();
+	  ctx.closePath()
+        circle();
+        ctx.strokeStyle = "black";
+       
+    }
+    setTimeout(run,1) ;
+}
+</script>
+</body>
+</html>
+
