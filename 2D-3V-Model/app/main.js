@@ -14,8 +14,7 @@ define([    'require',
             'shader!clickShader.frag',
             'shader!bvltShader.frag',
             'Abubu/Abubu',
-			'shader!willShader.frag',
-			'shader!will2Shader.frag'
+			'shader!willShader.frag'
             ],
 function(   require,
             vertShader,
@@ -25,8 +24,7 @@ function(   require,
             clickShader,
             bvltShader,
             Abubu,
-			willShader,
-			will2Shader
+			willShader
 			
             ){
 "use strict" ;
@@ -42,7 +40,7 @@ var gui ;
 var willDataForOnePoint
 
 willDataForOnePoint = "data:text;charset=utf-8,";
-
+var will_length = 512;
 /*========================================================================
  * createGui
  *========================================================================
@@ -153,7 +151,7 @@ function createGui(){
 
     gui.dspPrmFldr.add( env, 'timeWindow').name('Signal Window [ms]')
     .onChange( function(){
-        //env.plot.updateTimeWindow(env.timeWindow) ;
+        env.plot.updateTimeWindow(env.timeWindow) ;
         refreshDisplay() ;
     } ) ;
 
@@ -483,21 +481,6 @@ function changeParamType(){
         env.V_c    , 
         env.V_v    , 
         env.C_si   ] , [env.comp1, env.comp2 ] ) ; 
-    Abubu.setUniformsInSolvers( paramList, [
-        env.tau_pv , 
-        env.tau_v1 , 
-        env.tau_v2 , 
-        env.tau_pw , 
-        env.tau_mw , 
-        env.tau_d  , 
-        env.tau_0  , 
-        env.tau_r  , 
-        env.tau_si , 
-        env.K      , 
-        env.V_sic  , 
-        env.V_c    , 
-        env.V_v    , 
-        env.C_si   ] , [env.comp12, env.comp22 ] ) ;		
     for(var i=0; i<gui.mdlPrmFldr.__controllers.length;i++){
         gui.mdlPrmFldr.__controllers[i].updateDisplay() ;
     }
@@ -508,6 +491,8 @@ function changeParamType(){
  * Environment
  *========================================================================
  */
+ 
+ 
 function Environment(){
     this.running = false ;
 
@@ -537,8 +522,8 @@ function Environment(){
 
     /* Display Parameters       */
     this.colormap    =   'rainbowHotSpring';
-    this.dispWidth   =   512 ;
-    this.dispHeight  =   512 ;
+    this.dispWidth   =   will_length ;
+    this.dispHeight  =   will_length ;
     this.frameRate   =   2400 ;
     this.timeWindow  =   1000 ;
     this.probeVisiblity = false ;
@@ -548,8 +533,8 @@ function Environment(){
     this.tiptColor    = "#FFFFFF";
 
     /* Solver Parameters        */
-    this.width       =   512 ;
-    this.height      =   512 ;
+    this.width       =   will_length ;
+    this.height      =   will_length ;
     this.dt          =   1.e-2 ;
     this.cfl         =   1.0 ;
     this.ds_x        =   18 ;
@@ -619,8 +604,7 @@ function loadWebGL()
 
     canvas_1.width  = 512 ;
     canvas_1.height = 512 ;
-    canvas_2.width  = 512 ;
-    canvas_2.height = 512 ;
+
     env = new Environment() ;
     params = env ;
 /*-------------------------------------------------------------------------
@@ -634,11 +618,9 @@ function loadWebGL()
  * defining all render targets
  *------------------------------------------------------------------------
  */
-    env.fvfs     = new Abubu.FloatRenderTarget(512, 512) ;
-    env.svfs     = new Abubu.FloatRenderTarget(512, 512) ;
-    env.fvfs2     = new Abubu.FloatRenderTarget(512, 512) ;
-    env.svfs2     = new Abubu.FloatRenderTarget(512, 512) ;
-	
+    env.fvfs     = new Abubu.FloatRenderTarget(will_length, will_length) ;
+    env.svfs     = new Abubu.FloatRenderTarget(will_length, will_length) ;
+
 /*------------------------------------------------------------------------
  * init solver to initialize all textures
  *------------------------------------------------------------------------
@@ -651,14 +633,6 @@ function loadWebGL()
            outSvfs    : { location : 1, target: env.svfs     } ,
        }
     } ) ;
-    env.init2  = new Abubu.Solver( {
-       fragmentShader  : initShader.value ,
-       vertexShader    : vertShader.value ,
-       renderTargets   : {
-           outFvfs    : { location : 0, target: env.fvfs2     } ,
-           outSvfs    : { location : 1, target: env.svfs2     } ,
-       }
-    } ) ;	
     env.will  = new Abubu.Solver( {
        fragmentShader  : willShader.value ,
        vertexShader    : vertShader.value ,
@@ -669,18 +643,7 @@ function loadWebGL()
        targets   : {
            outFvfs    : { location : 0, target: env.svfs     } ,
        }	   
-    } ) ;
-    env.will2  = new Abubu.Solver( {
-       fragmentShader  : willShader.value ,
-       vertexShader    : vertShader.value ,
-        uniforms        : {
-			time     : { type: 'f',  value : env.time    } ,
-            inFvfs    : { type : 't', value: env.fvfs2     } ,			
-        } ,
-       targets   : {
-           outFvfs    : { location : 0, target: env.svfs2     } ,
-       }	   
-    } ) ;		
+    } ) ;	
 	
 	
 	
@@ -733,19 +696,7 @@ function loadWebGL()
         uniforms        : new env.compUniforms( env.svfs    ) ,
         renderTargets   : new env.compTargets(  env.fvfs    ) ,
     } ) ;
-    env.comp12 = new Abubu.Solver( {
-        fragmentShader  : compShader.value,
-        vertexShader    : vertShader.value,
-        uniforms        : new env.compUniforms( env.fvfs2    ) ,
-        renderTargets   : new env.compTargets(  env.svfs2    ) ,
-    } ) ;
 
-    env.comp22 = new Abubu.Solver( {
-        fragmentShader  : compShader.value,
-        vertexShader    : vertShader.value,
-        uniforms        : new env.compUniforms( env.svfs2    ) ,
-        renderTargets   : new env.compTargets(  env.fvfs2   ) ,
-    } ) ;
 /*------------------------------------------------------------------------
  * click solver
  *------------------------------------------------------------------------
@@ -767,7 +718,7 @@ function loadWebGL()
         clear           : true ,
     } ) ;
     env.clickCopy = new Abubu.Copy(env.svfs, env.fvfs ) ;
-	env.clickCopy2 = new Abubu.Copy(env.svfs2, env.fvfs2 ) ;
+
 /*------------------------------------------------------------------------
  * pace
  *------------------------------------------------------------------------
@@ -787,7 +738,31 @@ function loadWebGL()
  * Signal Plot
  *------------------------------------------------------------------------
  */
+    env.plot = new Abubu.SignalPlot( {
+            noPltPoints : 1024,
+            grid        : 'on' ,
+            nx          : 5 ,
+            ny          : 7 ,
+            xticks : { mode : 'auto', unit : 'ms', font:'11pt Times'} ,
+            yticks : { mode : 'auto', unit : '', precision : 1 } ,
+            canvas      : canvas_2,
+    });
 
+    env.plot.addMessage(    'Scaled Membrane Potential at the Probe',
+                        0.5,0.05,
+                    {   font : "12pt Times" ,
+                        align: "center"                          } ) ;
+
+    env.vsgn = env.plot.addSignal( env.fvfs, {
+            channel : 'r',
+            minValue : -0.2 ,
+            maxValue : 1.2 ,
+            restValue: 0,
+            color : [0.5,0,0],
+            visible: true,
+            linewidth : 3,
+            timeWindow: env.timeWindow,
+            probePosition : [0.5,0.5] , } ) ;
 
 /*------------------------------------------------------------------------
  * disp
@@ -795,7 +770,8 @@ function loadWebGL()
  */
     env.disp= new Abubu.Plot2D({
         target : env.svfs ,
-        prevTarget : env.fvfs ,
+		channel : 'r',
+
         colormap : env.colormap,
         canvas : canvas_1 ,
         minValue: 0 ,
@@ -808,22 +784,19 @@ function loadWebGL()
         cbrborder: 15 ,
         unit : '',
     } );
-    env.disp2= new Abubu.Plot2D({
-        target : env.svfs2 ,
-        prevTarget : env.fvfs2 ,
-        colormap : env.colormap,
-        canvas : canvas_2 ,
-        minValue: 0 ,
-        maxValue: 1.2 ,
-        tipt : false ,
-        tiptThreshold : env.tiptThreshold ,
-        probeVisible : false ,
-        colorbar : true ,
-        cblborder: 15 ,
-        cbrborder: 15 ,
-        unit : '',
-    } );	
-
+    /*env.disp.hideColorbar() ;*/
+//    env.disp.showColorbar() ;
+//    env.disp.addMessage(  '3-Variable Model',
+//                        0.05,   0.05, /* Coordinate of the
+//                                         message ( x,y in [0-1] )   */
+//                        {   font: "Bold 14pt Arial",
+//                            style:"#000000",
+//                            align : "start"             }   ) ;
+//    env.disp.addMessage(  'Simulation by Abouzar Kaboudian @ CHAOS Lab',
+//                        0.05,   0.1,
+//                        {   font: "italic 10pt Arial",
+//                            style: "#000000",
+//                            align : "start"             }  ) ;
 //
 /*------------------------------------------------------------------------
  * intervalCaller
@@ -849,10 +822,8 @@ function loadWebGL()
         env.paceTime = 0 ;
         env.breaked = false ;
         env.init.render() ;
-        env.init2.render() ;		
         //env.plot.init(0) ;
         env.disp.initialize() ;
-		env.disp2.initialize() ;
         refreshDisplay() ;
     }
 
@@ -872,13 +843,13 @@ function loadWebGL()
  * clicker
  *------------------------------------------------------------------------
  */
-    //canvas_1.addEventListener("click",      onClick,        false   ) ;
-    //canvas_1.addEventListener('mousemove',
-    //        function(e){
-    //            if ( e.buttons >=1 ){
-    //                onClick(e) ;
-    //            }
-    //        } , false ) ;
+    canvas_1.addEventListener("click",      onClick,        false   ) ;
+    canvas_1.addEventListener('mousemove',
+            function(e){
+                if ( e.buttons >=1 ){
+                    onClick(e) ;
+                }
+            } , false ) ;
 
 /*------------------------------------------------------------------------
  * rendering the program ;
@@ -886,8 +857,10 @@ function loadWebGL()
  */
 	var countWill = 0;
 	var lya_exponent = 0;
-	var willpoint = 524392
+	//var willpoint = 524392
 	var lya_n = 0
+	var willlist = []
+	var will_m = 0
     env.render = function(){
         if (env.running){
 			for(var j=0 ; j< 2 ; j++){
@@ -895,44 +868,59 @@ function loadWebGL()
 
 				
 					env.comp1.render() ;
-
-					env.comp12.render() ;
- 					env.comp2.render() ;
-					env.comp22.render() ;					
+					env.comp2.render() ;
 	//				if (env.time > 100){
 	//					lya_exponent += Math.log(Math.abs(env.svfs.value[willpoint + 3]));
 	//					console.log(env.svfs.value[willpoint + 0] / env.svfs.value[willpoint + 1]);
 	//					lya_n += 1;
 	//				}
 
-					if (env.time < 10000){
-						//willDataForOnePoint += ',' + env.svfs.value[willpoint + 0]
-					}					
+//     				if (env.time > 5000 && will_m < 16){
+//						willDataForOnePoint += ','
+//						var will_i = 0
+//						while (will_i < 512*512){
+//							willDataForOnePoint += env.svfs.value[will_i * 4]
+//							will_i += 1
+//							//console.log(will_i,will_m)
+//						}
+//						will_m += 1
+			
+					//willlist.push(env.svfs.value[524395 - 3])
+//					}		
+//					if (env.time < 4000 && env.time > 2000){
+//						willDataForOnePoint += ','  + env.svfs.value[524395 - 3] 	
+//					}
 					
 					env.time += 2.0*env.dt ;
 					env.paceTime += 2.0*env.dt ;
 					stats.update();
 					stats.update() ;
 					env.disp.updateTipt() ;
-					env.disp2.updateTipt() ;
-					//env.plot.update(env.time) ;
+					env.plot.update(env.time) ;
 					env.intervalCaller.call(env.time) ;
 
-					if (env.time > 10000 && env.time < 10000 + 2.0*env.dt){
+					if (env.time > 5100 && env.time < 5100 + 2.0*env.dt){
 						//console.log(lya_exponent / lya_n) ;
-						saveCsvFile()
+//						saveCsvFile()
 					}
+					
+//					if (env.time > 1500 && env.time < 1500 + 2.0*env.dt){
+//						env.paramType = 'set_01'
+//						changeParamType()
+//					}
+					
+					
+					//if (env.time>75 && countWill == 0){
+					//env.will.uniforms.time.value = env.time;
+						//env.will.render()	
+						//countWill += 1
 
-					if (env.time>75 && countWill == 0){
-					//env.will.uniforms.time.value = env.time;				
-						env.will.render()
-						env.will2.render()						
-						countWill += 1
-						//console.log(env.svfs.value[3]);
-						env.clickCopy.render()
-						env.clickCopy2.render()
-					}					
+						//env.clickCopy.render()
+						
+					//}
+	
 				}
+				//console.log(env.svfs.value);				
 			}
            // if ((env.paceTime > 400 ) && !env.breaked){
            //     env.breaked = true ;
@@ -940,17 +928,18 @@ function loadWebGL()
            //     env.pace.render() ;
            // }		
 			//data += '\n'+'2'
-			if (env.time > 55000.8){
-				env.running = !env.running;
+			if (env.time > 2000){
+				//env.running = !env.running;
 			}
 			
-			//console.log(env.svfs.value[willpoint] - env.svfs2.value[willpoint],env.svfs.value[willpoint + 0],env.svfs2.value[willpoint + 0],'time1',env.time)
-			//console.log(env.svfs.value[willpoint - 4 * 50] - env.svfs2.value[willpoint- 4 * 50],env.svfs.value[willpoint- 4 * 50],env.svfs2.value[willpoint- 4 * 50],'time2',env.time)
-
+		
+			
 		    refreshDisplay();	
         }
         requestAnimationFrame(env.render) ;
     }
+
+  
 function saveCsvFile(){
     var link = document.createElement('a') ;
 	/*
@@ -988,8 +977,8 @@ function saveCsvFile(){
  */
 function refreshDisplay(){
     env.disp.render() ;
-    env.disp2.render() ;	
-    //env.plot.render() ;
+    env.plot.render() ;
+
 }
 
 /*========================================================================
@@ -1031,9 +1020,9 @@ function clickRender(){
         requestAnimationFrame(clickSolve) ;
         break ;
    case 'Signal Loc. Picker':
-        //env.plot.setProbePosition( env.clickPosition ) ;
+        env.plot.setProbePosition( env.clickPosition ) ;
         env.disp.setProbePosition( env.clickPosition ) ;
-        //env.plot.init() ;
+        env.plot.init() ;
         refreshDisplay() ;
         break ;
     case 'Autopace Loc. Picker':

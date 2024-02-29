@@ -20,20 +20,17 @@ layout (location = 0 )  out vec4 outFvfs ;
  *========================================================================
  */
 void main() {
-	float Cr = 0.30000000;
     vec4    C = texture( inVfs , pixPos ) ;
 
 	if (pixPos.x < 0.1){
 		if (pixPos.x > 0.05){
 			if (pixPos.y < 0.55){
 				if (pixPos.y > 0.5){
-					C.r = 0.30000000;
+					C.r = 0.3000001;
 				}
 			}
 		}
 	}
-
-	C.a = Cr;
 	
     outFvfs = C ;	
 
