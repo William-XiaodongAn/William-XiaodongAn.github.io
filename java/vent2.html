@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML> <HEAD>
+<TITLE>calcium</TITLE>
+</HEAD>
+<body bgcolor=#ffffff>
+
+<BODY>
+<h1>
+<center>
+Eisner-Choi-Diaz-O’Neill-Trafford Calcium map 
+</h1>
+</center>
+<center>
+This model is used to simulate Calcium Alternans. 
+</center>
+
+<CENTER>
+<applet code=vent2.java width=710 height=480>
+</applet>
+</CENTER>
+<HR>
+<P>While electrical alternans can be atributed to cellular electrical currents and in some cases to dynamics associated 
+with the APD restitution curve, alternans also can result from intracellular calcium dynamics. The calcium and membrane 
+potential dynamics in cardiac cells are two coupled systems, as the shape of the action potential is determined by ionic
+ currents across the cell membrane, and some of these currents are dependent on the intracellular calcium concentrations
+ that may in turn depend on the membrane potential. It has been shown that during rapid pacing the intracellular calcium 
+concentration can alternate even while the action potential shape, and thus its duration, is held constant[1]. 
+One mechanism known to produce alternans in the intracellular cytoplasmic calcium concentration (calcium transient) 
+is the nonlinear relation between the calcium fluxes across the sarcolemma and the sarcoplasmic reticulum (SR) content[2].
+The applet above shows how alternans and other complex rhythms can appear when there is a steep relationship between the SR content and the calcium efflux,
+ using the Eisner-Choi-Diaz-Neill-Trafford map of intracellular calcium dynamics:
+
+<center>
+<img src="equations.png">
+</center>
+<center>
+<img src="equations2.png">
+</center>
+
+
+This is a classical negative fedback system where N is a Hill coefficient that represents the nonlinearity of the system. 
+This relationship includes the dependence of calcium release on SR content, the calcium buffering properties of the cytoplasm, 
+and the relationship between the calcium transient and calcium efflux. At low values of N the sytem is stable; however, as N 
+increases above 5 the relation becomes steep enough to produce alternans. 
+</BODY>
+
+<p>
+<font color="#FF0000">
+
+[1]Intracellular Ca2+ Dynamics and the Stability of Ventricular Tachycardia
+E. Chudin, J. Goldhaber, A. Garfinkel, J. Weiss, and B. Kogan; Biophys J, December 1999, p. 2930-2941, Vol. 77, No. 6
+<br>
+[2] Integrative Analysis of Calcium Cycling in Cardiac Muscle. DA Eisner, HS Choi, ME Diaz, S.C. O’Neill, AW Trafford 
+Circ Res 2000, 87:1087-1094
+</HTML>
