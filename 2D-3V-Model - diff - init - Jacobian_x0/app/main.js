@@ -592,7 +592,7 @@ function Environment(){
     this.autocall = false ;
     this.autoCallback = '' ;
     this.autocallInterval = 300 ;
-	this.skip = 20;
+	this.skip = 200;
 
 }
 
