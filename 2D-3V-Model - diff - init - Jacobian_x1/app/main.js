@@ -592,7 +592,7 @@ function Environment(){
     this.autocall = false ;
     this.autoCallback = '' ;
     this.autocallInterval = 300 ;
-	this.skip = 2000;
+	this.skip = 20;
 
 }
 
@@ -629,7 +629,7 @@ function loadWebGL()
  * init solver to initialize all textures
  *------------------------------------------------------------------------
  */
- 	env.sample 	 = new Abubu.FloatRenderTarget(8,8) ;
+ 	env.sample 	 = new Abubu.FloatRenderTarget(25,25) ;
 	env.sample.pairable = true ;
 	
      env.sampler = new Abubu.Solver({
@@ -886,7 +886,7 @@ function loadWebGL()
  */
  
 	var tau_pw_will = [350];
-	var tau_d_will = [];
+	var tau_d_will = [0.400,0.405,0.407,0.409,0.411,0.415,0.420];
 
     var tau_pw_will_order = 0;
     var tau_d_will_order = 0;
@@ -919,26 +919,15 @@ function loadWebGL()
 
 					countWill2 += 1
 					
-					
-					// transient Pass
-					
 					if (env.time < 21000 && env.time > 20000 && initial_difference_pass == 0 ){ //&& countWill2%20 == 0){ //20 * 2*dt = 20*2 * 0.1 = 4
 						
-						env.svfs.value[(512*200 + 200)*4] = 0.9;
-
-						env.svfs.value[(512*500 + 200)*4] = 0.9;
-
-						env.svfs.value[(512*10 + 200)*4] = 0.9;
-
-						env.svfs.value[(512*100 + 200)*4] = 0.9;
-
-						env.svfs.value[(512*150 + 200)*4] = 0.9;
 						
+						//simulateClick(500, 500);
 						initial_difference_pass += 1
-					} 					
+					}			
 					
 
-					if (env.time < 100000 && env.time > 20000 && countWill2%env.skip == 0 ){ //&& countWill2%20 == 0){ //20 * 2*dt = 20*2 * 0.1 = 4
+					if (env.time < 24000 && env.time > 20000 && countWill2%env.skip == 0 ){ //&& countWill2%20 == 0){ //20 * 2*dt = 20*2 * 0.1 = 4
 						
 						env.sampler.render() ;// 4045285398 abouzar phone.
 						willDataForOnePoint += ',' + env.sample.value ;
@@ -954,7 +943,7 @@ function loadWebGL()
 					env.intervalCaller.call(env.time) ;				
 					
 				
-					if (env.time > 53000 && env.time < 53000 + 2.0*env.dt){
+					if (env.time > 25000 && env.time < 25000 + 2.0*env.dt){
 
 						saveCsvFile(willDataForOnePoint,env.tau_pw,env.tau_d,'jacobian')
 
@@ -966,7 +955,7 @@ function loadWebGL()
 						
 						setTimeout(function(){
 							env.running = true;
-						}, 60*100);		// 0.1 mins				
+						}, 60*1000);		// 1 mins				
 					
 						
 					}
@@ -996,12 +985,37 @@ function loadWebGL()
 						
 						
 					}
+					
+					if (env.time > 26000 && tau_d_will_order != tau_d_will.length){
+						
+						env.initialize() ;
+						countWill2 = 0;
+						countWill = 0;
+						countWill3 = 0;	
+						turn_red = 0;						
+						
 
+						
+						env.tau_pw = tau_pw_will[tau_pw_will_order]
+						env.tau_d = tau_d_will[tau_d_will_order]
+						
+						Abubu.setUniformInSolvers('tau_pw', env.tau_pw,[env.comp1,env.comp2 ]) ;						
+						Abubu.setUniformInSolvers('tau_d', env.tau_d,[env.comp1,env.comp2 ]) ;
+						
+						
+						tau_pw_will_order += 1
+						
+						if (tau_pw_will_order == tau_pw_will.length){
+							tau_d_will_order += 1
+							tau_pw_will_order = 0
+						}
+
+					}				
 	
 				}
 			
 			}
-			  if (env.time > 55000){
+			  if (env.time > 27000){
 				  env.running = !env.running;
 			  }
 			
@@ -1032,6 +1046,20 @@ function saveCsvFile(willDataForOnePoint,tau_pw,tau_d,lya_type){
 	link.click() ;
 }	
 	
+function simulateClick(x, y) {
+  const element = document.elementFromPoint(x, y);
+
+  if (element) {
+    const clickEvent = new MouseEvent('click', {
+      clientX: x,
+      clientY: y,
+      bubbles: true,
+      cancelable: true
+    });
+
+    element.dispatchEvent(clickEvent);
+  }
+}
 
 /*------------------------------------------------------------------------
  * add environment to document
