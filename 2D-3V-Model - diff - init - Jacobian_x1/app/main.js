@@ -925,12 +925,20 @@ function loadWebGL()
 					if (env.time < 21000 && env.time > 20000 && initial_difference_pass == 0 ){ //&& countWill2%20 == 0){ //20 * 2*dt = 20*2 * 0.1 = 4
 						
 						env.svfs.value[(512*200 + 200)*4] = 0.9;
+
+						env.svfs.value[(512*500 + 200)*4] = 0.9;
+
+						env.svfs.value[(512*10 + 200)*4] = 0.9;
+
+						env.svfs.value[(512*100 + 200)*4] = 0.9;
+
+						env.svfs.value[(512*150 + 200)*4] = 0.9;
 						
 						initial_difference_pass += 1
 					} 					
 					
 
-					if (env.time < 50000 && env.time > 20000 && countWill2%env.skip == 0 ){ //&& countWill2%20 == 0){ //20 * 2*dt = 20*2 * 0.1 = 4
+					if (env.time < 100000 && env.time > 20000 && countWill2%env.skip == 0 ){ //&& countWill2%20 == 0){ //20 * 2*dt = 20*2 * 0.1 = 4
 						
 						env.sampler.render() ;// 4045285398 abouzar phone.
 						willDataForOnePoint += ',' + env.sample.value ;
@@ -958,7 +966,7 @@ function loadWebGL()
 						
 						setTimeout(function(){
 							env.running = true;
-						}, 60*1000 * 2);		// 2 mins				
+						}, 60*100);		// 0.1 mins				
 					
 						
 					}
