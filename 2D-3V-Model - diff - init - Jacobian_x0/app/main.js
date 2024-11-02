@@ -629,7 +629,7 @@ function loadWebGL()
  * init solver to initialize all textures
  *------------------------------------------------------------------------
  */
- 	env.sample 	 = new Abubu.FloatRenderTarget(8,8) ;
+ 	env.sample 	 = new Abubu.FloatRenderTarget(200,200) ;
 	env.sample.pairable = true ;
 	
      env.sampler = new Abubu.Solver({
