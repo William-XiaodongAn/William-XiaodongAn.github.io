@@ -985,12 +985,37 @@ function loadWebGL()
 						
 						
 					}
+					
+					if (env.time > 26000 && tau_d_will_order != tau_d_will.length){
+						
+						env.initialize() ;
+						countWill2 = 0;
+						countWill = 0;
+						countWill3 = 0;	
+						turn_red = 0;						
+						
 
+						
+						env.tau_pw = tau_pw_will[tau_pw_will_order]
+						env.tau_d = tau_d_will[tau_d_will_order]
+						
+						Abubu.setUniformInSolvers('tau_pw', env.tau_pw,[env.comp1,env.comp2 ]) ;						
+						Abubu.setUniformInSolvers('tau_d', env.tau_d,[env.comp1,env.comp2 ]) ;
+						
+						
+						tau_pw_will_order += 1
+						
+						if (tau_pw_will_order == tau_pw_will.length){
+							tau_d_will_order += 1
+							tau_pw_will_order = 0
+						}
+
+					}				
 	
 				}
 			
 			}
-			  if (env.time > 26000){
+			  if (env.time > 27000){
 				  env.running = !env.running;
 			  }
 			
