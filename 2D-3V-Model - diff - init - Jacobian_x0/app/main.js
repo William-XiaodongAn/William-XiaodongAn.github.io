@@ -950,7 +950,7 @@ function loadWebGL()
 						
 						setTimeout(function(){
 							env.running = true;
-						}, 60*100);		// 0.1 mins				
+						}, 60*1000);		// 0.1 mins				
 					
 						
 					}
