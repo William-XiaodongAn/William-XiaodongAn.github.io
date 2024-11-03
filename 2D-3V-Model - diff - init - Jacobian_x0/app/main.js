@@ -945,7 +945,7 @@ function loadWebGL()
 				
 					if (env.time > 25000 && env.time < 25000 + 2.0*env.dt){
 
-						saveCsvFile(willDataForOnePoint,env.tau_pw,env.tau_d,'jacobian')
+						saveCsvFile(willDataForOnePoint,env.tau_pw,env.tau_d,'jacobian_x0')
 
 						willDataForOnePoint = null;
 						
