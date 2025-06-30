@@ -64,6 +64,10 @@ uniform float x3;
 uniform float y3;
 uniform float x4;
 uniform float y4;
+uniform float x5;
+uniform float y5;
+uniform float x6;
+uniform float y6;
 uniform float L;
 uniform float type;
 
@@ -115,7 +119,18 @@ void main() {
 			}
 		}
 	
-	}		
+	}	
+	if (cc.x > x5){
+		if (cc.x < x6){
+			if (cc.y > y5){
+				if (cc.y < y6){
+					color.r  = 0.2 ;
+				}
+			
+			}
+		}
+	
+	}	
     // we assign the same values to both of them
     color1 = color ;
     return ;
@@ -144,17 +159,20 @@ var scolor = new Abubu.Float32Texture(512,512) ;
 
 
 var env = {
-		N: 300,
+		N: 1000,
 		x: 0.5,
 		y: 0.5,
 		viscosity: 5,
 		k: 2 ,
 		wallBounceLose : 0.05,
-		x0: 0.29,//(env2.x1 + env2.x2)/2,
-		y0: 0.22,//(env2.y1 + env2.y2)/2,
+		x0: 0.24,//(env2.x1 + env2.x2)/2,
+		y0: 0.12,//(env2.y1 + env2.y2)/2,
 		
-		x00: 0.56,
-		y00: 0.22,
+		x00: 0.405,
+		y00: 0.12,
+		
+		x000: 0.51,
+		y000: 0.27,		
 		L: 0.05
 } ;
 
@@ -177,7 +195,7 @@ var env2 = {
 		type : Array(env.N).fill(0),
 		dens0 : 1000 ,
 		dens0_a : 1000,
-		dens0_b : 800,
+		dens0_b : 1500,
 		pressureC : 15*env.k,
 		
 		pressure : Array(env.N).fill(0) ,
@@ -190,7 +208,7 @@ var env2 = {
 		ay : Array(env.N).fill(0) ,
 		
 		gravityC : 10 ,		
-		xMax : 0.7	,
+		xMax : 0.5	,
 		yMax : 1,
 		xMin : 0.2,
 		yMin : 0 ,
@@ -198,46 +216,72 @@ var env2 = {
 		yMinOfParticle: 0.,
 		yMaxOfParticle: 0.51,
 		xMinOfParticle: 0.23,
+		xMaxOfParticle: 0.37, // adjust as needed to match desired total width
 
 		x1: 0.18,
-		x2: 0.4,
-		y1: 0.2,
-		y2: 0.24,
+		x2: 0.3,
+		y1: 0.05,
+		y2: 0.09,
 		
-		x3: 0.41,
-		x4: 0.71,
-		y3: 0.2,
-		y4: 0.24
+		x3: 0.31,
+		x4: 0.41,
+		y3: 0.05,
+		y4: 0.09,
+		
+		x5: 0.4,
+		x6: 0.42,
+		y5: 0.04,
+		y6: 0.45,
+		checkStatus: false,
+		gateOpen: false,
+		
+		//gate:
+		
+		x_gate1: 0.4,
+		x_gate2: 0.42,
+		y_gate1: 0.09,
+		y_gate2: 0.45,		
+		
 } ;
+env.x00 = (env2.x3 + env2.x4)/2
+env.y00 = (env2.y3 + env2.y4)/2
+env.x0 = (env2.x1 + env2.x2)/2
+env.y0 = (env2.y1 + env2.y2)/2
+env.x000 = (env2.x5 + env2.x6)/2
+env.y000 = (env2.y5 + env2.y6)/2
 
+env2.x_gate1 = env2.x2 - 0.05
+env2.x_gate2 = env2.x3 + 0.05
+env2.y_gate1 = env2.y1
+env2.y_gate2 = env2.y2
 
 /* initial position */
 function initialPosition(){
-    var xp = env2.xMinOfParticle;
-    var yp = env2.yMinOfParticle;
     var r = env2.h;
-    
-    for (var i = 0; i < env.N; i++) {
-        env2.x[i] = xp;
-        env2.y[i] = yp;
 
-        // Split vertically: type 0 in bottom half, type 1 in top half
-        if (yp < (env2.yMinOfParticle + env2.yMaxOfParticle)/2) {
-            env2.type[i] = 0.;
-        } else {
-            env2.type[i] = 1.;
-        }
+    var yMin = 0;
+    var yMax = env2.y2 + 0.03;
+    var xMin = env2.xMin;
+    var xMax = env2.xMax;
 
-        yp += r;
-        if (yp > env2.yMaxOfParticle) {
-            yp = env2.yMinOfParticle;
-            xp += r;
-        }
+    var count = 0;
+    while (count < env.N) {
+        // Random position in the desired band
+        var xp = Math.random() * (xMax - xMin) + xMin;
+        var yp = Math.random() * (yMax - yMin) + yMin;
 
-        env2.vx[i] = Math.random()*0.04 - 0.02;
-        env2.vy[i] = Math.random()*0.04 - 0.02;
+        env2.x[count] = xp;
+        env2.y[count] = yp;
+
+
+        env2.vx[count] = Math.random() * 0.04 - 0.02;
+        env2.vy[count] = Math.random() * 0.04 - 0.02;
+
+        count++;
     }
 }
+
+
 
 initialPosition()
 
@@ -267,6 +311,10 @@ var fmarch = new Abubu.Solver({
 				y3 : { type : 'f', value : env2.y3 } ,
 				x4 : { type : 'f', value : env2.x4 } ,
 				y4 : { type : 'f', value : env2.y4 } ,
+				x5 : { type : 'f', value : env2.x5 } ,
+				y5 : { type : 'f', value : env2.y5 } ,
+				x6 : { type : 'f', value : env2.x6 } ,
+				y6 : { type : 'f', value : env2.y6 } ,
 				L : { type : 'f', value : env.L } ,
 				type : { type : 'f', value : 0. },
         } ,
@@ -292,6 +340,10 @@ var smarch = new Abubu.Solver({
 				y3 : { type : 'f', value : env2.y3 } ,
 				x4 : { type : 'f', value : env2.x4 } ,
 				y4 : { type : 'f', value : env2.y4 } ,
+				x5 : { type : 'f', value : env2.x5 } ,
+				y5 : { type : 'f', value : env2.y5 } ,
+				x6 : { type : 'f', value : env2.x6 } ,
+				y6 : { type : 'f', value : env2.y6 } ,
 				L : { type : 'f', value : env.L } ,
 				type : { type : 'f', value : 0. },
         } ,
@@ -300,7 +352,57 @@ var smarch = new Abubu.Solver({
         }
     } ) ;
 
+function checkStatus(){
+	var count = 0;
+    while (count < env.N) {
+		var xp = env2.x[count];
+		var yp = env2.y[count];
 
+        // Check if in the left channel (based on obstacle bounding box)
+        if (xp <= env2.x4 && yp >= env.y0) {
+            env2.type[count] = 1.; // blue
+        } else {
+            env2.type[count] = 0.; // yellow
+        }
+		count++;
+	}
+}
+
+
+
+function spawnParticlesAt(x, y, count = 30) {
+    const r = env2.h;
+
+    for (let i = 0; i < count; i++) {
+        // Generate slight jitter
+        const jitterX = (Math.random() - 0.5) * r * 2;
+        const jitterY = (Math.random() - 0.5) * r * 2;
+
+        env2.x.push(x + jitterX);
+        env2.y.push(y + jitterY);
+        env2.vx.push((Math.random() - 0.5) * 0.1);
+        env2.vy.push((Math.random() - 0.5) * 0.1);
+        env2.vhx.push(0);
+        env2.vhy.push(0);
+        env2.density.push(0);
+        env2.pressure.push(0);
+        env2.ax.push(0);
+        env2.ay.push(0);
+        env2.type.push(0.); // you said no state logic needed
+    }
+
+    // 🚀 Expand N
+    env.N = env2.x.length;
+    march();
+    plot.render();
+}
+var mouseClick = new Abubu.MouseListener({
+    canvas: canvas_1,
+    event: 'click',
+    callback: function (e) {
+        spawnParticlesAt(e.position[0], e.position[1], 30);
+    }
+});
 	
 function march(){
 	for (var i =0; i<env.N; i++){
@@ -327,14 +429,18 @@ var plot = new Abubu.Plot2D({
     colorbar : false ,           /* if you need to show the colorbar     */
     canvas : canvas_1 ,         /* the canvas to draw on                */
 }) ;
-	plot.init() ; 
-	plot.render() ;
+plot.init() ; 
+plot.render() ;
 /* function to create a graphical user interface */
 function createGui(){
     var gui = new Abubu.Gui() ;     /*  create a graphical user 
                                         interface               */
     var panel = gui.addPanel() ;    /*  add a panel to the GUI  */
     panel.add(env2, 'running' ) ;
+    panel.add(env2, 'checkStatus').onChange(function(){
+		checkStatus();
+    } );
+	panel.add(env2, 'gateOpen');
     panel.add(env2, 'frame');
     panel.add(env, 'k').onChange(function(){
 		env2.pressureC = 15*env.k;
@@ -390,6 +496,7 @@ function createGui(){
 		march();
 		plot.render();
     } );
+
 }
 
 /* Actual calculation of SPH */
@@ -556,8 +663,15 @@ function timeStep() {
         env2.x[i] += env2.vhx[i] * env2.dt;
         env2.y[i] += env2.vhy[i] * env2.dt;
 		detectWall(i);
-		detectObstacle(i);
-		detectObstacle2(i);
+		detectObstacle(i,env2.x1,env2.x2,env2.y1,env2.y2,env.x0,env.y0);
+		detectObstacle(i,env2.x3,env2.x4,env2.y3,env2.y4,env.x00,env.y00);
+		detectObstacle(i,env2.x5,env2.x6,env2.y5,env2.y6,env.x000,env.y000);
+		
+		//gateOpen
+		if (!env2.gateOpen){
+			detectObstacle(i,env2.x_gate1,env2.x_gate2,env2.y_gate1,env2.y_gate2,(env2.x_gate1+env2.x_gate2)/2,(env2.y_gate1+env2.y_gate2)/2)
+		}
+
 	}
 }
 function detectWall(i){ 
@@ -582,65 +696,36 @@ function detectWall(i){
         }
 };
 
-function detectObstacle(i){ 
+function detectObstacle(i,x1,x2,y1,y2,x0,y0){ 
 		
-		let y = env2.y2 - env2.y1
-		let x = env2.x2 - env2.x1
+		let y = y2 - y1
+		let x = x2 - x1
 		
-        if (env2.y[i] < env2.y2 && env2.y[i] > env.y0 && env2.x[i] < env2.x2 && env2.x[i] > env2.x1 
-		&& Math.abs(env2.y[i]-env.y0) * x >= Math.abs(env2.x[i]-env.x0) * y) {
-            env2.y[i] = env2.y2;
+        if (env2.y[i] < y2 && env2.y[i] > y0 && env2.x[i] < x2 && env2.x[i] > x1 
+		&& Math.abs(env2.y[i]-y0) * x >= Math.abs(env2.x[i]-x0) * y) {
+            env2.y[i] = y2;
             env2.vy[i] *= -env2.wallBounce;
             env2.vhy[i] *= -env2.wallBounce;
-        } else if (env2.y[i] < env.y0 && env2.y[i] > env2.y1 && env2.x[i] < env2.x2 && env2.x[i] > env2.x1 
-		&& Math.abs(env2.y[i]-env.y0) * x  >= Math.abs(env2.x[i]-env.x0) * y) {
-            env2.y[i] = env2.y1;
+        } else if (env2.y[i] < y0 && env2.y[i] > y1 && env2.x[i] < x2 && env2.x[i] > x1 
+		&& Math.abs(env2.y[i]-y0) * x  >= Math.abs(env2.x[i]-x0) * y) {
+            env2.y[i] = y1;
             env2.vy[i] *= -env2.wallBounce;
             env2.vhy[i] *= -env2.wallBounce;
         }
         
-        else if (env2.y[i] < env2.y2 && env2.y[i] > env2.y1 && env2.x[i] < env.x0 && env2.x[i] > env2.x1 
-		&& Math.abs(env2.y[i]-env.y0)* x  <= Math.abs(env2.x[i]-env.x0)* y) {
-            env2.x[i] = env2.x1;
+        else if (env2.y[i] < y2 && env2.y[i] > y1 && env2.x[i] < x0 && env2.x[i] > x1 
+		&& Math.abs(env2.y[i]-y0)* x  <= Math.abs(env2.x[i]-x0)* y) {
+            env2.x[i] = x1;
             env2.vx[i] *= -env2.wallBounce;
             env2.vhx[i] *= -env2.wallBounce;
-        } else if (env2.y[i] < env2.y2 && env2.y[i] > env2.y1 && env2.x[i] < env2.x2 && env2.x[i] > env.x0 
-		&& Math.abs(env2.y[i]-env.y0)* x  <= Math.abs(env2.x[i]-env.x0)* y) {
-            env2.x[i] = env2.x2;
+        } else if (env2.y[i] < y2 && env2.y[i] > y1 && env2.x[i] < x2 && env2.x[i] > x0 
+		&& Math.abs(env2.y[i]-y0)* x  <= Math.abs(env2.x[i]-x0)* y) {
+            env2.x[i] = x2;
             env2.vx[i] *= -env2.wallBounce;
             env2.vhx[i] *= -env2.wallBounce;
         }
 };
 
-function detectObstacle2(i){ 
-		
-		let y = env2.y4 - env2.y3
-		let x = env2.x4 - env2.x3
-		
-        if (env2.y[i] < env2.y4 && env2.y[i] > env.y00 && env2.x[i] < env2.x4 && env2.x[i] > env2.x3 
-		&& Math.abs(env2.y[i]-env.y00) * x >= Math.abs(env2.x[i]-env.x00) * y) {
-            env2.y[i] = env2.y4;
-            env2.vy[i] *= -env2.wallBounce;
-            env2.vhy[i] *= -env2.wallBounce;
-        } else if (env2.y[i] < env.y00 && env2.y[i] > env2.y3 && env2.x[i] < env2.x4 && env2.x[i] > env2.x3 
-		&& Math.abs(env2.y[i]-env.y00) * x  >= Math.abs(env2.x[i]-env.x00) * y) {
-            env2.y[i] = env2.y3;
-            env2.vy[i] *= -env2.wallBounce;
-            env2.vhy[i] *= -env2.wallBounce;
-        }
-        
-        else if (env2.y[i] < env2.y4 && env2.y[i] > env2.y3 && env2.x[i] < env.x00 && env2.x[i] > env2.x3 
-		&& Math.abs(env2.y[i]-env.y00)* x  <= Math.abs(env2.x[i]-env.x00)* y) {
-            env2.x[i] = env2.x3;
-            env2.vx[i] *= -env2.wallBounce;
-            env2.vhx[i] *= -env2.wallBounce;
-        } else if (env2.y[i] < env2.y4 && env2.y[i] > env2.y3 && env2.x[i] < env2.x4 && env2.x[i] > env.x00 
-		&& Math.abs(env2.y[i]-env.y00)* x  <= Math.abs(env2.x[i]-env.x00)* y) {
-            env2.x[i] = env2.x4;
-            env2.vx[i] *= -env2.wallBounce;
-            env2.vhx[i] *= -env2.wallBounce;
-        }
-};
 
 function move(){
     update();
@@ -657,6 +742,7 @@ function initialization(){
 }
 
 initialization();
+checkStatus()
 var clickCopy = new Abubu.Copy( scolor, fcolor ) ;
 
 /* finish of calculation function define */
