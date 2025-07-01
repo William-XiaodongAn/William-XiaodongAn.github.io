@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html>
+<!-- Head -->
+<head>
+<script src='https://abubujs.org/libs/Abubu.latest.js'
+	type='text/javascript'></script>
+</head>
+<!-- body of the html page -->
+<body>
+    <canvas id="canvas_1" 
+            width=512 height=512
+            style="border:1px solid #000000;" >
+        <!-- This message is displayed if canvas is not available -->
+        Your browser does not support the HTML5 canvas tag.
+    </canvas>
+</body>
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- fragment shader                                                    -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+
+<script id='init' type='shader'>#version 300 es
+precision highp float ;
+precision highp int ;
+
+layout (location = 0 ) out vec4 color1 ;
+layout (location = 1 ) out vec4 color2 ; 
+
+in vec2 cc ;        /* input from vertex shader */
+
+
+// Main body of the shader
+void main() {
+    vec4 color = vec4(0.) ;
+
+    // we assign the same values to both of them
+    color1 = color ;
+	color2 = color ;
+    return ;
+}
+</script>
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- fragment shader                                                    -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<script id='march' type='shader'>#version 300 es
+precision highp float ;
+precision highp int ;
+
+uniform sampler2D   inTexture ;
+uniform sampler2D particleTexture;
+uniform float x ;
+uniform float y ;
+uniform float r ;
+uniform float vx ;
+uniform float vy ;
+uniform float xMin ;
+uniform float xMax ;
+uniform float x1;
+uniform float y1;
+uniform float x2;
+uniform float y2;
+uniform float x3;
+uniform float y3;
+uniform float x4;
+uniform float y4;
+uniform float x5;
+uniform float y5;
+uniform float x6;
+uniform float y6;
+uniform float L;
+uniform float type;
+
+
+layout (location = 0 ) out vec4 color1 ; 
+
+in vec2 cc ;        /* input from vertex shader */
+
+
+// Main body of the shader
+void main() {
+	vec4 color = texture( inTexture ,cc );
+	vec4 p = texture(particleTexture, cc);
+	if (p.r == 1.) {
+		color.rgb = vec3(1., 1., 0.); // yellow for type 0
+	} else if (p.g == 1.) {
+		color.rgb = vec3(0.6, 1., 1.); // blue for type 1
+	}
+    if ( cc.x-xMin<0.){
+		if ( cc.x-xMin>-0.01){
+			color.r = 0.6 ;
+		}
+	}
+    if ( cc.x-xMax>0.){
+		if ( cc.x-xMax<0.01){
+			color.r = 0.6 ;
+		}
+	}
+
+	if (cc.x > x1){
+		if (cc.x < x2){
+			if (cc.y > y1){
+				if (cc.y < y2){
+					color.r  = 0.2 ;
+				}
+			
+			}
+		}
+	
+	}
+	if (cc.x > x3){
+		if (cc.x < x4){
+			if (cc.y > y3){
+				if (cc.y < y4){
+					color.r  = 0.2 ;
+				}
+			
+			}
+		}
+	
+	}	
+	if (cc.x > x5){
+		if (cc.x < x6){
+			if (cc.y > y5){
+				if (cc.y < y6){
+					color.r  = 0.2 ;
+				}
+			
+			}
+		}
+	
+	}	
+    // we assign the same values to both of them
+    color1 = color ;
+    return ;
+}
+</script>
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- Main script -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+
+
+<script>
+// get the shader source by its id ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function source(id){
+    return document.getElementById(id).text ;
+}
+
+// Get the canvas --------------------------------------------------------
+var canvas_1 = document.getElementById('canvas_1') ;
+
+// Define a texture ------------------------------------------------------
+var fcolor = new Abubu.Float32Texture(512,512) ;
+var scolor = new Abubu.Float32Texture(512,512) ;
+
+var particleScale = 200;
+var particleTexture = new Abubu.Float32Texture(particleScale, particleScale);
+var particleTable = new Float32Array(particleScale * particleScale * 4);
+
+/* set parameters */
+
+
+var env = {
+		N: 1000,
+		x: 0.5,
+		y: 0.5,
+		viscosity: 5,
+		k: 5 ,
+		wallBounceLose : 0.05,
+		x0: 0.24,//(env2.x1 + env2.x2)/2,
+		y0: 0.12,//(env2.y1 + env2.y2)/2,
+		
+		x00: 0.405,
+		y00: 0.12,
+		
+		x000: 0.51,
+		y000: 0.27,		
+		L: 0.05
+} ;
+
+var env2 = {
+        running : false ,
+		restart : false ,
+		frame : 5,
+		x : Array(env.N).fill(0) ,
+		y : Array(env.N).fill(0) ,
+		r : 0.007,
+		vx : Array(env.N).fill(0),
+		vy : Array(env.N).fill(0),
+		vhx : Array(env.N).fill(0),
+		vhy : Array(env.N).fill(0),
+
+		dt : 18e-4	,
+		m : 1 ,
+		h : 0.016 ,
+		density : Array(env.N).fill(0),
+		type : Array(env.N).fill(0),
+		dens0 : 1000 ,
+		dens0_a : 1000,
+		dens0_b : 1500,
+		pressureC : 15*env.k,
+		
+		pressure : Array(env.N).fill(0) ,
+
+		viscosityC : -40*env.viscosity , 
+		
+		tensionC : 1,
+		
+		ax : Array(env.N).fill(0) ,
+		ay : Array(env.N).fill(0) ,
+		
+		gravityC : 10 ,		
+		xMax : 0.5	,
+		yMax : 1,
+		xMin : 0.2,
+		yMin : 0 ,
+		wallBounce : 1-env.wallBounceLose ,
+		yMinOfParticle: 0.,
+		yMaxOfParticle: 0.51,
+		xMinOfParticle: 0.23,
+		xMaxOfParticle: 0.37, // adjust as needed to match desired total width
+
+		x1: 0.18,
+		x2: 0.3,
+		y1: 0.05,
+		y2: 0.06,
+		
+		x3: 0.31,
+		x4: 0.41,
+		y3: 0.05,
+		y4: 0.06,
+		
+		x5: 0.4,
+		x6: 0.42,
+		y5: 0.04,
+		y6: 0.45,
+		checkStatus: false,
+		gateOpen: false,
+		
+		//gate:
+		
+		x_gate1: 0.4,
+		x_gate2: 0.42,
+		y_gate1: 0.09,
+		y_gate2: 0.45,		
+		
+} ;
+env.x00 = (env2.x3 + env2.x4)/2
+env.y00 = (env2.y3 + env2.y4)/2
+env.x0 = (env2.x1 + env2.x2)/2
+env.y0 = (env2.y1 + env2.y2)/2
+env.x000 = (env2.x5 + env2.x6)/2
+env.y000 = (env2.y5 + env2.y6)/2
+
+env2.x_gate1 = env2.x2 - 0.05
+env2.x_gate2 = env2.x3 + 0.05
+env2.y_gate1 = env2.y1
+env2.y_gate2 = env2.y2
+
+/* initial position */
+function initialPosition(){
+    var r = env2.h;
+
+    var yMin = 0;
+    var yMax = env2.y2 + 0.03;
+    var xMin = env2.xMin;
+    var xMax = env2.xMax;
+
+    var count = 0;
+    while (count < env.N) {
+        // Random position in the desired band
+        var xp = Math.random() * (xMax - xMin) + xMin;
+        var yp = Math.random() * (yMax - yMin) + yMin;
+
+        env2.x[count] = xp;
+        env2.y[count] = yp;
+
+
+        env2.vx[count] = Math.random() * 0.04 - 0.02;
+        env2.vy[count] = Math.random() * 0.04 - 0.02;
+
+        count++;
+    }
+}
+
+
+
+initialPosition()
+
+/* painting on canvas */
+var init = new Abubu.Solver({
+        fragmentShader : source( 'init') ,
+        targets : {
+                color1: {location : 0 , target : fcolor } ,
+				color2: {location : 1 , target : scolor } ,
+        }
+} ) ;
+	init.render() ;
+var fmarch = new Abubu.Solver({
+        fragmentShader : source('march') ,
+		uniforms: {
+				inTexture   : { type : 't', value : fcolor } ,
+				particleTexture: { type: 't', value: particleTexture },
+				x : { type : 'f', value : env.x } ,
+				y : { type : 'f', value : env.y } ,
+				r : { type : 'f', value : env2.r } ,
+				xMin : { type : 'f', value : env2.xMin } ,
+				xMax : { type : 'f', value : env2.xMax } ,
+				x1 : { type : 'f', value : env2.x1 } ,
+				y1 : { type : 'f', value : env2.y1 } ,
+				x2 : { type : 'f', value : env2.x2 } ,
+				y2 : { type : 'f', value : env2.y2 } ,
+				x3 : { type : 'f', value : env2.x3 } ,
+				y3 : { type : 'f', value : env2.y3 } ,
+				x4 : { type : 'f', value : env2.x4 } ,
+				y4 : { type : 'f', value : env2.y4 } ,
+				x5 : { type : 'f', value : env2.x5 } ,
+				y5 : { type : 'f', value : env2.y5 } ,
+				x6 : { type : 'f', value : env2.x6 } ,
+				y6 : { type : 'f', value : env2.y6 } ,
+				L : { type : 'f', value : env.L } ,
+				type : { type : 'f', value : 0. },
+        } ,
+        targets : {
+                outputcolor : { location : 0 , target : scolor } ,
+        }
+    } ) ;
+	
+var smarch = new Abubu.Solver({
+        fragmentShader : source('march') ,
+		uniforms: {
+				inTexture   : { type : 't', value : scolor } ,
+				particleTexture: { type: 't', value: particleTexture },
+				x : { type : 'f', value : env.x } ,
+				y : { type : 'f', value : env.y } ,
+				r : { type : 'f', value : env2.r } ,
+				xMin : { type : 'f', value : env2.xMin } ,
+				xMax : { type : 'f', value : env2.xMax } ,
+				x1 : { type : 'f', value : env2.x1 } ,
+				y1 : { type : 'f', value : env2.y1 } ,
+				x2 : { type : 'f', value : env2.x2 } ,
+				y2 : { type : 'f', value : env2.y2 } ,
+				x3 : { type : 'f', value : env2.x3 } ,
+				y3 : { type : 'f', value : env2.y3 } ,
+				x4 : { type : 'f', value : env2.x4 } ,
+				y4 : { type : 'f', value : env2.y4 } ,
+				x5 : { type : 'f', value : env2.x5 } ,
+				y5 : { type : 'f', value : env2.y5 } ,
+				x6 : { type : 'f', value : env2.x6 } ,
+				y6 : { type : 'f', value : env2.y6 } ,
+				L : { type : 'f', value : env.L } ,
+				type : { type : 'f', value : 0. },
+        } ,
+        targets : {
+                outputcolor : { location : 0 , target : fcolor } ,
+        }
+    } ) ;
+
+function checkStatus(){
+	var count = 0;
+    while (count < env.N) {
+		var xp = env2.x[count];
+		var yp = env2.y[count];
+
+        // Check if in the left channel (based on obstacle bounding box)
+        if (xp <= env2.x4 && yp >= env.y0) {
+            env2.type[count] = 1.; // blue
+        } else {
+            env2.type[count] = 0.; // yellow
+        }
+		count++;
+	}
+}
+
+
+
+function spawnParticlesAt(x, y, count = 30) {
+    const r = env2.h;
+
+    for (let i = 0; i < count; i++) {
+        // Generate slight jitter
+        const jitterX = (Math.random() - 0.5) * r * 2;
+        const jitterY = (Math.random() - 0.5) * r * 2;
+
+        env2.x.push(x + jitterX);
+        env2.y.push(y + jitterY);
+        env2.vx.push((Math.random() - 0.5) * 0.1);
+        env2.vy.push((Math.random() - 0.5) * 0.1);
+        env2.vhx.push(0);
+        env2.vhy.push(0);
+        env2.density.push(0);
+        env2.pressure.push(0);
+        env2.ax.push(0);
+        env2.ay.push(0);
+        env2.type.push(0.); // you said no state logic needed
+    }
+
+    // 🚀 Expand N
+    env.N = env2.x.length;
+    march();
+    plot.render();
+}
+var mouseClick = new Abubu.MouseListener({
+    canvas: canvas_1,
+    event: 'click',
+    callback: function (e) {
+        spawnParticlesAt(e.position[0], e.position[1], 30);
+    }
+});
+	
+function march(){
+	updateParticleTexture();
+	for (var i =0; i<env.N; i++){
+		env.x = env2.x[i];
+		env.y = env2.y[i];
+        fmarch.uniforms.x.value = env2.x[i] ;
+        fmarch.uniforms.y.value = env2.y[i] ;
+        fmarch.uniforms.type.value = env2.type[i];
+        smarch.uniforms.x.value = env2.x[i] ;
+        smarch.uniforms.y.value = env2.y[i] ;
+        smarch.uniforms.type.value = env2.type[i];
+		fmarch.render() ;
+		smarch.render() ;
+	}
+}
+march()
+var plot = new Abubu.Plot2D({
+    target : fcolor ,   /* the texture to visualize             */
+    channel : 'r',              /* the channel of interest:
+                                        can be : 'r', 'g', 'b', or 'a' 
+                                        defualt value is 'r'            */
+    minValue : 0 ,              /* minimum value on the colormap        */
+    maxValue : 1 ,             /* maximum value on the colormap        */
+    colorbar : false ,           /* if you need to show the colorbar     */
+    canvas : canvas_1 ,         /* the canvas to draw on                */
+}) ;
+plot.init() ; 
+plot.render() ;
+/* function to create a graphical user interface */
+function createGui(){
+    var gui = new Abubu.Gui() ;     /*  create a graphical user 
+                                        interface               */
+    var panel = gui.addPanel() ;    /*  add a panel to the GUI  */
+    panel.add(env2, 'running' ) ;
+    panel.add(env2, 'checkStatus').onChange(function(){
+		checkStatus();
+    } );
+	panel.add(env2, 'gateOpen');
+    panel.add(env2, 'frame');
+    panel.add(env, 'k').onChange(function(){
+		env2.pressureC = 15*env.k;
+    } );
+    panel.add(env, 'viscosity').onChange(function(){
+	    env2.viscosityC = -40*env.viscosity;
+    } );
+    panel.add(env2, 'tensionC').onChange();
+    panel.add(env2, 'gravityC').onChange(function(){
+    } );
+    panel.add(env, 'wallBounceLose').onChange(function(){
+		env2.wallBounce = 1-env.wallBounceLose;
+    } );
+    panel.add(env2, 'xMax').step(0.01).onChange(function(){
+		fmarch.uniforms.xMax.value = env2.xMax;
+		smarch.uniforms.xMax.value = env2.xMax;
+		init.render();
+		march();
+		plot.render();
+	} );
+    panel.add(env2, 'xMin').step(0.01).onChange(function(){
+		fmarch.uniforms.xMin.value = env2.xMin;
+		smarch.uniforms.xMin.value = env2.xMin;
+		init.render();
+		march();
+		plot.render();
+    } );
+    panel.add(env2, 'yMinOfParticle').onChange(function(){
+		initialPosition();
+		initialization();
+		init.render();
+		march();
+		plot.render();
+    } );
+    panel.add(env2, 'yMaxOfParticle').onChange(function(){
+		initialPosition();
+		initialization();
+		init.render();
+		march();
+		plot.render();
+    } );
+    panel.add(env2, 'xMinOfParticle').onChange(function(){
+		initialPosition();
+		initialization();
+		init.render();
+		march();
+		plot.render();
+    } );	
+    panel.add(env, 'N').onChange(function(){
+		initialPosition();
+		initialization();
+		init.render();
+		march();
+		plot.render();
+    } );
+
+}
+
+/* Actual calculation of SPH */
+function distance(i,j){
+	var r2 = (env2.x[i] - env2.x[j])**2 + (env2.y[i] - env2.y[j])**2;
+	var r = Math.sqrt(r2);
+	return r;
+}
+function updateTimestep() {
+    let vmax = 0;
+    for (let i = 0; i < env.N; i++) {
+        const v = Math.sqrt(env2.vx[i]**2 + env2.vy[i]**2);
+        if (v > vmax) vmax = v;
+    }
+
+    const CFL = 0.3;
+    const dt_min = 1e-5;    // lower bound (slowest safe)
+    const dt_max = 5e-4;    // upper bound (to avoid too fast)
+
+    let suggested_dt = CFL * env2.h / (vmax + 1e-6);
+    env2.dt = Math.max(dt_min, Math.min(dt_max, suggested_dt));
+}
+
+// === Spatial Grid for Fast Neighbor Search ===
+class SpatialGrid {
+    constructor(xMin, xMax, yMin, yMax, cellSize) {
+        this.xMin = xMin;
+        this.xMax = xMax;
+        this.yMin = yMin;
+        this.yMax = yMax;
+        this.cellSize = cellSize;
+        this.nx = Math.ceil((xMax - xMin) / cellSize);
+        this.ny = Math.ceil((yMax - yMin) / cellSize);
+        this.cells = [];
+        for (let i = 0; i < this.nx * this.ny; i++) this.cells[i] = [];
+    }
+    clear() {
+        for (let i = 0; i < this.cells.length; i++) this.cells[i] = [];
+    }
+    cellIndex(x, y) {
+        let ix = Math.floor((x - this.xMin) / this.cellSize);
+        let iy = Math.floor((y - this.yMin) / this.cellSize);
+        if (ix < 0) ix = 0;
+        if (iy < 0) iy = 0;
+        if (ix >= this.nx) ix = this.nx - 1;
+        if (iy >= this.ny) iy = this.ny - 1;
+        return iy * this.nx + ix;
+    }
+    insert(x, y, i) {
+        this.cells[this.cellIndex(x, y)].push(i);
+    }
+    queryNeighbors(x, y) {
+        let ix = Math.floor((x - this.xMin) / this.cellSize);
+        let iy = Math.floor((y - this.yMin) / this.cellSize);
+        let neighbors = [];
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                let nx = ix + dx;
+                let ny = iy + dy;
+                if (nx >= 0 && nx < this.nx && ny >= 0 && ny < this.ny) {
+                    let idx = ny * this.nx + nx;
+                    neighbors.push(...this.cells[idx]);
+                }
+            }
+        }
+        return neighbors;
+    }
+}
+
+// === Create the grid (once) ===
+let cellSize = env2.h;
+let grid = new SpatialGrid(env2.xMin, env2.xMax, 0, env2.y6, cellSize);
+
+function updateDensity(){
+    grid.clear();
+    for (let i = 0; i < env.N; i++) {
+        grid.insert(env2.x[i], env2.y[i], i);
+    }
+    var neighbor = [];
+    var C1 = 4 * env2.m / (Math.PI * (env2.h**2));
+    var C2 = 4 * env2.m / (Math.PI * (env2.h**8));
+    for (let i = 0; i < env.N; i++) {
+        env2.density[i] = C1;
+        env2.ax[i] = 0;
+        env2.ay[i] = -env2.gravityC;
+        let x = env2.x[i], y = env2.y[i];
+        let candidates = grid.queryNeighbors(x, y);
+        for (let j of candidates) {
+            if (i < j) {
+                let dx = x - env2.x[j];
+                let dy = y - env2.y[j];
+                let r2 = dx * dx + dy * dy;
+                if (r2 < env2.h * env2.h && r2 != 0) {
+                    neighbor.push([i, j, dx, dy, r2]);
+                }
+            }
+        }
+    }
+    var c, rho_ij, z;
+    for (var i = 0; i < neighbor.length; i++) {
+        c = neighbor[i];
+        z = env2.h**2 - c[4];
+        rho_ij = C2 * z * z * z;
+        env2.density[c[0]] += rho_ij;
+        env2.density[c[1]] += rho_ij;
+    }
+}
+
+function update(){
+    grid.clear();
+    for (let i = 0; i < env.N; i++) {
+        grid.insert(env2.x[i], env2.y[i], i);
+    }
+    var neighbor = [];
+    var C0 = env2.m / (Math.PI * (env2.h**4));
+    var C1 = 4 * env2.m / (Math.PI * (env2.h**2));
+    var C2 = 4 * env2.m / (Math.PI * (env2.h**8));
+    for (let i = 0; i < env.N; i++) {
+        env2.density[i] = C1;
+        env2.ax[i] = 0;
+        env2.ay[i] = -env2.gravityC;
+        let x = env2.x[i], y = env2.y[i];
+        let candidates = grid.queryNeighbors(x, y);
+        for (let j of candidates) {
+            if (i < j) {
+                let dx = x - env2.x[j];
+                let dy = y - env2.y[j];
+                let r2 = dx * dx + dy * dy;
+                if (r2 < env2.h * env2.h && r2 != 0) {
+                    neighbor.push([i, j, dx, dy, r2]);
+                }
+            }
+        }
+    }
+    var c, rho_ij, z;
+    for (var i = 0; i < neighbor.length; i++) {
+        c = neighbor[i];
+        z = env2.h**2 - c[4];
+        rho_ij = C2 * z * z * z;
+        env2.density[c[0]] += rho_ij;
+        env2.density[c[1]] += rho_ij;
+    }
+    var pi, pj, rij, q, u, w0, wp, wv, dvx, dvy, wt;
+    for (var i = 0; i < neighbor.length; i++) {
+        c = neighbor[i];
+        pi = c[0];
+        pj = c[1];
+        let dens0_pi = (env2.type[pi] == 0 ? env2.dens0_a : env2.dens0_b);
+        let dens0_pj = (env2.type[pj] == 0 ? env2.dens0_a : env2.dens0_b);
+        rij = Math.sqrt(c[4]);
+        q = rij / env2.h;
+        u = 1 - q;
+        w0 = C0 * u / (env2.density[pi] * env2.density[pj]);
+        wp = w0 * env2.pressureC * (env2.density[pi] + env2.density[pj] - dens0_pi - dens0_pj) * u / q;
+        wv = w0 * env2.viscosityC;
+        wt = -env2.tensionC * w0 / (env2.h - rij) / (env2.h**4) * (env2.h**2 - c[4]) * (c[4] - 3/4*(env2.h**2 - c[4]));
+        dvx = env2.vx[pi] - env2.vx[pj];
+        dvy = env2.vy[pi] - env2.vy[pj];
+        env2.ax[pi] += (wp+wt) * c[2] + wv * dvx;
+        env2.ay[pi] += (wp+wt) * c[3] + wv * dvy;
+        env2.ax[pj] -= (wp+wt) * c[2] + wv * dvx;
+        env2.ay[pj] -= (wp+wt) * c[3] + wv * dvy;
+    }
+}
+
+function normalizeMass(){
+    //env2.m = 1;
+    updateDensity();
+    
+    var rho2 = 0;
+    var rho  = 0;
+    for (var i =0; i<env.N; i++) {
+        rho2 += env2.density[i] * env2.density[i];
+        rho  += env2.density[i];
+    }
+    
+    env2.m = env2.dens0 * rho / rho2;	
+}
+
+function leapfrog() {
+    for (var i = 0; i < env.N; i++) {
+
+        env2.vhx[i] = env2.vx[i] + env2.ax[i] * env2.dt/2;
+        env2.vhy[i] = env2.vy[i] + env2.ay[i] * env2.dt/2;
+        
+        env2.vx[i] = env2.ax[i] * env2.dt/2;
+        env2.vy[i] = env2.ay[i] * env2.dt/2;
+		
+		const vmax = 20.0; // tweakable
+		env2.vx[i] = Math.max(-vmax, Math.min(vmax, env2.vx[i]));
+		env2.vy[i] = Math.max(-vmax, Math.min(vmax, env2.vy[i]));
+			        
+        env2.x[i] += env2.vhx[i] * env2.dt;
+        env2.y[i] += env2.vhy[i] * env2.dt;
+    }
+};
+
+function timeStep() {
+    for (var i = 0; i < env.N; i++) {
+
+        env2.vhx[i] += env2.ax[i] * env2.dt;
+        env2.vhy[i] += env2.ay[i] * env2.dt;
+        
+        env2.vx[i] = env2.vhx[i] + env2.ax[i] * env2.dt/2;
+        env2.vy[i] = env2.vhy[i] + env2.ay[i] * env2.dt/2;
+        
+        env2.x[i] += env2.vhx[i] * env2.dt;
+        env2.y[i] += env2.vhy[i] * env2.dt;
+		detectWall(i);
+		detectObstacle(i,env2.x1,env2.x2,env2.y1,env2.y2,env.x0,env.y0);
+		detectObstacle(i,env2.x3,env2.x4,env2.y3,env2.y4,env.x00,env.y00);
+		detectObstacle(i,env2.x5,env2.x6,env2.y5,env2.y6,env.x000,env.y000);
+		
+		//gateOpen
+		if (!env2.gateOpen){
+			detectObstacle(i,env2.x_gate1,env2.x_gate2,env2.y_gate1,env2.y_gate2,(env2.x_gate1+env2.x_gate2)/2,(env2.y_gate1+env2.y_gate2)/2)
+		}
+
+	}
+}
+function detectWall(i){ 
+        if (env2.x[i] < env2.xMin) {
+            env2.x[i] = env2.xMin;
+            env2.vx[i] *= -env2.wallBounce;
+            env2.vhx[i] *= -env2.wallBounce;
+        } else if (env2.x[i] > env2.xMax) {
+            env2.x[i] = env2.xMax;
+            env2.vx[i] *= -env2.wallBounce;
+            env2.vhx[i] *= -env2.wallBounce;
+        }
+        
+        if (env2.y[i] < env2.yMin) {
+            env2.y[i] = env2.yMin + Math.random()*0.0004 + 0.0001;
+            env2.vy[i] *= -env2.wallBounce;
+            env2.vhy[i] *= -env2.wallBounce;
+        } else if (env2.y[i] > env2.yMax) {
+            env2.y[i] = env2.yMax - Math.random()*0.0004 - 0.0001;
+            env2.vy[i] *= -env2.wallBounce;
+            env2.vhy[i] *= -env2.wallBounce;
+        }
+};
+
+function detectObstacle(i,x1,x2,y1,y2,x0,y0){ 
+		
+		let y = y2 - y1
+		let x = x2 - x1
+		
+        if (env2.y[i] < y2 && env2.y[i] > y0 && env2.x[i] < x2 && env2.x[i] > x1 
+		&& Math.abs(env2.y[i]-y0) * x >= Math.abs(env2.x[i]-x0) * y) {
+            env2.y[i] = y2;
+            env2.vy[i] *= -env2.wallBounce;
+            env2.vhy[i] *= -env2.wallBounce;
+        } else if (env2.y[i] < y0 && env2.y[i] > y1 && env2.x[i] < x2 && env2.x[i] > x1 
+		&& Math.abs(env2.y[i]-y0) * x  >= Math.abs(env2.x[i]-x0) * y) {
+            env2.y[i] = y1;
+            env2.vy[i] *= -env2.wallBounce;
+            env2.vhy[i] *= -env2.wallBounce;
+        }
+        
+        else if (env2.y[i] < y2 && env2.y[i] > y1 && env2.x[i] < x0 && env2.x[i] > x1 
+		&& Math.abs(env2.y[i]-y0)* x  <= Math.abs(env2.x[i]-x0)* y) {
+            env2.x[i] = x1;
+            env2.vx[i] *= -env2.wallBounce;
+            env2.vhx[i] *= -env2.wallBounce;
+        } else if (env2.y[i] < y2 && env2.y[i] > y1 && env2.x[i] < x2 && env2.x[i] > x0 
+		&& Math.abs(env2.y[i]-y0)* x  <= Math.abs(env2.x[i]-x0)* y) {
+            env2.x[i] = x2;
+            env2.vx[i] *= -env2.wallBounce;
+            env2.vhx[i] *= -env2.wallBounce;
+        }
+};
+
+
+function move(){
+    update();
+    timeStep();
+}
+
+function initialization(){
+	initialPosition();
+	normalizeMass();
+	update();
+	leapfrog();
+
+
+}
+
+initialization();
+checkStatus()
+var clickCopy = new Abubu.Copy( scolor, fcolor ) ;
+
+/* finish of calculation function define */
+function run(){
+		if (env2.running){
+			for (var k =0; k<env2.frame; k++){
+				//updateTimestep();
+				move();
+			}
+			march();
+			plot.render();
+			init.render();
+		}
+		requestAnimationFrame(run) ;
+}
+/* run createGui to create the graphical user interface     */
+createGui() ;
+run() ;
+
+function updateParticleTexture() {
+    // Clear table
+    for (let i = 0; i < particleTable.length; i++) {
+        particleTable[i] = 0;
+    }
+    for (let i = 0; i < env.N; i++) {
+        let row = Math.round(particleScale * env2.y[i]);
+        let col = Math.round(particleScale * env2.x[i]);
+        if (row < 1) row = 1;
+        if (col < 1) col = 1;
+        if (row > particleScale) row = particleScale;
+        if (col > particleScale) col = particleScale;
+        let idx = (row - 1) * particleScale + (col - 1);
+        if (env2.type[i] == 0) {
+            particleTable[4 * idx] = 1; // red for type 0
+            particleTable[4 * idx + 1] = 0;
+        } else {
+            particleTable[4 * idx] = 0;
+            particleTable[4 * idx + 1] = 1; // green for type 1
+        }
+    }
+    particleTexture.data = particleTable;
+}
+</script>
+</html>
