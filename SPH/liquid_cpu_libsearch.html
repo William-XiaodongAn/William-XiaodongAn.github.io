@@ -172,7 +172,8 @@ var env = {
 		
 		x000: 0.51,
 		y000: 0.27,		
-		L: 0.05
+		L: 0.05,
+        width_between_walls: 0.12,
 } ;
 
 var env2 = {
@@ -237,7 +238,8 @@ var env2 = {
 		y_gate1: 0.02,
 		y_gate2: 0.03,	
         chamber_height:0.02,
-		
+        gate_width: 0.01,
+		gate_thickness: 0.01,
 } ;
 env.x00 = (env2.x3 + env2.x4)/2
 env.y00 = (env2.y3 + env2.y4)/2
@@ -252,6 +254,15 @@ env2.x_gate2 = env2.x3 + 0.05
 env2.y_gate1 = env2.y1
 env2.y_gate2 = env2.y2
 
+env2.x3 = env2.x2 + env2.gate_width;
+env2.y2 = env2.y1 + env2.gate_thickness;
+env2.y4 = env2.y3 + env2.gate_thickness;
+env2.y1 = env2.chamber_height;
+env2.y2 = env2.chamber_height + env2.gate_thickness;
+env2.y3 = env2.chamber_height;
+env2.y4 = env2.chamber_height + env2.gate_thickness;
+env2.y5 = env2.chamber_height - 0.001;
+env2.y6 = env2.chamber_height + 0.4;
 /* initial position */
 function initialPosition(){
     var r = env2.h;
@@ -439,6 +450,25 @@ function createGui(){
 		paintColors();
     } );
 	panel.add(env2, 'gateOpen');
+    panel.add(env2, 'gate_width').step(0.001).onChange(function(){
+        env2.x3 = env2.x2 + env2.gate_width;
+        fmarch.uniforms.x3.value = env2.x3;
+        smarch.uniforms.x3.value = env2.x3;
+        init.render();
+        march();
+        plot.render();
+    } );
+    panel.add(env2, 'gate_thickness').step(0.001).onChange(function(){
+        env2.y2 = env2.y1 + env2.gate_thickness;
+        env2.y4 = env2.y3 + env2.gate_thickness;
+        fmarch.uniforms.y2.value = env2.y2;
+        smarch.uniforms.y2.value = env2.y2;
+        fmarch.uniforms.y4.value = env2.y4;
+        smarch.uniforms.y4.value = env2.y4;
+        init.render();
+        march();
+        plot.render();
+    } );
     panel.add(env2, 'chamber_height').step(0.01).onChange(function(){
 		env2.y1 = env2.chamber_height;
         env2.y2 = env2.chamber_height + 0.01;
@@ -473,6 +503,17 @@ function createGui(){
     panel.add(env2, 'dens0_green').step(0.01).onChange(function(){
         env2.dens0_green = env2.dens0_green;
     } );
+    panel.add(env,'width_between_walls').min(0.12).max(0.3).step(0.01).onChange(function(){
+        env2.xMax = env2.x4 + env.width_between_walls / 2;
+        env2.xMin = env2.x4 - env.width_between_walls / 2;
+		fmarch.uniforms.xMax.value = env2.xMax;
+		smarch.uniforms.xMax.value = env2.xMax;
+		fmarch.uniforms.xMin.value = env2.xMin;
+		smarch.uniforms.xMin.value = env2.xMin;
+		init.render();
+		march();
+		plot.render();
+	} );    
     panel.add(env2, 'frame');
     panel.add(env, 'k').onChange(function(){
 		env2.pressureC = 15*env.k;
@@ -486,6 +527,7 @@ function createGui(){
     panel.add(env, 'wallBounceLose').onChange(function(){
 		env2.wallBounce = 1-env.wallBounceLose;
     } );
+
     panel.add(env2, 'xMax').step(0.01).onChange(function(){
 		fmarch.uniforms.xMax.value = env2.xMax;
 		smarch.uniforms.xMax.value = env2.xMax;
