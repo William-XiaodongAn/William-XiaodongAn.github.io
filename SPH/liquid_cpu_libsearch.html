@@ -193,8 +193,8 @@ var env2 = {
 		density : Array(env.N).fill(0),
 		type : Array(env.N).fill(0),
 		dens0 : 1000 ,
-		dens0_a : 1000,
-		dens0_b : 1500,
+		dens0_orange : 1000,
+		dens0_green : 1500,
 		pressureC : 15*env.k,
 		
 		pressure : Array(env.N).fill(0) ,
@@ -223,7 +223,7 @@ var env2 = {
 		y3: 0.02,
 		y4: 0.03,
 		
-		x5: 0.35,
+		x5: 0.34,
 		x6: 0.37,
 		y5: 0.019,
 		y6: 0.42,
@@ -466,7 +466,13 @@ function createGui(){
 		init.render();
 		march();
 		plot.render();
-    } );    
+    } );   
+    panel.add(env2, 'dens0_orange').step(0.01).onChange(function(){
+        env2.dens0_orange = env2.dens0_orange;
+    } );
+    panel.add(env2, 'dens0_green').step(0.01).onChange(function(){
+        env2.dens0_green = env2.dens0_green;
+    } );
     panel.add(env2, 'frame');
     panel.add(env, 'k').onChange(function(){
 		env2.pressureC = 15*env.k;
@@ -635,8 +641,8 @@ function update(){
         c = neighbor[i];
         pi = c[0];
         pj = c[1];
-        let dens0_pi = (env2.type[pi] == 0 ? env2.dens0_a : env2.dens0_b);
-        let dens0_pj = (env2.type[pj] == 0 ? env2.dens0_a : env2.dens0_b);
+        let dens0_pi = (env2.type[pi] == 0 ? env2.dens0_orange : env2.dens0_green);
+        let dens0_pj = (env2.type[pj] == 0 ? env2.dens0_orange : env2.dens0_green);
         rij = Math.sqrt(c[4]);
         q = rij / env2.h;
         u = 1 - q;
