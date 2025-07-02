@@ -212,34 +212,31 @@ var env2 = {
 		xMin : 0.2,
 		yMin : 0 ,
 		wallBounce : 1-env.wallBounceLose ,
-		yMinOfParticle: 0.,
-		yMaxOfParticle: 0.51,
-		xMinOfParticle: 0.23,
-		xMaxOfParticle: 0.37, // adjust as needed to match desired total width
 
 		x1: 0.18,
 		x2: 0.3,
-		y1: 0.05,
-		y2: 0.06,
+		y1: 0.02,
+		y2: 0.03,
 		
 		x3: 0.31,
-		x4: 0.41,
-		y3: 0.05,
-		y4: 0.06,
+		x4: 0.35,
+		y3: 0.02,
+		y4: 0.03,
 		
-		x5: 0.4,
-		x6: 0.42,
-		y5: 0.04,
-		y6: 0.45,
-		checkStatus: false,
+		x5: 0.35,
+		x6: 0.37,
+		y5: 0.019,
+		y6: 0.42,
+		paintColors: false,
 		gateOpen: false,
 		
 		//gate:
 		
 		x_gate1: 0.4,
 		x_gate2: 0.42,
-		y_gate1: 0.09,
-		y_gate2: 0.45,		
+		y_gate1: 0.02,
+		y_gate2: 0.03,	
+        chamber_height:0.02,
 		
 } ;
 env.x00 = (env2.x3 + env2.x4)/2
@@ -249,6 +246,7 @@ env.y0 = (env2.y1 + env2.y2)/2
 env.x000 = (env2.x5 + env2.x6)/2
 env.y000 = (env2.y5 + env2.y6)/2
 
+env2.chamber_height = env2.y1
 env2.x_gate1 = env2.x2 - 0.05
 env2.x_gate2 = env2.x3 + 0.05
 env2.y_gate1 = env2.y1
@@ -351,7 +349,7 @@ var smarch = new Abubu.Solver({
         }
     } ) ;
 
-function checkStatus(){
+function paintColors(){
 	var count = 0;
     while (count < env.N) {
 		var xp = env2.x[count];
@@ -435,11 +433,40 @@ function createGui(){
     var gui = new Abubu.Gui() ;     /*  create a graphical user 
                                         interface               */
     var panel = gui.addPanel() ;    /*  add a panel to the GUI  */
+
     panel.add(env2, 'running' ) ;
-    panel.add(env2, 'checkStatus').onChange(function(){
-		checkStatus();
+    panel.add(env2, 'paintColors').onChange(function(){
+		paintColors();
     } );
 	panel.add(env2, 'gateOpen');
+    panel.add(env2, 'chamber_height').step(0.01).onChange(function(){
+		env2.y1 = env2.chamber_height;
+        env2.y2 = env2.chamber_height + 0.01;
+        env2.y3 = env2.chamber_height;
+        env2.y4 = env2.chamber_height + 0.01;
+        env2.y5 = env2.chamber_height - 0.001;
+        env2.y6 = env2.chamber_height + 0.4;
+        env.y00 = (env2.y3 + env2.y4)/2
+        env.y0 = (env2.y1 + env2.y2)/2
+        env.y000 = (env2.y5 + env2.y6)/2
+        env2.y_gate1 = env2.y1;
+        env2.y_gate2 = env2.y2;
+		fmarch.uniforms.y1.value = env2.y1;
+		smarch.uniforms.y1.value = env2.y1;
+		fmarch.uniforms.y2.value = env2.y2;
+		smarch.uniforms.y2.value = env2.y2;
+		fmarch.uniforms.y3.value = env2.y3;
+		smarch.uniforms.y3.value = env2.y3;
+		fmarch.uniforms.y4.value = env2.y4;
+		smarch.uniforms.y4.value = env2.y4;
+		fmarch.uniforms.y5.value = env2.y5;
+		smarch.uniforms.y5.value = env2.y5;
+		fmarch.uniforms.y6.value = env2.y6;
+		smarch.uniforms.y6.value = env2.y6;
+		init.render();
+		march();
+		plot.render();
+    } );    
     panel.add(env2, 'frame');
     panel.add(env, 'k').onChange(function(){
 		env2.pressureC = 15*env.k;
@@ -467,27 +494,7 @@ function createGui(){
 		march();
 		plot.render();
     } );
-    panel.add(env2, 'yMinOfParticle').onChange(function(){
-		initialPosition();
-		initialization();
-		init.render();
-		march();
-		plot.render();
-    } );
-    panel.add(env2, 'yMaxOfParticle').onChange(function(){
-		initialPosition();
-		initialization();
-		init.render();
-		march();
-		plot.render();
-    } );
-    panel.add(env2, 'xMinOfParticle').onChange(function(){
-		initialPosition();
-		initialization();
-		init.render();
-		march();
-		plot.render();
-    } );	
+
     panel.add(env, 'N').onChange(function(){
 		initialPosition();
 		initialization();
@@ -769,7 +776,7 @@ function initialization(){
 }
 
 initialization();
-checkStatus()
+paintColors()
 var clickCopy = new Abubu.Copy( scolor, fcolor ) ;
 
 /* finish of calculation function define */
