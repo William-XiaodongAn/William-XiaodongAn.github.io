@@ -226,7 +226,7 @@ var env2 = {
 		
 		x5: 0.34,
 		x6: 0.37,
-		y5: 0.019,
+		y5: 0.015,
 		y6: 0.42,
 		paintColors: false,
 		gateOpen: false,
@@ -261,7 +261,7 @@ env2.y1 = env2.chamber_height;
 env2.y2 = env2.chamber_height + env2.gate_thickness;
 env2.y3 = env2.chamber_height;
 env2.y4 = env2.chamber_height + env2.gate_thickness;
-env2.y5 = env2.chamber_height - 0.001;
+env2.y5 = env2.chamber_height - 0.005;
 env2.y6 = env2.chamber_height + 0.4;
 /* initial position */
 function initialPosition(){
@@ -745,9 +745,10 @@ function timeStep() {
         env2.x[i] += env2.vhx[i] * env2.dt;
         env2.y[i] += env2.vhy[i] * env2.dt;
 		detectWall(i);
+		detectObstacle(i,env2.x5,env2.x6,env2.y5,env2.y6,env.x000,env.y000);
 		detectObstacle(i,env2.x1,env2.x2,env2.y1,env2.y2,env.x0,env.y0);
 		detectObstacle(i,env2.x3,env2.x4,env2.y3,env2.y4,env.x00,env.y00);
-		detectObstacle(i,env2.x5,env2.x6,env2.y5,env2.y6,env.x000,env.y000);
+
 		
 		//gateOpen
 		if (!env2.gateOpen){
@@ -782,27 +783,27 @@ function detectObstacle(i,x1,x2,y1,y2,x0,y0){
 		
 		let y = y2 - y1
 		let x = x2 - x1
-		
+		let epsilon = 0.0001;
         if (env2.y[i] < y2 && env2.y[i] > y0 && env2.x[i] < x2 && env2.x[i] > x1 
 		&& Math.abs(env2.y[i]-y0) * x >= Math.abs(env2.x[i]-x0) * y) {
-            env2.y[i] = y2;
+            env2.y[i] = y2 + epsilon;
             env2.vy[i] *= -env2.wallBounce;
             env2.vhy[i] *= -env2.wallBounce;
         } else if (env2.y[i] < y0 && env2.y[i] > y1 && env2.x[i] < x2 && env2.x[i] > x1 
 		&& Math.abs(env2.y[i]-y0) * x  >= Math.abs(env2.x[i]-x0) * y) {
-            env2.y[i] = y1;
+            env2.y[i] = y1 - epsilon;
             env2.vy[i] *= -env2.wallBounce;
             env2.vhy[i] *= -env2.wallBounce;
         }
         
         else if (env2.y[i] < y2 && env2.y[i] > y1 && env2.x[i] < x0 && env2.x[i] > x1 
 		&& Math.abs(env2.y[i]-y0)* x  <= Math.abs(env2.x[i]-x0)* y) {
-            env2.x[i] = x1;
+            env2.x[i] = x1 - epsilon;
             env2.vx[i] *= -env2.wallBounce;
             env2.vhx[i] *= -env2.wallBounce;
         } else if (env2.y[i] < y2 && env2.y[i] > y1 && env2.x[i] < x2 && env2.x[i] > x0 
 		&& Math.abs(env2.y[i]-y0)* x  <= Math.abs(env2.x[i]-x0)* y) {
-            env2.x[i] = x2;
+            env2.x[i] = x2 + epsilon;
             env2.vx[i] *= -env2.wallBounce;
             env2.vhx[i] *= -env2.wallBounce;
         }
