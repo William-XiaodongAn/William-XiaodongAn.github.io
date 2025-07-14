@@ -1164,8 +1164,8 @@ function Environment(){
     this.height      =   750 ;
     this.dt          =   4.e-2 ;
     this.cfl         =   1.0 ;
-    this.ds_x        =   8 ;
-    this.ds_y        =   8 ;
+    this.ds_x        =   11.71875 ;      // Domain size-x (11.71875 cm for 750 grid)
+    this.ds_y        =   11.71875 ;      // Domain size-y (11.71875 cm for 750 grid)
 
     /* Autopace                 */
     this.paceMakerNumber = 0 ;
