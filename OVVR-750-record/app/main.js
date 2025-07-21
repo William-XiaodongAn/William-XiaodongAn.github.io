@@ -1168,12 +1168,12 @@ function Environment(){
     }
 
     /* Solver Parameters        */
-    this.width       =   512 ;
-    this.height      =   512 ;
-    this.dt          =   8.e-2 ;
+    this.width       =   750 ;
+    this.height      =   750 ;
+    this.dt          =   4.e-2 ;
     this.cfl         =   1.0 ;
-    this.ds_x        =   16 ;
-    this.ds_y        =   16 ;
+    this.ds_x        =   11.71875 ;      // Domain size-x (11.71875 cm for 750 grid)
+    this.ds_y        =   11.71875 ;      // Domain size-y (11.71875 cm for 750 grid)
 
     /* Autopace                 */
     this.paceMakerNumber = 0 ;
@@ -2271,12 +2271,12 @@ env.apdInit = new Abubu.Solver({
 /*------------------------------------------------------------------------
  * rendering the program ;
  *------------------------------------------------------------------------
- */	var will_length = 512;
-	var tau_pw_will = [1.25,1.26,1.27,1.28,1.29,1.3,1.31,1.32,1.33,1.34,1.35,1.36,1.37,1.38,1.39,1.4,1.41,1.42,1.43,1.44,1.45]; //C_Na // 1.26, 1.2,1.25,1.3,1.35,1.4
-	var tau_d_will = [1.0]; // C_CaL\
+ */	var will_length = 750;
+	var tau_pw_will = [0.85,0.9,0.95,1.0]; //C_Na // 1.26, 1.2,1.25,1.3,1.35,1.4
+	var tau_d_will = [2.0]; // C_Kr\
 	
-	env.C_Na = 1.29
-	Abubu.setUniformInSolvers('C_Na', env.C_Na,[env.s2comp1,env.s2comp2, env.crnt]) ;
+	env.C_CaL = 0.8
+	Abubu.setUniformInSolvers('C_CaL', env.C_CaL,[env.s2comp1,env.s2comp2, env.crnt]) ;
 	
     var tau_pw_will_order = 0;
     var tau_d_will_order = 0;
@@ -2356,7 +2356,7 @@ env.apdInit = new Abubu.Solver({
 				
 				if (env.time > 520200  && env.time < 520200 + 2.0*env.dt){
 
-					saveCsvFile(willDataForOnePoint,env.C_Na,env.C_CaL,'_spatial_20e4_32e4_8_8')
+					saveCsvFile(willDataForOnePoint,env.C_CaL,env.C_Kr,'_spatial_20e4_32e4_8_8')
 
 					willDataForOnePoint = null;
 					
@@ -2374,7 +2374,7 @@ env.apdInit = new Abubu.Solver({
 				
 				if (env.time > 850200 && env.time < 850200 + 2.0*env.dt){
 
-					saveCsvFile(willDataForOnePoint,env.C_Na,env.C_CaL,'_spatial_20e4_32e4_8_8')
+					saveCsvFile(willDataForOnePoint,env.C_CaL,env.C_Kr,'_spatial_20e4_32e4_8_8')
 
 					willDataForOnePoint = null;
 					
@@ -2391,7 +2391,7 @@ env.apdInit = new Abubu.Solver({
 				
 				if (env.time > 1180200 && env.time < 1180200 + 2.0*env.dt){
 
-					saveCsvFile(willDataForOnePoint,env.C_Na,env.C_CaL,'_spatial_20e4_32e4_8_8')
+					saveCsvFile(willDataForOnePoint,env.C_CaL,env.C_Kr,'_spatial_20e4_32e4_8_8')
 
 					willDataForOnePoint = null;
 					
@@ -2408,7 +2408,7 @@ env.apdInit = new Abubu.Solver({
 				
 				if (env.time > 1510200 && env.time < 1510200 + 2.0*env.dt){
 
-					saveCsvFile(willDataForOnePoint,env.C_Na,env.C_CaL,'_spatial_20e4_32e4_8_8')
+					saveCsvFile(willDataForOnePoint,env.C_CaL,env.C_Kr,'_spatial_20e4_32e4_8_8')
 
 					willDataForOnePoint = null;
 					
@@ -2425,7 +2425,7 @@ env.apdInit = new Abubu.Solver({
 				
 				if (env.time > 1830200 && env.time < 1830200 + 2.0*env.dt){
 
-					saveCsvFile(willDataForOnePoint,env.C_Na,env.C_CaL,'_spatial_20e4_32e4_8_8')
+					saveCsvFile(willDataForOnePoint,env.C_CaL,env.C_Kr,'_spatial_20e4_32e4_8_8')
 
 					willDataForOnePoint = null;
 					
@@ -2503,11 +2503,11 @@ env.apdInit = new Abubu.Solver({
 					
 
 					
-					env.C_Na = tau_pw_will[tau_pw_will_order]
-					env.C_CaL = tau_d_will[tau_d_will_order]
+					env.C_CaL = tau_pw_will[tau_pw_will_order]
+					env.C_Kr = tau_d_will[tau_d_will_order]
 					
-					Abubu.setUniformInSolvers('C_Na', env.C_Na,[env.s2comp1,env.s2comp2, env.crnt]) ;						
-					Abubu.setUniformInSolvers('C_CaL', env.C_CaL,[env.s2comp1,env.s2comp2, env.crnt]) ;
+					Abubu.setUniformInSolvers('C_CaL', env.C_CaL,[env.s2comp1,env.s2comp2, env.crnt]) ;						
+					Abubu.setUniformInSolvers('C_Kr', env.C_Kr,[env.s2comp1,env.s2comp2, env.crnt]) ;
 					
 					
 					tau_pw_will_order += 1
@@ -2561,7 +2561,7 @@ function saveCsvFile(willDataForOnePoint, tau_pw, tau_r, lya_type) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
 
-    const name_download = 'C_Na_' + tau_pw +  '_C_CaL_' + tau_r + lya_type + '_APD_step_' + (2*env.frameRate/120*env.dt) + '.csv';
+    const name_download = 'C_CaL_' + tau_pw +  '_C_Kr_' + tau_r + lya_type + '_APD_step_' + (2*env.frameRate/120*env.dt) + '.csv';
 
     link.href = url;
     link.download = name_download;
