@@ -2273,9 +2273,9 @@ env.apdInit = new Abubu.Solver({
  *------------------------------------------------------------------------
  */	var will_length = 512;
 	var tau_pw_will = [1.0]; //C_Na // 1.26, 1.2,1.25,1.3,1.35,1.4
-	var tau_d_will = [0.85,0.9,0.95,1.0]; // C_CaL\
+	var tau_d_will = [0.94,0.96,0.98]; // C_CaL\
 	
-	env.C_CaL = 0.8
+	env.C_CaL = 0.92
 	Abubu.setUniformInSolvers('C_CaL', env.C_CaL,[env.s2comp1,env.s2comp2, env.crnt]) ;
 	
     var tau_pw_will_order = 0;
